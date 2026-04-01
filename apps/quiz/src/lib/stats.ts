@@ -1,0 +1,250 @@
+// ─── localStorage-based persistence for question stats & session history ─────
+
+const STORAGE_KEY = "canada-exam-stats";
+const PSTAR_STORAGE_KEY = "canada-pstar-stats";
+
+// ─── Types ───────────────────────────────────────────────────────────────────
+
+export interface QuestionStat {
+  questionId: number;
+  timesViewed: number;
+  timesAnswered: number;
+  timesCorrect: number;
+  lastAnsweredAt: string | null; // ISO date
+}
+
+export interface SessionRecord {
+  id: string;
+  mode: "practice" | "exam" | "section";
+  section?: string; // only for section mode
+  startedAt: string; // ISO date
+  finishedAt: string | null;
+  totalQuestions: number;
+  answered: number;
+  correct: number;
+  questionIds: number[]; // which questions were in the session
+}
+
+export interface StatsData {
+  questionStats: Record<number, QuestionStat>; // keyed by question id
+  sessions: SessionRecord[];
+}
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+function getDefaultStats(): StatsData {
+  return { questionStats: {}, sessions: [] };
+}
+
+export function loadStats(key: string = STORAGE_KEY): StatsData {
+  if (typeof window === "undefined") return getDefaultStats();
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return getDefaultStats();
+    return JSON.parse(raw) as StatsData;
+  } catch {
+    return getDefaultStats();
+  }
+}
+
+export function saveStats(data: StatsData, key: string = STORAGE_KEY): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch {
+    // quota exceeded or private browsing — silently ignore
+  }
+}
+
+// ─── PSTAR-specific wrappers ────────────────────────────────────────────────
+
+export function loadPstarStats(): StatsData {
+  return loadStats(PSTAR_STORAGE_KEY);
+}
+
+export function savePstarStats(data: StatsData): void {
+  saveStats(data, PSTAR_STORAGE_KEY);
+}
+
+export function recordPstarQuestionView(questionId: number): void {
+  const stats = loadPstarStats();
+  const qs = stats.questionStats[questionId] ?? {
+    questionId,
+    timesViewed: 0,
+    timesAnswered: 0,
+    timesCorrect: 0,
+    lastAnsweredAt: null,
+  };
+  qs.timesViewed++;
+  stats.questionStats[questionId] = qs;
+  savePstarStats(stats);
+}
+
+export function recordPstarQuestionAnswer(questionId: number, correct: boolean): void {
+  const stats = loadPstarStats();
+  const qs = stats.questionStats[questionId] ?? {
+    questionId,
+    timesViewed: 0,
+    timesAnswered: 0,
+    timesCorrect: 0,
+    lastAnsweredAt: null,
+  };
+  qs.timesAnswered++;
+  if (correct) qs.timesCorrect++;
+  qs.lastAnsweredAt = new Date().toISOString();
+  stats.questionStats[questionId] = qs;
+  savePstarStats(stats);
+}
+
+export function startPstarSession(
+  mode: SessionRecord["mode"],
+  questionIds: number[],
+  section?: string
+): string {
+  const stats = loadPstarStats();
+  const id = `pstar-${mode}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  stats.sessions.push({
+    id,
+    mode,
+    section,
+    startedAt: new Date().toISOString(),
+    finishedAt: null,
+    totalQuestions: questionIds.length,
+    answered: 0,
+    correct: 0,
+    questionIds,
+  });
+  savePstarStats(stats);
+  return id;
+}
+
+export function finishPstarSession(
+  sessionId: string,
+  answered: number,
+  correct: number
+): void {
+  const stats = loadPstarStats();
+  const session = stats.sessions.find((s) => s.id === sessionId);
+  if (session) {
+    session.finishedAt = new Date().toISOString();
+    session.answered = answered;
+    session.correct = correct;
+  }
+  savePstarStats(stats);
+}
+
+export function clearPstarStats(): void {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem(PSTAR_STORAGE_KEY);
+}
+
+// ─── Question-level tracking ─────────────────────────────────────────────────
+
+export function recordQuestionView(questionId: number): void {
+  const stats = loadStats();
+  const qs = stats.questionStats[questionId] ?? {
+    questionId,
+    timesViewed: 0,
+    timesAnswered: 0,
+    timesCorrect: 0,
+    lastAnsweredAt: null,
+  };
+  qs.timesViewed++;
+  stats.questionStats[questionId] = qs;
+  saveStats(stats);
+}
+
+export function recordQuestionAnswer(questionId: number, correct: boolean): void {
+  const stats = loadStats();
+  const qs = stats.questionStats[questionId] ?? {
+    questionId,
+    timesViewed: 0,
+    timesAnswered: 0,
+    timesCorrect: 0,
+    lastAnsweredAt: null,
+  };
+  qs.timesAnswered++;
+  if (correct) qs.timesCorrect++;
+  qs.lastAnsweredAt = new Date().toISOString();
+  stats.questionStats[questionId] = qs;
+  saveStats(stats);
+}
+
+// ─── Session-level tracking ──────────────────────────────────────────────────
+
+export function startSession(
+  mode: SessionRecord["mode"],
+  questionIds: number[],
+  section?: string
+): string {
+  const stats = loadStats();
+  const id = `${mode}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  stats.sessions.push({
+    id,
+    mode,
+    section,
+    startedAt: new Date().toISOString(),
+    finishedAt: null,
+    totalQuestions: questionIds.length,
+    answered: 0,
+    correct: 0,
+    questionIds,
+  });
+  saveStats(stats);
+  return id;
+}
+
+export function finishSession(
+  sessionId: string,
+  answered: number,
+  correct: number
+): void {
+  const stats = loadStats();
+  const session = stats.sessions.find((s) => s.id === sessionId);
+  if (session) {
+    session.finishedAt = new Date().toISOString();
+    session.answered = answered;
+    session.correct = correct;
+  }
+  saveStats(stats);
+}
+
+// ─── Aggregate helpers (used by the stats dashboard) ─────────────────────────
+
+export function getAggregateStats(data: StatsData) {
+  const qStats = Object.values(data.questionStats);
+  const totalQuestionsViewed = qStats.filter((q) => q.timesViewed > 0).length;
+  const totalQuestionsAnswered = qStats.filter((q) => q.timesAnswered > 0).length;
+  const totalAnswers = qStats.reduce((s, q) => s + q.timesAnswered, 0);
+  const totalCorrect = qStats.reduce((s, q) => s + q.timesCorrect, 0);
+  const totalViews = qStats.reduce((s, q) => s + q.timesViewed, 0);
+
+  const completedSessions = data.sessions.filter((s) => s.finishedAt);
+  const examSessions = completedSessions.filter((s) => s.mode === "exam");
+  const practiceSessions = completedSessions.filter((s) => s.mode === "practice");
+  const sectionSessions = completedSessions.filter((s) => s.mode === "section");
+
+  const examsPassed = examSessions.filter(
+    (s) => s.totalQuestions > 0 && (s.correct / s.totalQuestions) * 100 >= 60
+  ).length;
+
+  return {
+    totalQuestionsViewed,
+    totalQuestionsAnswered,
+    totalAnswers,
+    totalCorrect,
+    totalViews,
+    overallAccuracy: totalAnswers > 0 ? Math.round((totalCorrect / totalAnswers) * 100) : 0,
+    totalSessions: data.sessions.length,
+    completedSessions: completedSessions.length,
+    examSessions: examSessions.length,
+    practiceSessions: practiceSessions.length,
+    sectionSessions: sectionSessions.length,
+    examsPassed,
+  };
+}
+
+export function clearStats(): void {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem(STORAGE_KEY);
+}
