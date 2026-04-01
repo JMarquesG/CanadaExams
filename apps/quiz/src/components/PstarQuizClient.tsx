@@ -131,6 +131,7 @@ export default function PstarQuizClient() {
                   </div>
                   {!isCorrect && <p className="text-xs text-red-500 mb-1">Your answer: {q.options.find((o) => o.id === a.selected)?.text}</p>}
                   <p className="text-xs text-green-700">Correct: {q.options.find((o) => o.id === q.correctAnswer)?.text}</p>
+                  {q.explanation && <p className="text-xs text-gray-600 mt-1">{q.explanation}</p>}
                   {q.reference && (
                     <div className="flex items-center gap-2 mt-1">
                       <span className="text-xs text-gray-400">Ref: {q.reference}</span>
@@ -217,6 +218,9 @@ export default function PstarQuizClient() {
                 — Correct answer: <strong>({current.correctAnswer}) {current.options.find((o) => o.id === current.correctAnswer)?.text}</strong>
               </span>
             </div>
+            {current.explanation && (
+              <p className="text-sm text-gray-600 mt-2">{current.explanation}</p>
+            )}
             {current.reference && (
               <div className="flex items-center gap-3 flex-wrap border-t border-gray-200 pt-3 mt-1">
                 <span className="text-xs text-gray-400">Reference: {current.reference}</span>

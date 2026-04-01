@@ -388,6 +388,9 @@ export default function PstarExamClient() {
                 })}
               </div>
 
+              {reviewQ.explanation && (
+                <p className="text-sm text-gray-600 mb-2">{reviewQ.explanation}</p>
+              )}
               {reviewQ.reference && (
                 <p className="text-xs text-gray-400 mb-3">
                   Reference: {reviewQ.reference}

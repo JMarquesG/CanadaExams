@@ -474,6 +474,9 @@ export default function PstarPracticeClient() {
                 </span>
               )}
             </div>
+            {current.explanation && (
+              <p className="text-sm text-gray-600 mt-2">{current.explanation}</p>
+            )}
             {current.reference && (
               <div className="flex items-center gap-3 flex-wrap border-t border-gray-200 pt-3 mt-1">
                 <span className="text-xs text-gray-400">Reference: {current.reference}</span>

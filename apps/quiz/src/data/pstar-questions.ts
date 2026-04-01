@@ -21,6 +21,7 @@ export interface PstarQuestion {
   options: { id: number; text: string }[];
   correctAnswer: number;
   reference?: string;
+  explanation?: string;
 }
 
 export const pstarQuestions: PstarQuestion[] = [
@@ -40,6 +41,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "CAR 602.19(2)",
+    explanation: "An aircraft towing objects has the right of way over all power-driven heavier-than-air aircraft. The rule states the aircraft that has the other on its right shall give way.",
   },
   {
     id: 2,
@@ -54,6 +56,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "CAR 602.19(3)",
+    explanation: "The aircraft that has the other on its right shall give way. Use hands or model airplanes to practice which aircraft has right of way in converging scenarios.",
   },
   {
     id: 3,
@@ -68,6 +71,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CAR 602.19(2)",
+    explanation: "A glider is NOT power-driven, and it has the right of way over power-driven aircraft.",
   },
   {
     id: 4,
@@ -82,6 +86,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CAR 602.19(2)",
+    explanation: "Everyone except balloons gives way to gliders.",
   },
   {
     id: 5,
@@ -96,6 +101,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CAR 602.19(2)",
+    explanation: "Priority order is: balloons first, then gliders, then helicopters and airplanes together.",
   },
   {
     id: 6,
@@ -109,6 +115,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "CAR 602.19(2)",
+    explanation: "Balloons have the right of way over everyone.",
   },
   {
     id: 7,
@@ -123,6 +130,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "CAR 602.19(3)",
+    explanation: "The aircraft on the right has right of way.",
   },
   {
     id: 8,
@@ -137,6 +145,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "CAR 602.19(4)",
+    explanation: "Turn to your own right when meeting head-on, matching how vehicles would meet on a narrow road.",
   },
   {
     id: 9,
@@ -151,6 +160,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "CAR 602.19(5)",
+    explanation: "Alter heading to the right when an aircraft is ahead, regardless of its direction.",
   },
   {
     id: 10,
@@ -165,6 +175,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "CAR 602.19(8)",
+    explanation: "If you must overtake, do it on the right.",
   },
 
   // ===========================
@@ -183,6 +194,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "CAR 602.17",
+    explanation: "Memorize the light signals table: steady green in the air means cleared to land, steady green on ground means cleared for take-off.",
   },
   {
     id: 12,
@@ -197,6 +209,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "CAR 602.17",
+    explanation: "Flashing green in the air means return for landing, flashing green on ground means cleared to taxi.",
   },
   {
     id: 13,
@@ -211,6 +224,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "CAR 602.17",
+    explanation: "Flashing red in the air means airport unsafe, do not land. On the ground, flashing red means taxi clear of landing area in use.",
   },
   {
     id: 14,
@@ -225,6 +239,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CAR 602.17",
+    explanation: "Steady red in the air means give way to other aircraft and continue circling. On ground, steady red means stop.",
   },
   {
     id: 15,
@@ -239,6 +254,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "CAR 602.17",
+    explanation: "Blinking white on the ground means return to starting point on the airport.",
   },
   {
     id: 16,
@@ -253,6 +269,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM RAC 4.4.4",
+    explanation: "Red flare or red pyrotechnics while on the ground means be aware that there is an emergency in progress. Vacate the runways immediately.",
   },
   {
     id: 17,
@@ -267,6 +284,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM MAP 7.5",
+    explanation: "The symbol on charts for an area where explosives are in use may also indicate an artillery range or open pit mine. Mink and similar animals on fur farms will eat their young if very frightened by low-flying aircraft.",
   },
   {
     id: 18,
@@ -281,6 +299,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM AIR 2.3",
+    explanation: "Low flying airplanes frighten and disturb wild animals and can interfere with grazing, mating and other activities. Remember TWO thousand feet because most of these animals have TWO antlers.",
   },
 
   // ===========================
@@ -299,6 +318,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "AIM COM 5.2",
+    explanation: "Initial contact requires manufacturer name or aircraft type followed by last four letters of registration using the phonetic alphabet (e.g., 'Cessna Golf Alfa Delta Tango').",
   },
   {
     id: 20,
@@ -313,6 +333,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "AIM COM 5.2",
+    explanation: "Memorize phonetic equivalents for your aircraft's registration letters before making radio calls. For the PSTAR exam, focus on Foxtrot, Sierra, Quebec, and Bravo.",
   },
   {
     id: 21,
@@ -327,6 +348,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM COM 5.2",
+    explanation: "You must use the full phonetic alphabet for all letters every time. Abbreviated three-letter versions are only permitted if the air traffic service initiates the shortening.",
   },
   {
     id: 22,
@@ -341,6 +363,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM COM 5.2",
+    explanation: "Include aircraft type/manufacturer in initial contact to convey speed, maneuverability, and appearance information, but omit it from subsequent transmissions.",
   },
   {
     id: 23,
@@ -354,6 +377,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM COM 5.6",
+    explanation: "ATIS broadcasts continuously updated recorded airport information. For weather beyond the airport, contact Flight Service Station. ATIS reduces controller frequency congestion.",
   },
   {
     id: 24,
@@ -368,6 +392,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM COM 5.6",
+    explanation: "'With the numbers' indicates you've already received altimeter setting, winds, and runway information from listening to another aircraft's briefing.",
   },
   {
     id: 25,
@@ -382,6 +407,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM COM 5.14",
+    explanation: "Monitor 126.7 MHz for VFR enroute operations in uncontrolled airspace to hear position reports and access FSS services.",
   },
   {
     id: 26,
@@ -396,6 +422,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM COM 5.14",
+    explanation: "An ELT is a transmitter-only device with no receiver mode. If equipped with two radios, tune to 126.7 and 121.5. Testing is only permitted during the first five minutes of the hour.",
   },
   {
     id: 27,
@@ -410,6 +437,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM RAC 4.5.7",
+    explanation: "The CFS (Canada Flight Supplement) provides details on every Canadian airport. Consult it or your instructor for reference materials.",
   },
   {
     id: 28,
@@ -424,6 +452,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "AIM RAC 4.5.7",
+    explanation: "At uncontrolled fields, address traffic as 'Powell River Traffic' or similar \\u2014 you are communicating with all traffic, not air traffic control.",
   },
   {
     id: 29,
@@ -438,6 +467,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "AIM RAC 4.5.7",
+    explanation: "121.5 MHz is the emergency frequency.",
   },
   {
     id: 30,
@@ -452,6 +482,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM RAC 4.5.7",
+    explanation: "Per CARs 602.97, remain on the Mandatory Frequency until outside the designated area. AIP RAC recommends monitoring 5-10 nm further.",
   },
   {
     id: 31,
@@ -466,6 +497,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM RAC 4.3.2",
+    explanation: "Unless specific crossing instructions were given, hold short of runways and request authorization before crossing during taxi.",
   },
   {
     id: 32,
@@ -480,6 +512,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM RAC 4.3.2",
+    explanation: "Restrictions are the only part of a VFR clearance requiring readback.",
   },
   {
     id: 33,
@@ -494,6 +527,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "AIM RAC 4.3.2",
+    explanation: "If offered immediate takeoff but unable to comply safely, respond 'Unable' and remain stationary. There is no penalty for refusing.",
   },
   {
     id: 34,
@@ -508,6 +542,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM RAC 1.5",
+    explanation: "Controllers provide known traffic altitude and indicate if altitude is 'unverified' or based solely on transponder reply.",
   },
   {
     id: 35,
@@ -522,6 +557,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "AIM RAC 4.3.2",
+    explanation: "Never comply with instructions that compromise safety, regardless of source. Prioritize safe operation.",
   },
   {
     id: 36,
@@ -536,6 +572,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM COM 5.8",
+    explanation: "MAYDAY, MAYDAY, MAYDAY signals grave and imminent danger requiring immediate assistance.",
   },
   {
     id: 37,
@@ -550,6 +587,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM COM 5.8",
+    explanation: "PAN PAN, PAN PAN, PAN PAN signals urgency concerning aircraft, vehicle, or person safety \\u2014 not requiring immediate assistance.",
   },
   {
     id: 38,
@@ -564,6 +602,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM COM 5.8",
+    explanation: "Transmit one MAYDAY followed by three 'ALL STATIONS' transmissions. Conclude with 'distress traffic ended,' 'silence finished,' or 'seelonce finie.'",
   },
   {
     id: 39,
@@ -578,6 +617,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM RAC 4.3.5",
+    explanation: "Departing aircraft normally remain on tower frequency until clear of the Control Zone. Early departure requires requesting, obtaining, and acknowledging permission.",
   },
   {
     id: 40,
@@ -592,6 +632,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM RAC 4.3.5",
+    explanation: "Listen for position reports identifying preceding traffic. Landing clearance timing varies from downwind to short final.",
   },
   {
     id: 41,
@@ -606,6 +647,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM COM 5.2",
+    explanation: "Simply transmitting your callsign signifies receipt, understanding, and compliance. Clarify anything misunderstood rather than remaining silent.",
   },
   {
     id: 42,
@@ -620,6 +662,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM COM 5.2",
+    explanation: "All airport radio operators are historically addressed as 'Radio' despite title changes \\u2014 the call sign remained constant.",
   },
   {
     id: 43,
@@ -634,6 +677,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM COM 5.11",
+    explanation: "FSS provides weather, NOTAMs, and flight plan filing services in controlled or uncontrolled airspace.",
   },
   {
     id: 44,
@@ -647,6 +691,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM MAP 1.6",
+    explanation: "NOTAMs address airport closures, navaid outages, runway hazards, airshows, parachute jumping, antenna installation, and airspace changes.",
   },
   {
     id: 45,
@@ -661,6 +706,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "AIM MAP 1.6",
+    explanation: "APRX means approximately. Without APRX notation, NOTAMs expire at the specified time.",
   },
   {
     id: 46,
@@ -675,6 +721,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM MAP 1.6",
+    explanation: "When a NOTAM time shows APRX, a cancelling NOTAM must be issued. Exact times require no cancellation.",
   },
   {
     id: 47,
@@ -689,6 +736,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM COM 5.2",
+    explanation: "Signal strength indicates volume level (1=bad, 5=excellent). Readability indicates clarity (1=unreadable, 5=perfectly readable).",
   },
 
   // ===========================
@@ -706,6 +754,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CAR 101.01",
+    explanation: "A registered aerodrome is any aerodrome listed in the CFS or WAS. Certification as an airport requires meeting stricter standards and is denoted by 'Cert' in the OPR section.",
   },
   {
     id: 49,
@@ -720,6 +769,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM AGA 4.3",
+    explanation: "A windsock estimates wind speed: the wind is blowing at about five knots per orange stripe that is inflated. A fully extended dry windsock indicates approximately 15 knots minimum.",
   },
   {
     id: 50,
@@ -734,6 +784,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "CAR 601.17",
+    explanation: "Permission to operate vehicles on airport grounds must be obtained from the airport operator, whose contact information appears in the CFS entry's OPR section.",
   },
   {
     id: 51,
@@ -748,6 +799,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "AIM AGA 6.0",
+    explanation: "Runway closures are marked with 'X's that may be painted, placed on tarpaulins, applied with dye on snow, or outlined with poles, depending on closure permanence.",
   },
   {
     id: 52,
@@ -762,6 +814,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM AGA 5.2",
+    explanation: "Runway numbering reflects compass direction: the first two digits of the compass heading is the runway number. Aircraft landing from the west fly east (090\\u00b0), so the runway is 09.",
   },
   {
     id: 53,
@@ -776,6 +829,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM AGA 5.3",
+    explanation: "Pilots must stop at hold short lines until receiving clearance to cross. Once cleared for takeoff or runway positioning, crossing the line is permitted.",
   },
   {
     id: 54,
@@ -790,6 +844,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM AGA 5.3",
+    explanation: "200 feet (approximately 60 metres) is the standard distance unauthorized aircraft, pedestrians and vehicles are asked to maintain.",
   },
   {
     id: 55,
@@ -803,6 +858,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CAR 101.01",
+    explanation: "The maneuvering area comprises taxiways and runways only, excluding aprons/ramps used for parking.",
   },
   {
     id: 56,
@@ -817,6 +873,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "CAR 602.96",
+    explanation: "Overflying at 2000 feet maintains 500 feet above circuit altitude and complies with regulations.",
   },
   {
     id: 57,
@@ -831,6 +888,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM AGA 6.0",
+    explanation: "The marking shown identifies a hospital heliport.",
   },
 
   // ===========================
@@ -840,7 +898,7 @@ export const pstarQuestions: PstarQuestion[] = [
     id: 58,
     section: "Equipment",
     question:
-      "Except for ultra-light aeroplanes and balloons, which documents shall be carried on board when flying a radio equipped Canadian privately registered aircraft?",
+      "Except for ultra-light aeroplanes and balloons, which documents shall be carried on board when flying a radio equipped Canadian privately registered aircraft? Items A, B and\n\nA — Flight Authority (Certificate of Airworthiness or Flight Permit)\nB — Certificate of Registration\nC — Technical Records\nD — Crew licences\nE — Aircraft Flight Manual or equivalent document\nF — Type certificate\nG — Aircraft journey log book (where landing away from point of departure)\nH — Proof of liability insurance",
     options: [
       { id: 1, text: "C, D, E, G." },
       { id: 2, text: "C, D, F, H." },
@@ -849,6 +907,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CAR 602.60",
+    explanation: "Remember the mnemonic 'AROWILL' for required onboard documents: Airworthiness Certificate, Registration Certificate, Owner's Manual, Weight & Balance, Insurance, Licences, and Logbook.",
   },
   {
     id: 59,
@@ -863,6 +922,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "CAR 602.61",
+    explanation: "For journeys exceeding 25 nm, carry fire-starting means, water purification, shelter materials, and distress signalling equipment per CARs 602.61. Radio is only required in controlled airspace or mandatory frequency areas.",
   },
   {
     id: 60,
@@ -877,6 +937,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "CAR 605.16",
+    explanation: "A serviceable landing light is required when carrying passengers at night per CARs 605.16(1)(j). Night landings at unlighted aerodromes are prohibited except for police or life-saving operations.",
   },
   {
     id: 61,
@@ -891,6 +952,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CAR 605.31",
+    explanation: "Oxygen requirements are triggered at cabin altitudes above 10,000 ft for more than 30 minutes. Above 13,000 ft, everyone on board must use supplemental oxygen.",
   },
   {
     id: 62,
@@ -905,6 +967,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "CAR 605.31",
+    explanation: "Any aircraft flying above 10,000 ft for over 30 minutes requires oxygen availability for crew members.",
   },
   {
     id: 63,
@@ -919,6 +982,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "CAR 602.62",
+    explanation: "Life preservers are required for each person per CARs 602.62. Life rafts do not require a one-per-person ratio.",
   },
   {
     id: 64,
@@ -932,6 +996,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM COM 5.8",
+    explanation: "Emergency frequency 121.5 MHz is required if radio equipped per CARs 602.143. The UHF equivalent is 243.0 MHz.",
   },
   {
     id: 65,
@@ -946,6 +1011,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "CAR 602.19",
+    explanation: "Canadian night currency requires 5 night takeoffs and landings in the past six months for passenger operations.",
   },
   {
     id: 66,
@@ -960,6 +1026,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CAR 101.01",
+    explanation: "Per CARs 101.01, infants under two years may be held by adults or secured in car seats.",
   },
   {
     id: 67,
@@ -974,20 +1041,22 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "CAR 605.27",
+    explanation: "Child restraint systems refer to car seats, not standard seatbelts.",
   },
   {
     id: 68,
     section: "Equipment",
     question:
-      "Which flight instrument systems and equipment are required on power driven aircraft for day VFR flight in controlled airspace? A magnetic direction indicating system or magnetic compass and",
+      "Which flight instrument systems and equipment are required on power driven aircraft for day VFR flight in controlled airspace? A magnetic direction indicating system or magnetic compass and\n\nA — an airspeed indicator\nB — an attitude indicator\nC — an altimeter\nD — a vertical speed indicator\nE — a turn and bank indicator\nF — a time piece\nG — a heading indicator",
     options: [
-      { id: 1, text: "A, C, F." },
-      { id: 2, text: "A, B, G." },
-      { id: 3, text: "A, C, D, E, F." },
-      { id: 4, text: "B, D, E, G." },
+      { id: 1, text: "A, C, F (airspeed indicator, altimeter, time piece)." },
+      { id: 2, text: "A, B, G (airspeed indicator, attitude indicator, heading indicator)." },
+      { id: 3, text: "A, C, D, E, F (airspeed, altimeter, VSI, turn & bank, time piece)." },
+      { id: 4, text: "B, D, E, G (attitude, VSI, turn & bank, heading indicator)." },
     ],
     correctAnswer: 1,
     reference: "CAR 605.14",
+    explanation: "Day VFR equipment per CARs 605.14 includes tachometer, oil gauges, compass, altimeter, timepiece, airspeed indicator, fuel gauge, and emergency/survival equipment.",
   },
 
   // ===========================
@@ -1006,6 +1075,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "AIM RAC 4.3.2",
+    explanation: "Controllers may offer intersection take-offs. Pilots can determine runway length via airport diagrams, controller inquiry, or ATIS, and should verify required take-off distance during preflight.",
   },
   {
     id: 70,
@@ -1020,6 +1090,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM RAC 4.3.2",
+    explanation: "Controllers may offer intersection take-offs. Verify the available runway length meets your aircraft's requirements.",
   },
   {
     id: 71,
@@ -1034,6 +1105,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "AIM RAC 4.3.2",
+    explanation: "Pilots join on or before downwind unless specifically cleared to base or final. Controllers typically avoid crossing aircraft over airports.",
   },
   {
     id: 72,
@@ -1048,6 +1120,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM RAC 4.5.2",
+    explanation: "Cross at circuit height. At 2,000 ft AGL you are approximately 1,000 ft above circuit altitude for non-landing overflights. Fly at 500 ft above circuit to check wind information.",
   },
   {
     id: 73,
@@ -1062,6 +1135,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM RAC 4.5.2",
+    explanation: "Pilots should not join base or final without clearance. 'Downwind on the forty-five' is the standard uncontrolled circuit entry practice.",
   },
   {
     id: 74,
@@ -1076,6 +1150,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "AIM RAC 4.5.2",
+    explanation: "If the runway appears unobstructed and a controller is available, request clearance by stating your callsign and 'short final.' Overshoot if no clearance is received.",
   },
   {
     id: 75,
@@ -1090,6 +1165,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM RAC 4.3.2",
+    explanation: "Comply with regulations requiring 500 ft below cloud base during circuit operations, regardless of published circuit altitude.",
   },
   {
     id: 76,
@@ -1104,6 +1180,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM RAC 4.5.2",
+    explanation: "Comply with regulations requiring 500 ft below cloud base during circuit operations, regardless of published circuit altitude.",
   },
   {
     id: 77,
@@ -1118,6 +1195,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM RAC 4.5.2",
+    explanation: "A straight-in clearance means descending on runway heading. Circuit altitudes vary based on terrain and airspace considerations. Cloud conditions may necessitate lower circuits.",
   },
   {
     id: 78,
@@ -1132,6 +1210,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM RAC 4.5.2",
+    explanation: "Reduce airspeed when instructed. Flaps lower the minimum safe speed. Maintain safety margins regardless of ATC instructions.",
   },
   {
     id: 79,
@@ -1146,6 +1225,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM RAC 4.3.2",
+    explanation: "Full flaps in strong crosswinds risks reduced elevator effectiveness. Landing on other runways requires clearance. Safety is paramount if uncomfortable.",
   },
   {
     id: 80,
@@ -1160,6 +1240,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "AIM RAC 4.3.2",
+    explanation: "Pilot responsibility: maintain VFR conditions. Controllers lack cloud visibility on radar.",
   },
   {
     id: 81,
@@ -1174,6 +1255,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CAR 602.114",
+    explanation: "Pilot responsibility: maintain VFR conditions. Controllers cannot see clouds on radar.",
   },
   {
     id: 82,
@@ -1188,6 +1270,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "CAR 602.114",
+    explanation: "Special VFR permits flight in control zones below normal VFR limits. Student pilots are prohibited from Special VFR. Pilots remain responsible for cloud and obstacle clearance.",
   },
   {
     id: 83,
@@ -1202,6 +1285,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "CAR 602.117",
+    explanation: "Special VFR permits flight in control zones below normal VFR limits. Student pilots are prohibited from Special VFR.",
   },
   {
     id: 84,
@@ -1216,6 +1300,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CAR 602.117",
+    explanation: "Altitude changes are not always required for traffic avoidance \\u2014 heading changes are also acceptable. Pilots may request clarification from the controller.",
   },
   {
     id: 85,
@@ -1230,6 +1315,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "CAR 602.31",
+    explanation: "VFR aircraft squawk 1200. Above 12,500 ft in Canada requires Class B clearance with a discrete code assignment or squawk 1400.",
   },
   {
     id: 86,
@@ -1244,6 +1330,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "CAR 602.34",
+    explanation: "Press the ident button only when directed by ATC. A single press allows the controller to identify your aircraft. Unauthorized use risks misidentification.",
   },
   {
     id: 87,
@@ -1258,6 +1345,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "CAR 602.34",
+    explanation: "Four student pilot restrictions: (1) instructor is PIC when present, (2) night flight is forbidden, (3) day VFR only, (4) only a flight test examiner is permitted as passenger.",
   },
   {
     id: 88,
@@ -1272,6 +1360,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "CAR 401.19",
+    explanation: "Aircraft must comply with and acknowledge all ATC instructions. Light signals warrant compliance despite their rarity outside controlled airspace.",
   },
   {
     id: 89,
@@ -1286,6 +1375,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CAR 602.17",
+    explanation: "CARs 602.71 requires familiarity with appropriate pre-flight information. Many flights require no ATC clearances.",
   },
   {
     id: 90,
@@ -1300,6 +1390,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "CAR 602.71",
+    explanation: "The Designated Airspace Handbook lists airspace coordinates and responsible contacts. VTA charts provide high-density area details. CFS supplies airport frequencies and procedures.",
   },
   {
     id: 91,
@@ -1314,6 +1405,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM MAP 3.0",
+    explanation: "Wake turbulence avoidance is always the responsibility of the pilot.",
   },
 
   // ===========================
@@ -1331,6 +1423,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM AIR 2.6",
+    explanation: "Wake turbulence avoidance is always the responsibility of the pilot.",
   },
   {
     id: 93,
@@ -1345,6 +1438,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "AIM AIR 2.6",
+    explanation: "Plan on wake turbulence persisting for a minimum of two minutes.",
   },
   {
     id: 94,
@@ -1359,6 +1453,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM AIR 2.6",
+    explanation: "All three options regarding wake turbulence characteristics can be correct \\u2014 vortices are invisible, unpredictable, and dangerous.",
   },
   {
     id: 95,
@@ -1373,6 +1468,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM AIR 2.6",
+    explanation: "Any of the listed outcomes from wake turbulence encounters are possible, including structural damage, loss of control, or altitude loss.",
   },
   {
     id: 96,
@@ -1387,6 +1483,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "AIM AIR 2.6",
+    explanation: "Vortices may remain after two minutes, dissipate gradually, and sink beneath the aircraft flight path.",
   },
   {
     id: 97,
@@ -1401,6 +1498,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM AIR 2.6",
+    explanation: "To avoid wake effects during landing, land past the touchdown point of the larger airplane.",
   },
   {
     id: 98,
@@ -1415,6 +1513,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM AIR 2.6",
+    explanation: "Since vortices are invisible, safety requires taking off before the point where you know they start.",
   },
   {
     id: 99,
@@ -1428,6 +1527,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM AIR 2.6",
+    explanation: "All rotary and fixed-wing aircraft generate wake turbulence, including gliders (though glider wake is minimal).",
   },
   {
     id: 100,
@@ -1442,6 +1542,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM AIR 2.6",
+    explanation: "Rotation occurs when the airplane's nose lifts off the ground, initiating wingtip vortex formation.",
   },
   {
     id: 101,
@@ -1456,6 +1557,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM AIR 2.6",
+    explanation: "Wake turbulence originates at rotation and descends below the flight path.",
   },
   {
     id: 102,
@@ -1470,6 +1572,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM AIR 2.6",
+    explanation: "Wingtip vortices are independent of engine operation \\u2014 they are generated by lift, not thrust.",
   },
   {
     id: 103,
@@ -1484,6 +1587,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM AIR 2.6",
+    explanation: "Maximum turbulence results from aircraft being heavy, clean (flaps up, gear up) and slow.",
   },
   {
     id: 104,
@@ -1498,6 +1602,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM AIR 2.6",
+    explanation: "Helicopter rotor downwash behaves similarly to wingtip vortices, trailing behind and below.",
   },
   {
     id: 105,
@@ -1512,6 +1617,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM AIR 2.6",
+    explanation: "Heavier helicopters produce more intense wake turbulence.",
   },
   {
     id: 106,
@@ -1526,6 +1632,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM AIR 2.6",
+    explanation: "Light crosswinds can trap vortices over runways, affecting adjacent runways and taxiways.",
   },
 
   // ===========================
@@ -1544,6 +1651,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "CAR 404.06",
+    explanation: "You cannot exercise pilot privileges if physically disabled per CARs 404.06. You need not report to Transport Canada or surrender your license, and you can still be a passenger.",
   },
   {
     id: 108,
@@ -1558,6 +1666,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "AIM AIR 3.0",
+    explanation: "Hyperventilation and hypoxia symptoms overlap. At altitude, provide oxygen first. If ineffective after 3-4 breaths, treat hyperventilation by slowing breathing. Below 8,000 ft, treat for hyperventilation immediately.",
   },
   {
     id: 109,
@@ -1572,6 +1681,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM AIR 3.0",
+    explanation: "During climb, ear pressure releases easily. During descent, pressure differences can close eustachian tubes, risking eardrum damage. Use max 500 fpm descent rate with passengers.",
   },
   {
     id: 110,
@@ -1586,6 +1696,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM AIR 3.0",
+    explanation: "Swallowing and yawning help open eustachian tubes. The Valsalva maneuver (plug nose, close mouth, blow) is most effective but risks forcing bacteria into the middle ear if done with a cold.",
   },
   {
     id: 111,
@@ -1600,6 +1711,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM AIR 3.14",
+    explanation: "SCUBA divers must wait 24 hours before flying above 8,000 ft. 12 hours suffices below 8,000 ft if no decompression stops were required.",
   },
   {
     id: 112,
@@ -1614,6 +1726,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM AIR 3.0",
+    explanation: "Financial and family problems contribute to fatigue. Fatigue impairs pilot performance dramatically. Altitude and hunger increase fatigue. CARs 602.02 forbids flying while fatigued.",
   },
   {
     id: 113,
@@ -1628,6 +1741,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM AIR 3.0",
+    explanation: "The AIP recommends against blood donation for active pilots but allows it with a 48-hour waiting period.",
   },
   {
     id: 114,
@@ -1642,6 +1756,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM AIR 3.0",
+    explanation: "General anesthesia itself may prevent flying. Consult your doctor about safe return-to-flying timing.",
   },
   {
     id: 115,
@@ -1656,6 +1771,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM AIR 3.0",
+    explanation: "Use common sense \\u2014 wait at least 24 hours after dental work before flying.",
   },
   {
     id: 116,
@@ -1670,6 +1786,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM AIR 3.0",
+    explanation: "Altitude reduces alcohol tolerance. Wait minimum 8 hours; AIP recommends 24 hours. Alcohol impairs judgment and balance.",
   },
   {
     id: 117,
@@ -1684,6 +1801,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM AIR 3.0",
+    explanation: "Manufacturers may not know drug effects at altitude. Safest rule: don't fly while taking unfamiliar medications. Consult your CAME about over-the-counter drugs.",
   },
   {
     id: 118,
@@ -1698,6 +1816,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "CAR 404.04",
+    explanation: "Medical validity periods: private pilots under 40 now have 5-year validity. Those 40 and over have 2-year validity.",
   },
   {
     id: 119,
@@ -1712,6 +1831,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "CAR 404.04",
+    explanation: "Medical validity periods: private pilots under 40 now have 5-year validity. Those 40 and over have 2-year validity.",
   },
 
   // ===========================
@@ -1730,6 +1850,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "CAR 602.88",
+    explanation: "Helicopter and airplane pilots answer the same PSTAR. Day VFR requires 20 minutes fuel reserve in a helicopter and 30 minutes reserve in an airplane.",
   },
   {
     id: 121,
@@ -1744,6 +1865,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "CAR 602.88",
+    explanation: "Same fuel reserve guidance applies: 20 minutes for helicopter, 30 minutes for airplane for day VFR.",
   },
   {
     id: 122,
@@ -1758,6 +1880,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "CAR 602.73",
+    explanation: "Any aircraft traveling more than 25 nautical miles from origin needs a flight plan or itinerary per CARs 602.73, whether it lands or not.",
   },
   {
     id: 123,
@@ -1772,6 +1895,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CAR 602.77",
+    explanation: "Pilots should report in as soon as practicable after landing but never exceeding 60 minutes after filed ETA.",
   },
   {
     id: 124,
@@ -1786,6 +1910,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "CAR 602.77",
+    explanation: "Notify air traffic services as soon as practicable of route, duration, or destination changes. Search begins within 10 nm of proposed route, then 15 nm.",
   },
   {
     id: 125,
@@ -1800,6 +1925,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CAR 602.77",
+    explanation: "Call your responsible person as soon as practicable after landing. 24 hours represents the absolute maximum timeframe.",
   },
   {
     id: 126,
@@ -1814,6 +1940,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "CAR 602.73",
+    explanation: "No age or knowledge qualifications are required for a responsible person per CARs 602.70. Choosing a pilot is preferable over non-pilots.",
   },
   {
     id: 127,
@@ -1828,6 +1955,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "CAR 602.77",
+    explanation: "The pilot bears responsibility for requesting flight plan closure. Do not close until at final destination.",
   },
   {
     id: 128,
@@ -1842,6 +1970,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "AIM RAC 3.6",
+    explanation: "Total time calculation: add all leg times plus stopover durations. 1h15 + 30min + 1h20 = 3 hours 05 minutes.",
   },
   {
     id: 129,
@@ -1856,6 +1985,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM RAC 3.6",
+    explanation: "Add all leg times plus stopover times. Avoid adding extra contingency time.",
   },
   {
     id: 130,
@@ -1870,6 +2000,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "AIM RAC 3.6",
+    explanation: "Format intermediate stops by repeating airport name and duration in four consecutive digits (e.g., '0030' for a 30-minute stop).",
   },
 
   // ===========================
@@ -1887,6 +2018,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM RAC 1.7",
+    explanation: "An ATC instruction becomes effective upon receipt and requires acknowledgment. A clearance becomes effective when accepted.",
   },
   {
     id: 132,
@@ -1900,6 +2032,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "AIM RAC 1.7",
+    explanation: "An ATC instruction becomes effective upon receipt. A clearance must be accepted to become effective. VFR pilots need not read back clearances.",
   },
   {
     id: 133,
@@ -1914,6 +2047,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM RAC 1.7",
+    explanation: "Any time you must deviate from a clearance or instruction, you must inform ATC. Take necessary safety actions and communicate immediately.",
   },
   {
     id: 134,
@@ -1928,6 +2062,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM RAC 1.7",
+    explanation: "In controlled airspace: obtain permission before acting, comply with instructions if safe, take necessary safety actions if instructions become unsafe, then inform the controller.",
   },
   {
     id: 135,
@@ -1942,6 +2077,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "AIM RAC 1.7",
+    explanation: "The only time the pilot is relieved of responsibility for separation from other traffic is on an IFR flight plan, in IMC (in cloud).",
   },
   {
     id: 136,
@@ -1956,6 +2092,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM RAC 1.7",
+    explanation: "If offered an unsuitable clearance, turn it down and ask for what you want. Communicate specific reasons for refusal.",
   },
 
   // ===========================
@@ -1974,6 +2111,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM SAR 3.5",
+    explanation: "Turn on the ELT as soon as possible after an emergency landing. The sooner you turn it on, the more quickly help will come. Turning it on and off could delay the pinpointing process.",
   },
   {
     id: 138,
@@ -1988,6 +2126,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM SAR 3.5",
+    explanation: "Refer to CARs 605.40 regarding when you may or may not activate your ELT.",
   },
   {
     id: 139,
@@ -2002,6 +2141,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM SAR 3.5",
+    explanation: "If you hear a signal on 121.5, switch to an adjacent frequency like 121.55 or 121.6 to determine if the ELT originates from your own aircraft or one nearby.",
   },
   {
     id: 140,
@@ -2016,6 +2156,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM SAR 3.5",
+    explanation: "If your ELT activates accidentally, turn it off immediately and contact the nearest air traffic services unit, then return it to the armed position.",
   },
   {
     id: 141,
@@ -2030,6 +2171,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "CAR 602.09",
+    explanation: "Per CARs 602.10, an aircraft must be attended, though regulations don't specify who must remain with the aircraft.",
   },
   {
     id: 142,
@@ -2044,6 +2186,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM MET 3.11",
+    explanation: "Strong winds, downdrafts, and windshear from thunderstorms extend up to 20 miles away. Waiting for the storm to pass is safest before landing.",
   },
   {
     id: 143,
@@ -2058,6 +2201,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM MET 3.11",
+    explanation: "Strong winds, downdrafts, and windshear from thunderstorms extend up to 20 miles away.",
   },
   {
     id: 144,
@@ -2072,6 +2216,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM AIR 2.7",
+    explanation: "Jet blast danger zones at ground idle: small jets 200ft/500ft, medium jets 450ft/1200ft, large jets 600ft/1600ft. Remember '2-4-6' then triple for takeoff thrust.",
   },
   {
     id: 145,
@@ -2086,6 +2231,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "AIM AIR 2.7",
+    explanation: "Know the jet blast distance references for safety around different jet aircraft sizes.",
   },
   {
     id: 146,
@@ -2100,6 +2246,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM AIR 2.7",
+    explanation: "Know the jet blast distance references for safety around different jet aircraft sizes.",
   },
   {
     id: 147,
@@ -2114,6 +2261,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM AIR 2.7",
+    explanation: "Know the jet blast distance references for safety around different jet aircraft sizes.",
   },
   {
     id: 148,
@@ -2128,6 +2276,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM AIR 2.7",
+    explanation: "45 knots propeller thrust produces a danger zone of approximately 60 feet.",
   },
   {
     id: 149,
@@ -2142,6 +2291,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM COM 4.4",
+    explanation: "VDF steers (VHF Direction Finding) allow ground stations to determine your bearing using your radio transmissions.",
   },
   {
     id: 150,
@@ -2156,6 +2306,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM COM 4.4",
+    explanation: "VDF steers (VHF Direction Finding) allow ground stations to determine your bearing using your radio transmissions.",
   },
   {
     id: 151,
@@ -2170,6 +2321,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "AIM COM 4.4",
+    explanation: "VDF steers (VHF Direction Finding) allow ground stations to determine your bearing using your radio transmissions.",
   },
   {
     id: 152,
@@ -2184,6 +2336,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "AIM RAC 4.3.7",
+    explanation: "SIRO means Simultaneous Intersecting Runway Operations, where aircraft hold short of crossing runways.",
   },
   {
     id: 153,
@@ -2198,6 +2351,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM RAC 4.3.7",
+    explanation: "Pilots must inform ATC immediately if unable to hold short of a runway, even after accepting clearance.",
   },
 
   // ===========================
@@ -2215,6 +2369,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CAR 602.145",
+    explanation: "File a defence flight plan or itinerary with ATS for ADIZ penetration. Any change in time by more than 5 minutes or route by more than 20 nm must be reported.",
   },
   {
     id: 155,
@@ -2229,6 +2384,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "CAR 602.114",
+    explanation: "VFR flight is defined as flight with visual reference to the surface.",
   },
   {
     id: 156,
@@ -2243,6 +2399,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "CAR 602.115",
+    explanation: "Helicopter visibility rules are almost always half of aeroplane requirements.",
   },
   {
     id: 157,
@@ -2257,6 +2414,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CAR 602.115",
+    explanation: "When below 1,000 ft AGL, pilots must stay clear of cloud rather than maintain specific distances, with visibility doubled to 2 miles for airplanes.",
   },
   {
     id: 158,
@@ -2271,6 +2429,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "CAR 602.23",
+    explanation: "No person shall create a hazard to persons or property on the surface by dropping an object from an aircraft in flight. You must ensure items won't cause harm.",
   },
   {
     id: 159,
@@ -2285,6 +2444,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "CAR 602.27",
+    explanation: "Minimum visibility for aerobatics combined with class F airspace designation requirements.",
   },
   {
     id: 160,
@@ -2299,6 +2459,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "CAR 602.03",
+    explanation: "As of 2019, twelve hours minimum rest is required before flight duties.",
   },
   {
     id: 161,
@@ -2313,6 +2474,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "CAR 101.01",
+    explanation: "Day means the time between the beginning of morning civil twilight and the end of evening civil twilight.",
   },
   {
     id: 162,
@@ -2327,6 +2489,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CAR 101.01",
+    explanation: "Night occurs from the end of evening civil twilight to the beginning of morning civil twilight.",
   },
   {
     id: 163,
@@ -2341,6 +2504,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "CAR 602.38",
+    explanation: "If you prearrange a formation, it is legal, and you can fly side by side wherever you have a clearance.",
   },
   {
     id: 164,
@@ -2355,6 +2519,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CAR 601.04",
+    explanation: "No one may fly in restricted airspace without permission. To get permission, contact the person responsible for that airspace.",
   },
   {
     id: 165,
@@ -2369,6 +2534,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "CAR 601.04",
+    explanation: "Class F advisory airspace (CYA) means the chart is telling you that a certain kind of activity goes on there \\u2014 it's advice, not a rule.",
   },
   {
     id: 166,
@@ -2383,6 +2549,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "CAR 602.14",
+    explanation: "Helicopters must maintain 500 ft horizontal clearance from obstacles. Airplanes require 2,000 ft horizontal clearance.",
   },
   {
     id: 167,
@@ -2397,6 +2564,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "CAR 602.14",
+    explanation: "500 ft above or horizontally from obstacles applies to both helicopters and airplanes.",
   },
   {
     id: 168,
@@ -2411,6 +2579,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "CAR 602.13",
+    explanation: "Take-offs and landings are only permitted in built-up areas at airports, during police operations, or when saving human life.",
   },
   {
     id: 169,
@@ -2425,6 +2594,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "CAR 602.34",
+    explanation: "Although 3,500 ft is the lowest VFR cruising altitude, aircraft above 3,000 ft must comply with cruising altitude rules.",
   },
   {
     id: 170,
@@ -2439,6 +2609,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "CAR 602.34",
+    explanation: "Since 290\\u00b0 falls between 180\\u00b0 and 359\\u00b0, use even thousands plus 500 ft ASL.",
   },
   {
     id: 171,
@@ -2453,6 +2624,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "CAR 602.34",
+    explanation: "The track is the path over the ground; the heading is the direction the airplane is pointing. Magnetic track is used to dictate cruising altitude.",
   },
   {
     id: 172,
@@ -2467,6 +2639,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "CAR 401.03",
+    explanation: "Only police, customs, and Transport Canada officials may demand license presentation.",
   },
   {
     id: 173,
@@ -2481,6 +2654,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CAR 601.01",
+    explanation: "Class E airspace extends up to, but not including, 18,000 ft ASL.",
   },
   {
     id: 174,
@@ -2495,6 +2669,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "CAR 601.01",
+    explanation: "The control zone starts at the ground. The top of the control zone is a specified height above the surface.",
   },
 
   // ===========================
@@ -2513,6 +2688,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CAR 101.01",
+    explanation: "Controlled airspace per CARs 101.01 is an airspace of fixed dimensions within which air traffic control service is provided.",
   },
   {
     id: 176,
@@ -2527,6 +2703,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "CAR 602.114",
+    explanation: "Controlled airspace requires 500 ft vertical separation from cloud, 1 mile horizontal separation, and 3 miles visibility per CARs 602.114.",
   },
   {
     id: 177,
@@ -2541,6 +2718,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CAR 602.114",
+    explanation: "Low level airways are Class E airspace where VFR traffic doesn't need controller contact but must maintain controlled airspace weather minima.",
   },
   {
     id: 178,
@@ -2555,6 +2733,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "CAR 602.114",
+    explanation: "Controlled airspace requires controlled airspace weather minima to be maintained at all times.",
   },
   {
     id: 179,
@@ -2569,6 +2748,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "CAR 602.31",
+    explanation: "Per CARs 601.08, you must obtain an ATC clearance before entering any Class C control zone.",
   },
   {
     id: 180,
@@ -2583,6 +2763,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "CAR 602.117",
+    explanation: "Per CARs 602.117, minimum 1 mile visibility is required for airplanes operating under Special VFR.",
   },
   {
     id: 181,
@@ -2597,6 +2778,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "CAR 602.117",
+    explanation: "Helicopters may operate with half the airplane visibility requirements under Special VFR \\u2014 1/2 mile.",
   },
   {
     id: 182,
@@ -2611,6 +2793,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "CAR 602.117",
+    explanation: "Special VFR exists only within control zones, so any SVFR operation must occur in a control zone.",
   },
   {
     id: 183,
@@ -2625,6 +2808,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 2,
     reference: "CAR 602.31",
+    explanation: "You need permission prior to entering an Aerodrome Traffic Zone.",
   },
   {
     id: 184,
@@ -2639,6 +2823,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CAR 601.08",
+    explanation: "Class B airspace requires an ATC clearance. Such flights are considered CVFR (controlled VFR).",
   },
   {
     id: 185,
@@ -2653,6 +2838,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "CAR 602.31",
+    explanation: "You must obtain clearance before crossing the control zone boundary.",
   },
   {
     id: 186,
@@ -2667,6 +2853,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 3,
     reference: "CAR 602.31",
+    explanation: "Continuous listening watch is required in Class C airspace, with limited permission for brief frequency departures.",
   },
 
   // ===========================
@@ -2685,6 +2872,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CTAISB Act",
+    explanation: "Accidents are investigated to find out what went wrong, to try to ensure it doesn't happen again.",
   },
   {
     id: 188,
@@ -2699,6 +2887,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 1,
     reference: "AIM GEN 3.5",
+    explanation: "The procedures and information to report are all listed in AIP-GEN 3.3.",
   },
   {
     id: 189,
@@ -2713,6 +2902,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CTAISB Act",
+    explanation: "The fastest approach to reporting is notifying any air traffic service unit, e.g., the tower. TSB fax and 24-hour telephone numbers appear in the AIP.",
   },
   {
     id: 190,
@@ -2727,6 +2917,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CTAISB Act",
+    explanation: "A serious injury is anything that requires overnight hospitalization, or a fracture of any bone except a toe, finger, or nose. Even property damage constitutes a reportable accident without injuries.",
   },
   {
     id: 191,
@@ -2741,6 +2932,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CTAISB Act",
+    explanation: "Three authorized reasons for disturbing wreckage are stated in the AIP. Salvaging logbooks is NOT an acceptable reason.",
   },
   {
     id: 192,
@@ -2755,6 +2947,7 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "CTAISB Act",
+    explanation: "Reportable incidents apply only to airplanes over 5,700 kg or helicopters over 2,250 kg. Missing or inaccessible aircraft must be reported and are counted as reportable aviation accidents until proved otherwise.",
   },
 ];
 

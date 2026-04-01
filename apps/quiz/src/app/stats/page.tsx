@@ -4,25 +4,37 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   loadStats,
+  loadPstarStats,
   clearStats,
+  clearPstarStats,
   getAggregateStats,
   StatsData,
   SessionRecord,
 } from "@/lib/stats";
 import { questions, SECTIONS } from "@/data/questions";
+import { pstarQuestions, PSTAR_SECTIONS } from "@/data/pstar-questions";
 
+type ExamBank = "helicopter" | "pstar";
 type Tab = "overview" | "questions" | "sessions";
 type QuestionSort = "id" | "answered" | "accuracy" | "viewed";
 
 export default function StatsPage() {
-  const [data, setData] = useState<StatsData | null>(null);
+  const [bank, setBank] = useState<ExamBank>("helicopter");
+  const [heliData, setHeliData] = useState<StatsData | null>(null);
+  const [pstarData, setPstarData] = useState<StatsData | null>(null);
   const [tab, setTab] = useState<Tab>("overview");
   const [questionSort, setQuestionSort] = useState<QuestionSort>("id");
   const [showClearConfirm, setShowClearConfirm] = useState(false);
 
   useEffect(() => {
-    setData(loadStats());
+    setHeliData(loadStats());
+    setPstarData(loadPstarStats());
   }, []);
+
+  const data = bank === "helicopter" ? heliData : pstarData;
+  const allQuestions = bank === "helicopter" ? questions : pstarQuestions;
+  const sections = bank === "helicopter" ? SECTIONS : PSTAR_SECTIONS;
+  const passPercent = bank === "helicopter" ? 60 : 90;
 
   if (!data) {
     return (
@@ -33,16 +45,33 @@ export default function StatsPage() {
   }
 
   const agg = getAggregateStats(data);
-  const totalQuestions = questions.length;
+  // Override exams passed calculation for PSTAR (90% pass mark)
+  const examsPassed =
+    bank === "pstar"
+      ? data.sessions
+          .filter((s) => s.finishedAt && s.mode === "exam")
+          .filter(
+            (s) =>
+              s.totalQuestions > 0 &&
+              (s.correct / s.totalQuestions) * 100 >= 90
+          ).length
+      : agg.examsPassed;
+
+  const totalQuestions = allQuestions.length;
 
   const handleClear = () => {
-    clearStats();
-    setData(loadStats());
+    if (bank === "helicopter") {
+      clearStats();
+      setHeliData(loadStats());
+    } else {
+      clearPstarStats();
+      setPstarData(loadPstarStats());
+    }
     setShowClearConfirm(false);
   };
 
   // ─── Per-question data for the table ─────────────────────────────────────
-  const questionRows = questions.map((q) => {
+  const questionRows = allQuestions.map((q) => {
     const qs = data.questionStats[q.id];
     return {
       id: q.id,
@@ -68,9 +97,11 @@ export default function StatsPage() {
   });
 
   // ─── Section breakdown ───────────────────────────────────────────────────
-  const sectionBreakdown = SECTIONS.map((section) => {
-    const sectionQs = questions.filter((q) => q.section === section);
-    const sectionStats = sectionQs.map((q) => data.questionStats[q.id]).filter(Boolean);
+  const sectionBreakdown = sections.map((section) => {
+    const sectionQs = allQuestions.filter((q) => q.section === section);
+    const sectionStats = sectionQs
+      .map((q) => data.questionStats[q.id])
+      .filter(Boolean);
     const answered = sectionStats.filter((s) => s.timesAnswered > 0).length;
     const totalAns = sectionStats.reduce((s, q) => s + q.timesAnswered, 0);
     const totalCorr = sectionStats.reduce((s, q) => s + q.timesCorrect, 0);
@@ -101,10 +132,14 @@ export default function StatsPage() {
     return `Section: ${s.section ?? "?"}`;
   };
 
+  const accentColor = bank === "helicopter" ? "blue" : "indigo";
+  const headerBg =
+    bank === "helicopter" ? "bg-slate-800" : "bg-indigo-900";
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-slate-800 text-white py-6 px-4">
+      <header className={`${headerBg} text-white py-6 px-4`}>
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <div>
             <div className="flex items-center gap-3 mb-1">
@@ -126,7 +161,7 @@ export default function StatsPage() {
                 onClick={() => setShowClearConfirm(true)}
                 className="text-xs text-slate-400 hover:text-red-400 transition-colors"
               >
-                Clear all data
+                Clear {bank === "helicopter" ? "helicopter" : "PSTAR"} data
               </button>
             ) : (
               <div className="flex gap-2 items-center">
@@ -149,28 +184,64 @@ export default function StatsPage() {
         </div>
       </header>
 
-      {/* Tabs */}
+      {/* Exam bank toggle */}
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-5xl mx-auto px-4 flex gap-1">
-          {(
-            [
-              { key: "overview", label: "Overview" },
-              { key: "questions", label: "Questions" },
-              { key: "sessions", label: "Session History" },
-            ] as { key: Tab; label: string }[]
-          ).map(({ key, label }) => (
+        <div className="max-w-5xl mx-auto px-4 flex items-center gap-6">
+          <div className="flex gap-1 py-2">
             <button
-              key={key}
-              onClick={() => setTab(key)}
-              className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
-                tab === key
-                  ? "border-slate-800 text-slate-800"
-                  : "border-transparent text-gray-500 hover:text-gray-700"
+              onClick={() => {
+                setBank("helicopter");
+                setTab("overview");
+                setShowClearConfirm(false);
+              }}
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                bank === "helicopter"
+                  ? "bg-blue-100 text-blue-800"
+                  : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
               }`}
             >
-              {label}
+              🚁 Helicopter
             </button>
-          ))}
+            <button
+              onClick={() => {
+                setBank("pstar");
+                setTab("overview");
+                setShowClearConfirm(false);
+              }}
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                bank === "pstar"
+                  ? "bg-indigo-100 text-indigo-800"
+                  : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+              }`}
+            >
+              ✈️ PSTAR
+            </button>
+          </div>
+
+          <div className="h-6 w-px bg-gray-200" />
+
+          {/* Tabs */}
+          <div className="flex gap-1">
+            {(
+              [
+                { key: "overview", label: "Overview" },
+                { key: "questions", label: "Questions" },
+                { key: "sessions", label: "Session History" },
+              ] as { key: Tab; label: string }[]
+            ).map(({ key, label }) => (
+              <button
+                key={key}
+                onClick={() => setTab(key)}
+                className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+                  tab === key
+                    ? "border-slate-800 text-slate-800"
+                    : "border-transparent text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -183,7 +254,7 @@ export default function StatsPage() {
               <StatCard
                 label="Questions Seen"
                 value={`${agg.totalQuestionsViewed} / ${totalQuestions}`}
-                sub={`${Math.round((agg.totalQuestionsViewed / totalQuestions) * 100)}% coverage`}
+                sub={`${totalQuestions > 0 ? Math.round((agg.totalQuestionsViewed / totalQuestions) * 100) : 0}% coverage`}
                 color="blue"
               />
               <StatCard
@@ -196,7 +267,7 @@ export default function StatsPage() {
                 label="Overall Accuracy"
                 value={`${agg.overallAccuracy}%`}
                 sub={`${agg.totalCorrect} / ${agg.totalAnswers}`}
-                color={agg.overallAccuracy >= 70 ? "green" : "amber"}
+                color={agg.overallAccuracy >= passPercent ? "green" : "amber"}
               />
               <StatCard
                 label="Sessions"
@@ -216,7 +287,11 @@ export default function StatsPage() {
                   Exams Completed
                 </div>
                 <div className="text-xs text-indigo-500 mt-1">
-                  {agg.examsPassed} passed ({agg.examSessions > 0 ? Math.round((agg.examsPassed / agg.examSessions) * 100) : 0}%)
+                  {examsPassed} passed (
+                  {agg.examSessions > 0
+                    ? Math.round((examsPassed / agg.examSessions) * 100)
+                    : 0}
+                  %) — pass mark: {passPercent}%
                 </div>
               </div>
               <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-5">
@@ -253,7 +328,8 @@ export default function StatsPage() {
                     </div>
                     <div className="text-xs text-gray-500 mt-0.5">
                       {s.answered}/{s.total} questions attempted
-                      {s.totalAnswers > 0 && ` · ${s.totalAnswers} total answers`}
+                      {s.totalAnswers > 0 &&
+                        ` · ${s.totalAnswers} total answers`}
                     </div>
                   </div>
                   <div className="w-32">
@@ -327,7 +403,8 @@ export default function StatsPage() {
               return (
                 <div className="mt-8 bg-amber-50 border border-amber-200 rounded-lg p-5">
                   <h3 className="text-sm font-semibold text-amber-800 mb-1">
-                    {unseen.length} question{unseen.length !== 1 ? "s" : ""} never seen
+                    {unseen.length} question
+                    {unseen.length !== 1 ? "s" : ""} never seen
                   </h3>
                   <p className="text-xs text-amber-600">
                     IDs: {unseen.map((q) => q.id).join(", ")}
@@ -446,13 +523,14 @@ export default function StatsPage() {
                       ? Math.round((s.correct / s.totalQuestions) * 100)
                       : 0;
                   const isFinished = !!s.finishedAt;
+                  const passMark = passPercent;
                   return (
                     <div
                       key={s.id}
                       className={`bg-white border rounded-lg p-5 ${
                         !isFinished
                           ? "border-amber-200"
-                          : pct >= 60
+                          : pct >= passMark
                           ? "border-green-200"
                           : "border-red-200"
                       }`}
@@ -485,10 +563,8 @@ export default function StatsPage() {
                         <div className="flex items-center gap-4">
                           <span
                             className={`text-2xl font-bold ${
-                              pct >= 70
+                              pct >= passMark
                                 ? "text-green-600"
-                                : pct >= 60
-                                ? "text-amber-600"
                                 : "text-red-600"
                             }`}
                           >
@@ -498,10 +574,8 @@ export default function StatsPage() {
                             <div className="bg-gray-100 rounded-full h-2">
                               <div
                                 className={`h-2 rounded-full ${
-                                  pct >= 70
+                                  pct >= passMark
                                     ? "bg-green-500"
-                                    : pct >= 60
-                                    ? "bg-amber-400"
                                     : "bg-red-400"
                                 }`}
                                 style={{ width: `${pct}%` }}
@@ -516,10 +590,12 @@ export default function StatsPage() {
                           {s.mode === "exam" && (
                             <span
                               className={`text-xs font-bold ${
-                                pct >= 60 ? "text-green-600" : "text-red-600"
+                                pct >= passMark
+                                  ? "text-green-600"
+                                  : "text-red-600"
                               }`}
                             >
-                              {pct >= 60 ? "PASS" : "FAIL"}
+                              {pct >= passMark ? "PASS" : "FAIL"}
                             </span>
                           )}
                         </div>
