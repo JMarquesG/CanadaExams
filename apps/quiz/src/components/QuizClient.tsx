@@ -8,6 +8,8 @@ import {
   recordQuestionAnswer,
   startSession,
   finishSession,
+  updateSessionAnswer,
+  getSession,
 } from "@/lib/stats";
 import Link from "next/link";
 
@@ -25,7 +27,7 @@ type AnswerState = {
   revealed: boolean;
 };
 
-export default function QuizClient() {
+export default function QuizClient({ sessionId: resumeSessionId }: { sessionId?: string }) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -41,6 +43,39 @@ export default function QuizClient() {
 
   // Build question list
   useEffect(() => {
+    // Resume or review an existing session
+    if (resumeSessionId) {
+      const session = getSession(resumeSessionId);
+      if (session) {
+        const qMap = new Map(questions.map((q) => [q.id, q]));
+        const restored = session.questionIds.map((id) => qMap.get(id)).filter(Boolean) as Question[];
+        if (restored.length > 0) {
+          setQuizQuestions(restored);
+          sessionIdRef.current = session.id;
+
+          if (session.questionAnswers) {
+            const restoredAnswers: Record<number, AnswerState> = {};
+            for (const [idxStr, sa] of Object.entries(session.questionAnswers)) {
+              const idx = Number(idxStr);
+              restoredAnswers[idx] = { selected: sa.selectedOption, revealed: true };
+            }
+            setAnswers(restoredAnswers);
+
+            if (session.finishedAt) {
+              setShowResult(true);
+            } else {
+              const firstUnanswered = restored.findIndex((_, idx) => !restoredAnswers[idx]);
+              setCurrentIndex(firstUnanswered >= 0 ? firstUnanswered : 0);
+            }
+          } else if (session.finishedAt) {
+            setShowResult(true);
+          }
+          return;
+        }
+      }
+    }
+
+    // New session
     let qs = [...questions];
     if (mode === "section" && sectionParam) {
       qs = questions.filter((q) => q.section === decodeURIComponent(sectionParam) as QuestionSection);
@@ -58,7 +93,7 @@ export default function QuizClient() {
       sectionParam ? decodeURIComponent(sectionParam) : undefined
     );
     if (qs.length > 0) recordQuestionView(qs[0].id);
-  }, [mode, sectionParam]);
+  }, [mode, sectionParam, resumeSessionId]);
 
   const current = quizQuestions[currentIndex];
 
@@ -85,6 +120,13 @@ export default function QuizClient() {
       ...prev,
       [currentIndex]: { ...existing, revealed: true },
     }));
+    if (sessionIdRef.current) {
+      updateSessionAnswer(sessionIdRef.current, currentIndex, {
+        questionId: current.id,
+        selectedOption: existing.selected,
+        correct,
+      });
+    }
   }, [current, answers, currentIndex]);
 
   const handleNext = useCallback(() => {

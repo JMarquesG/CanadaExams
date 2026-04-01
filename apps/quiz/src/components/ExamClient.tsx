@@ -8,6 +8,8 @@ import {
   recordQuestionAnswer,
   startSession,
   finishSession,
+  updateSessionAnswer,
+  getSession,
 } from "@/lib/stats";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -44,7 +46,7 @@ function buildExam() {
 type ReviewFilter = "all" | "correct" | "incorrect";
 
 // ─── Component ────────────────────────────────────────────────────────────────
-export default function ExamClient() {
+export default function ExamClient({ sessionId: resumeSessionId }: { sessionId?: string }) {
   const [examQuestions, setExamQuestions] = useState<ReturnType<typeof buildExam>>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number>>({});
@@ -59,6 +61,42 @@ export default function ExamClient() {
   const sessionIdRef = useRef<string | null>(null);
 
   useEffect(() => {
+    // Resume or review an existing session
+    if (resumeSessionId) {
+      const session = getSession(resumeSessionId);
+      if (session) {
+        const qMap = new Map(questions.map((q) => [q.id, q]));
+        const restored = session.questionIds.map((id) => qMap.get(id)).filter(Boolean) as ReturnType<typeof buildExam>;
+        if (restored.length > 0) {
+          setExamQuestions(restored);
+          sessionIdRef.current = session.id;
+
+          if (session.questionAnswers) {
+            const restoredAnswers: Record<number, number> = {};
+            const restoredVisited = new Set<number>([0]);
+            for (const [idxStr, sa] of Object.entries(session.questionAnswers)) {
+              const idx = Number(idxStr);
+              restoredAnswers[idx] = sa.selectedOption;
+              restoredVisited.add(idx);
+            }
+            setAnswers(restoredAnswers);
+            setVisited(restoredVisited);
+
+            if (session.finishedAt) {
+              setSubmitted(true);
+            } else {
+              const firstUnanswered = restored.findIndex((_, idx) => restoredAnswers[idx] === undefined);
+              setCurrentIndex(firstUnanswered >= 0 ? firstUnanswered : 0);
+            }
+          } else if (session.finishedAt) {
+            setSubmitted(true);
+          }
+          return;
+        }
+      }
+    }
+
+    // New session
     const exam = buildExam();
     setExamQuestions(exam);
     sessionIdRef.current = startSession(
@@ -66,7 +104,7 @@ export default function ExamClient() {
       exam.map((q) => q.id)
     );
     if (exam.length > 0) recordQuestionView(exam[0].id);
-  }, []);
+  }, [resumeSessionId]);
 
   const totalAnswered = Object.keys(answers).length;
 
@@ -576,6 +614,17 @@ export default function ExamClient() {
   const current = examQuestions[currentIndex];
   const selectedForCurrent = answers[currentIndex];
 
+  const handleSelect = (optionId: number) => {
+    setAnswers((prev) => ({ ...prev, [currentIndex]: optionId }));
+    if (sessionIdRef.current) {
+      updateSessionAnswer(sessionIdRef.current, currentIndex, {
+        questionId: current.id,
+        selectedOption: optionId,
+        correct: optionId === current.correctAnswer,
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -691,9 +740,7 @@ export default function ExamClient() {
             return (
               <button
                 key={option.id}
-                onClick={() =>
-                  setAnswers((prev) => ({ ...prev, [currentIndex]: option.id }))
-                }
+                onClick={() => handleSelect(option.id)}
                 className={`w-full text-left rounded-lg border-2 p-4 transition-all text-sm ${
                   isSelected
                     ? "bg-indigo-50 border-indigo-500 text-indigo-900"

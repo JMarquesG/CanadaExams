@@ -1,10 +1,16 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { pstarQuestions, PstarQuestion, PstarSection } from "@/data/pstar-questions";
 import Link from "next/link";
 import { getAimPdfUrl } from "@/lib/aim-links";
+import {
+  startPstarSession,
+  finishPstarSession,
+  updatePstarSessionAnswer,
+  getPstarSession,
+} from "@/lib/stats";
 
 function shuffleArray<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -17,7 +23,7 @@ function shuffleArray<T>(arr: T[]): T[] {
 
 type AnswerState = { selected: number | null; revealed: boolean };
 
-export default function PstarQuizClient() {
+export default function PstarQuizClient({ sessionId: resumeSessionId }: { sessionId?: string }) {
   const searchParams = useSearchParams();
   const mode = searchParams.get("mode") ?? "all";
   const sectionParam = searchParams.get("section");
@@ -27,7 +33,42 @@ export default function PstarQuizClient() {
   const [answers, setAnswers] = useState<Record<number, AnswerState>>({});
   const [showResult, setShowResult] = useState(false);
 
+  const sessionIdRef = useRef<string | null>(null);
+
   useEffect(() => {
+    // Resume or review an existing session
+    if (resumeSessionId) {
+      const session = getPstarSession(resumeSessionId);
+      if (session) {
+        const qMap = new Map(pstarQuestions.map((q) => [q.id, q]));
+        const restored = session.questionIds.map((id) => qMap.get(id)).filter(Boolean) as PstarQuestion[];
+        if (restored.length > 0) {
+          setQuizQuestions(restored);
+          sessionIdRef.current = session.id;
+
+          if (session.questionAnswers) {
+            const restoredAnswers: Record<number, AnswerState> = {};
+            for (const [idxStr, sa] of Object.entries(session.questionAnswers)) {
+              const idx = Number(idxStr);
+              restoredAnswers[idx] = { selected: sa.selectedOption, revealed: true };
+            }
+            setAnswers(restoredAnswers);
+
+            if (session.finishedAt) {
+              setShowResult(true);
+            } else {
+              const firstUnanswered = restored.findIndex((_, idx) => !restoredAnswers[idx]);
+              setCurrentIndex(firstUnanswered >= 0 ? firstUnanswered : 0);
+            }
+          } else if (session.finishedAt) {
+            setShowResult(true);
+          }
+          return;
+        }
+      }
+    }
+
+    // New session
     let qs = [...pstarQuestions];
     if (mode === "section" && sectionParam) {
       qs = pstarQuestions.filter((q) => q.section === decodeURIComponent(sectionParam) as PstarSection);
@@ -39,7 +80,12 @@ export default function PstarQuizClient() {
     setCurrentIndex(0);
     setAnswers({});
     setShowResult(false);
-  }, [mode, sectionParam]);
+    sessionIdRef.current = startPstarSession(
+      mode === "section" ? "section" : "practice",
+      qs.map((q) => q.id),
+      sectionParam ? decodeURIComponent(sectionParam) : undefined
+    );
+  }, [mode, sectionParam, resumeSessionId]);
 
   const current = quizQuestions[currentIndex];
 
@@ -58,12 +104,30 @@ export default function PstarQuizClient() {
     const existing = answers[currentIndex];
     if (!existing?.selected) return;
     setAnswers((prev) => ({ ...prev, [currentIndex]: { ...existing, revealed: true } }));
+    if (sessionIdRef.current) {
+      updatePstarSessionAnswer(sessionIdRef.current, currentIndex, {
+        questionId: current.id,
+        selectedOption: existing.selected,
+        correct: existing.selected === current.correctAnswer,
+      });
+    }
   }, [current, answers, currentIndex]);
 
   const handleNext = useCallback(() => {
     if (currentIndex < quizQuestions.length - 1) setCurrentIndex((i) => i + 1);
-    else setShowResult(true);
-  }, [currentIndex, quizQuestions.length]);
+    else {
+      const answered = Object.values(answers).filter((a) => a.revealed).length;
+      const correct = Object.entries(answers).filter(([idx, a]) => {
+        if (!a.revealed) return false;
+        const q = quizQuestions[Number(idx)];
+        return q && a.selected === q.correctAnswer;
+      }).length;
+      if (sessionIdRef.current) {
+        finishPstarSession(sessionIdRef.current, answered, correct);
+      }
+      setShowResult(true);
+    }
+  }, [currentIndex, quizQuestions, answers]);
 
   const handleRestart = () => {
     let qs = [...pstarQuestions];
@@ -75,6 +139,11 @@ export default function PstarQuizClient() {
     setCurrentIndex(0);
     setAnswers({});
     setShowResult(false);
+    sessionIdRef.current = startPstarSession(
+      mode === "section" ? "section" : "practice",
+      qs.map((q) => q.id),
+      sectionParam ? decodeURIComponent(sectionParam) : undefined
+    );
   };
 
   if (quizQuestions.length === 0) {

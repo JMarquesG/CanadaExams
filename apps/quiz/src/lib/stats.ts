@@ -13,6 +13,12 @@ export interface QuestionStat {
   lastAnsweredAt: string | null; // ISO date
 }
 
+export interface SessionAnswer {
+  questionId: number;
+  selectedOption: number;
+  correct: boolean;
+}
+
 export interface SessionRecord {
   id: string;
   mode: "practice" | "exam" | "section";
@@ -23,6 +29,7 @@ export interface SessionRecord {
   answered: number;
   correct: number;
   questionIds: number[]; // which questions were in the session
+  questionAnswers?: Record<number, SessionAnswer>; // keyed by question index
 }
 
 export interface StatsData {
@@ -133,6 +140,33 @@ export function finishPstarSession(
   savePstarStats(stats);
 }
 
+export function updatePstarSessionAnswer(
+  sessionId: string,
+  questionIndex: number,
+  answer: SessionAnswer
+): void {
+  const stats = loadPstarStats();
+  const session = stats.sessions.find((s) => s.id === sessionId);
+  if (session) {
+    if (!session.questionAnswers) session.questionAnswers = {};
+    session.questionAnswers[questionIndex] = answer;
+    session.answered = Object.keys(session.questionAnswers).length;
+    session.correct = Object.values(session.questionAnswers).filter((a) => a.correct).length;
+  }
+  savePstarStats(stats);
+}
+
+export function deletePstarSession(sessionId: string): void {
+  const stats = loadPstarStats();
+  stats.sessions = stats.sessions.filter((s) => s.id !== sessionId);
+  savePstarStats(stats);
+}
+
+export function getPstarSession(sessionId: string): SessionRecord | undefined {
+  const stats = loadPstarStats();
+  return stats.sessions.find((s) => s.id === sessionId);
+}
+
 export function clearPstarStats(): void {
   if (typeof window === "undefined") return;
   localStorage.removeItem(PSTAR_STORAGE_KEY);
@@ -207,6 +241,33 @@ export function finishSession(
     session.correct = correct;
   }
   saveStats(stats);
+}
+
+export function updateSessionAnswer(
+  sessionId: string,
+  questionIndex: number,
+  answer: SessionAnswer
+): void {
+  const stats = loadStats();
+  const session = stats.sessions.find((s) => s.id === sessionId);
+  if (session) {
+    if (!session.questionAnswers) session.questionAnswers = {};
+    session.questionAnswers[questionIndex] = answer;
+    session.answered = Object.keys(session.questionAnswers).length;
+    session.correct = Object.values(session.questionAnswers).filter((a) => a.correct).length;
+  }
+  saveStats(stats);
+}
+
+export function deleteSession(sessionId: string): void {
+  const stats = loadStats();
+  stats.sessions = stats.sessions.filter((s) => s.id !== sessionId);
+  saveStats(stats);
+}
+
+export function getSession(sessionId: string): SessionRecord | undefined {
+  const stats = loadStats();
+  return stats.sessions.find((s) => s.id === sessionId);
 }
 
 // ─── Aggregate helpers (used by the stats dashboard) ─────────────────────────

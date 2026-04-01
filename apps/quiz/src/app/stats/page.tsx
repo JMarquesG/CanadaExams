@@ -8,6 +8,8 @@ import {
   clearStats,
   clearPstarStats,
   getAggregateStats,
+  deleteSession,
+  deletePstarSession,
   StatsData,
   SessionRecord,
 } from "@/lib/stats";
@@ -524,6 +526,10 @@ export default function StatsPage() {
                       : 0;
                   const isFinished = !!s.finishedAt;
                   const passMark = passPercent;
+                  const quizBase = bank === "helicopter" ? "/helicopter/quiz" : "/pstar/quiz";
+                  const modeParam = s.mode === "exam" ? "exam" : s.mode === "practice" ? "practice" : `section&section=${encodeURIComponent(s.section ?? "")}`;
+                  const sessionUrl = `${quizBase}?mode=${modeParam}&session=${s.id}`;
+
                   return (
                     <div
                       key={s.id}
@@ -560,50 +566,86 @@ export default function StatsPage() {
                       </div>
 
                       {isFinished ? (
-                        <div className="flex items-center gap-4">
-                          <span
-                            className={`text-2xl font-bold ${
-                              pct >= passMark
-                                ? "text-green-600"
-                                : "text-red-600"
-                            }`}
-                          >
-                            {pct}%
-                          </span>
-                          <div className="flex-1">
-                            <div className="bg-gray-100 rounded-full h-2">
-                              <div
-                                className={`h-2 rounded-full ${
-                                  pct >= passMark
-                                    ? "bg-green-500"
-                                    : "bg-red-400"
-                                }`}
-                                style={{ width: `${pct}%` }}
-                              />
-                            </div>
-                          </div>
-                          <span className="text-xs text-gray-500">
-                            {s.correct}/{s.answered} correct
-                            {s.answered < s.totalQuestions &&
-                              ` (${s.totalQuestions - s.answered} skipped)`}
-                          </span>
-                          {s.mode === "exam" && (
+                        <>
+                          <div className="flex items-center gap-4">
                             <span
-                              className={`text-xs font-bold ${
+                              className={`text-2xl font-bold ${
                                 pct >= passMark
                                   ? "text-green-600"
                                   : "text-red-600"
                               }`}
                             >
-                              {pct >= passMark ? "PASS" : "FAIL"}
+                              {pct}%
                             </span>
-                          )}
-                        </div>
+                            <div className="flex-1">
+                              <div className="bg-gray-100 rounded-full h-2">
+                                <div
+                                  className={`h-2 rounded-full ${
+                                    pct >= passMark
+                                      ? "bg-green-500"
+                                      : "bg-red-400"
+                                  }`}
+                                  style={{ width: `${pct}%` }}
+                                />
+                              </div>
+                            </div>
+                            <span className="text-xs text-gray-500">
+                              {s.correct}/{s.answered} correct
+                              {s.answered < s.totalQuestions &&
+                                ` (${s.totalQuestions - s.answered} skipped)`}
+                            </span>
+                            {s.mode === "exam" && (
+                              <span
+                                className={`text-xs font-bold ${
+                                  pct >= passMark
+                                    ? "text-green-600"
+                                    : "text-red-600"
+                                }`}
+                              >
+                                {pct >= passMark ? "PASS" : "FAIL"}
+                              </span>
+                            )}
+                          </div>
+                          {/* Review button for completed sessions */}
+                          <div className="mt-3 pt-3 border-t border-gray-100">
+                            <Link
+                              href={sessionUrl}
+                              className="text-xs font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+                            >
+                              Review answers →
+                            </Link>
+                          </div>
+                        </>
                       ) : (
-                        <div className="text-xs text-gray-400">
-                          {s.totalQuestions} questions · started{" "}
-                          {fmtDate(s.startedAt)}
-                        </div>
+                        <>
+                          <div className="text-xs text-gray-500 mb-3">
+                            {s.answered}/{s.totalQuestions} answered · started{" "}
+                            {fmtDate(s.startedAt)}
+                          </div>
+                          {/* Continue / Delete for in-progress sessions */}
+                          <div className="flex items-center gap-3 pt-3 border-t border-gray-100">
+                            <Link
+                              href={sessionUrl}
+                              className="text-xs font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-lg transition-colors"
+                            >
+                              Continue →
+                            </Link>
+                            <button
+                              onClick={() => {
+                                if (bank === "helicopter") {
+                                  deleteSession(s.id);
+                                  setHeliData(loadStats());
+                                } else {
+                                  deletePstarSession(s.id);
+                                  setPstarData(loadPstarStats());
+                                }
+                              }}
+                              className="text-xs text-red-500 hover:text-red-700 transition-colors"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </>
                       )}
                     </div>
                   );

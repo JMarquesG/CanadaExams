@@ -8,6 +8,8 @@ import {
   recordPstarQuestionAnswer,
   startPstarSession,
   finishPstarSession,
+  updatePstarSessionAnswer,
+  getPstarSession,
 } from "@/lib/stats";
 
 const EXAM_SIZE = 50;
@@ -34,7 +36,7 @@ function buildExam() {
 
 type ReviewFilter = "all" | "correct" | "incorrect";
 
-export default function PstarExamClient() {
+export default function PstarExamClient({ sessionId: resumeSessionId }: { sessionId?: string }) {
   const [quiz, setQuiz] = useState<ReturnType<typeof buildExam>>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number>>({});
@@ -49,6 +51,42 @@ export default function PstarExamClient() {
   const sessionIdRef = useRef<string | null>(null);
 
   useEffect(() => {
+    // Resume or review an existing session
+    if (resumeSessionId) {
+      const session = getPstarSession(resumeSessionId);
+      if (session) {
+        const qMap = new Map(pstarQuestions.map((q) => [q.id, q]));
+        const restored = session.questionIds.map((id) => qMap.get(id)).filter(Boolean) as typeof quiz;
+        if (restored.length > 0) {
+          setQuiz(restored);
+          sessionIdRef.current = session.id;
+
+          if (session.questionAnswers) {
+            const restoredAnswers: Record<number, number> = {};
+            const restoredVisited = new Set<number>([0]);
+            for (const [idxStr, sa] of Object.entries(session.questionAnswers)) {
+              const idx = Number(idxStr);
+              restoredAnswers[idx] = sa.selectedOption;
+              restoredVisited.add(idx);
+            }
+            setAnswers(restoredAnswers);
+            setVisited(restoredVisited);
+
+            if (session.finishedAt) {
+              setPhase("submitted");
+            } else {
+              const firstUnanswered = restored.findIndex((_, idx) => !restoredAnswers[idx]);
+              setCurrentIndex(firstUnanswered >= 0 ? firstUnanswered : 0);
+            }
+          } else if (session.finishedAt) {
+            setPhase("submitted");
+          }
+          return;
+        }
+      }
+    }
+
+    // New session
     const exam = buildExam();
     setQuiz(exam);
     sessionIdRef.current = startPstarSession(
@@ -56,7 +94,7 @@ export default function PstarExamClient() {
       exam.map((q) => q.id)
     );
     if (exam.length > 0) recordPstarQuestionView(exam[0].id);
-  }, []);
+  }, [resumeSessionId]);
 
   const answeredCount = Object.keys(answers).length;
 
@@ -88,6 +126,13 @@ export default function PstarExamClient() {
   const handleSelect = (optionId: number) => {
     if (phase !== "active") return;
     setAnswers((prev) => ({ ...prev, [currentIndex]: optionId }));
+    if (sessionIdRef.current) {
+      updatePstarSessionAnswer(sessionIdRef.current, currentIndex, {
+        questionId: current.id,
+        selectedOption: optionId,
+        correct: optionId === current.correctAnswer,
+      });
+    }
   };
 
   const doSubmit = () => {

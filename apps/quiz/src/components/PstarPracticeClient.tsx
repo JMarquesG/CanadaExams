@@ -8,6 +8,8 @@ import {
   recordPstarQuestionAnswer,
   startPstarSession,
   finishPstarSession,
+  updatePstarSessionAnswer,
+  getPstarSession,
 } from "@/lib/stats";
 import { getAimPdfUrl } from "@/lib/aim-links";
 
@@ -23,7 +25,7 @@ function shuffleArray<T>(arr: T[]): T[] {
 type AnswerRecord = { selected: number; correct: boolean };
 type ReviewFilter = "all" | "correct" | "incorrect";
 
-export default function PstarPracticeClient() {
+export default function PstarPracticeClient({ sessionId: resumeSessionId }: { sessionId?: string }) {
   const [quiz, setQuiz] = useState<PstarQuestion[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, AnswerRecord>>({});
@@ -35,13 +37,51 @@ export default function PstarPracticeClient() {
   const sessionIdRef = useRef<string | null>(null);
 
   useEffect(() => {
+    // Resume or review an existing session
+    if (resumeSessionId) {
+      const session = getPstarSession(resumeSessionId);
+      if (session) {
+        // Reconstruct questions from session questionIds
+        const qMap = new Map(pstarQuestions.map((q) => [q.id, q]));
+        const restored = session.questionIds.map((id) => qMap.get(id)).filter(Boolean) as PstarQuestion[];
+        if (restored.length > 0) {
+          setQuiz(restored);
+          sessionIdRef.current = session.id;
+
+          // Restore answers from session
+          if (session.questionAnswers) {
+            const restoredAnswers: Record<number, AnswerRecord> = {};
+            const restoredVisited = new Set<number>([0]);
+            for (const [idxStr, sa] of Object.entries(session.questionAnswers)) {
+              const idx = Number(idxStr);
+              restoredAnswers[idx] = { selected: sa.selectedOption, correct: sa.correct };
+              restoredVisited.add(idx);
+            }
+            setAnswers(restoredAnswers);
+            setVisited(restoredVisited);
+
+            if (session.finishedAt) {
+              // Review mode for completed session
+              setDone(true);
+            } else {
+              // Resume: jump to first unanswered question
+              const firstUnanswered = restored.findIndex((_, idx) => !restoredAnswers[idx]);
+              setCurrentIndex(firstUnanswered >= 0 ? firstUnanswered : 0);
+            }
+          }
+          return;
+        }
+      }
+    }
+
+    // New session
     const shuffled = shuffleArray(pstarQuestions);
     setQuiz(shuffled);
     sessionIdRef.current = startPstarSession(
       "practice",
       shuffled.map((q) => q.id)
     );
-  }, []);
+  }, [resumeSessionId]);
 
   // Record view for first question once quiz loads
   useEffect(() => {
@@ -365,6 +405,13 @@ export default function PstarPracticeClient() {
       [currentIndex]: { selected: optionId, correct },
     }));
     recordPstarQuestionAnswer(current.id, correct);
+    if (sessionIdRef.current) {
+      updatePstarSessionAnswer(sessionIdRef.current, currentIndex, {
+        questionId: current.id,
+        selectedOption: optionId,
+        correct,
+      });
+    }
   };
 
   const handleNext = () => {

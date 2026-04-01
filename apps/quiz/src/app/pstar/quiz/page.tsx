@@ -9,10 +9,11 @@ import PstarExamClient from "@/components/PstarExamClient";
 function PstarQuizRouter() {
   const searchParams = useSearchParams();
   const mode = searchParams.get("mode") ?? "all";
+  const sessionId = searchParams.get("session") ?? undefined;
 
-  if (mode === "practice") return <PstarPracticeClient />;
-  if (mode === "exam") return <PstarExamClient />;
-  return <PstarQuizClient />;
+  if (mode === "practice") return <PstarPracticeClient sessionId={sessionId} />;
+  if (mode === "exam") return <PstarExamClient sessionId={sessionId} />;
+  return <PstarQuizClient sessionId={sessionId} />;
 }
 
 export default function PstarQuizPage() {

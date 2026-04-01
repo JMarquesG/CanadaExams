@@ -8,6 +8,8 @@ import {
   recordQuestionAnswer,
   startSession,
   finishSession,
+  updateSessionAnswer,
+  getSession,
 } from "@/lib/stats";
 
 function shuffleArray<T>(arr: T[]): T[] {
@@ -22,7 +24,7 @@ function shuffleArray<T>(arr: T[]): T[] {
 type AnswerRecord = { selected: number; correct: boolean };
 type ReviewFilter = "all" | "correct" | "incorrect";
 
-export default function PracticeClient() {
+export default function PracticeClient({ sessionId: resumeSessionId }: { sessionId?: string }) {
   const [quiz, setQuiz] = useState<Question[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, AnswerRecord>>({});
@@ -36,13 +38,47 @@ export default function PracticeClient() {
   const sessionIdRef = useRef<string | null>(null);
 
   useEffect(() => {
+    // Resume or review an existing session
+    if (resumeSessionId) {
+      const session = getSession(resumeSessionId);
+      if (session) {
+        const qMap = new Map(questions.map((q) => [q.id, q]));
+        const restored = session.questionIds.map((id) => qMap.get(id)).filter(Boolean) as Question[];
+        if (restored.length > 0) {
+          setQuiz(restored);
+          sessionIdRef.current = session.id;
+
+          if (session.questionAnswers) {
+            const restoredAnswers: Record<number, AnswerRecord> = {};
+            const restoredVisited = new Set<number>([0]);
+            for (const [idxStr, sa] of Object.entries(session.questionAnswers)) {
+              const idx = Number(idxStr);
+              restoredAnswers[idx] = { selected: sa.selectedOption, correct: sa.correct };
+              restoredVisited.add(idx);
+            }
+            setAnswers(restoredAnswers);
+            setVisited(restoredVisited);
+
+            if (session.finishedAt) {
+              setDone(true);
+            } else {
+              const firstUnanswered = restored.findIndex((_, idx) => !restoredAnswers[idx]);
+              setCurrentIndex(firstUnanswered >= 0 ? firstUnanswered : 0);
+            }
+          }
+          return;
+        }
+      }
+    }
+
+    // New session
     const shuffled = shuffleArray(questions);
     setQuiz(shuffled);
     sessionIdRef.current = startSession(
       "practice",
       shuffled.map((q) => q.id)
     );
-  }, []);
+  }, [resumeSessionId]);
 
   // Track visited questions
   const goTo = useCallback(
@@ -478,6 +514,13 @@ export default function PracticeClient() {
       [currentIndex]: { selected: optionId, correct },
     }));
     recordQuestionAnswer(current.id, correct);
+    if (sessionIdRef.current) {
+      updateSessionAnswer(sessionIdRef.current, currentIndex, {
+        questionId: current.id,
+        selectedOption: optionId,
+        correct,
+      });
+    }
   };
 
   const handleNext = () => {

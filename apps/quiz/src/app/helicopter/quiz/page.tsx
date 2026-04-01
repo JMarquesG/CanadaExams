@@ -9,10 +9,11 @@ import ExamClient from "@/components/ExamClient";
 function QuizRouter() {
   const searchParams = useSearchParams();
   const mode = searchParams.get("mode") ?? "all";
+  const sessionId = searchParams.get("session") ?? undefined;
 
-  if (mode === "practice") return <PracticeClient />;
-  if (mode === "exam") return <ExamClient />;
-  return <QuizClient />;
+  if (mode === "practice") return <PracticeClient sessionId={sessionId} />;
+  if (mode === "exam") return <ExamClient sessionId={sessionId} />;
+  return <QuizClient sessionId={sessionId} />;
 }
 
 export default function HelicopterQuizPage() {
