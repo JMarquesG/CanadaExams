@@ -250,6 +250,16 @@ export default function PstarQuizClient({ sessionId: resumeSessionId }: { sessio
 
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
           <p className="text-gray-800 font-medium text-base leading-relaxed whitespace-pre-line">{current.question}</p>
+          {current.images && current.images.length > 0 && (
+            <div className="mt-4 space-y-3">
+              {current.images.map((img, idx) => (
+                <div key={idx} className="border border-gray-200 rounded-lg overflow-hidden">
+                  <img src={img.src} alt={img.alt} className="w-full h-auto cursor-pointer" onClick={() => window.open(img.src, '_blank')} title="Click to open full size" />
+                  <p className="text-xs text-gray-500 px-3 py-1.5 bg-gray-50">{img.alt}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="space-y-3 mb-6">

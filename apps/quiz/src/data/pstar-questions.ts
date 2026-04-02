@@ -22,6 +22,7 @@ export interface PstarQuestion {
   correctAnswer: number;
   reference?: string;
   explanation?: string;
+  images?: { src: string; alt: string }[];
 }
 
 export const pstarQuestions: PstarQuestion[] = [
@@ -879,7 +880,7 @@ export const pstarQuestions: PstarQuestion[] = [
     id: 57,
     section: "Aerodromes",
     question:
-      "Helicopter ground markings identify hospital heliport and heliport respectively as",
+      "Refer to the Heliport Markings diagram.\nSelect the helicopter ground markings which identify respectively:\n- a hospital heliport\n- a heliport",
     options: [
       { id: 1, text: "D, C." },
       { id: 2, text: "D, A." },
@@ -888,7 +889,8 @@ export const pstarQuestions: PstarQuestion[] = [
     ],
     correctAnswer: 4,
     reference: "AIM AGA 6.0",
-    explanation: "The marking shown identifies a hospital heliport.",
+    explanation: "Marking A (cross with H and runway number) is a hospital heliport. Marking B (triangle with H and north arrow) is a standard heliport. C is an unrelated triangle symbol, and D shows multiple circled H symbols.",
+    images: [{ src: "/images/appendix/heliport-markings.jpg", alt: "Heliport Markings — A: Hospital heliport (cross with H), B: Heliport (triangle with H), C: Triangle, D: Multiple circled H symbols" }],
   },
 
   // ===========================
