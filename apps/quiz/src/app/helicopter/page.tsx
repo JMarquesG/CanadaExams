@@ -1,7 +1,9 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { SECTIONS, questions } from "@/data/questions";
+import { loadStats, getWeakQuestionIds } from "@/lib/stats";
 
 export default function HelicopterHomePage() {
   const totalQuestions = questions.length;
@@ -9,6 +11,16 @@ export default function HelicopterHomePage() {
     section,
     count: questions.filter((q) => q.section === section).length,
   }));
+
+  const [weakCount, setWeakCount] = useState(0);
+  const [weakIds, setWeakIds] = useState<number[]>([]);
+
+  useEffect(() => {
+    const stats = loadStats();
+    const ids = getWeakQuestionIds(stats, questions.map((q) => q.id), 50);
+    setWeakIds(ids);
+    setWeakCount(ids.length);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -68,7 +80,7 @@ export default function HelicopterHomePage() {
           Practice gives instant feedback. Exam simulates the real test.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
           {/* ── Practice ── */}
           <Link href="/helicopter/quiz?mode=practice" className="group">
             <div className="bg-emerald-50 rounded-xl border-2 border-emerald-200 p-6 hover:border-emerald-500 hover:shadow-md transition-all cursor-pointer h-full">
@@ -136,6 +148,48 @@ export default function HelicopterHomePage() {
               </div>
             </div>
           </Link>
+
+          {/* ── Weakest Questions ── */}
+          {weakCount > 0 ? (
+            <Link href={`/helicopter/quiz?mode=practice&weak=${weakIds.join(",")}`} className="group">
+              <div className="bg-amber-50 rounded-xl border-2 border-amber-200 p-6 hover:border-amber-500 hover:shadow-md transition-all cursor-pointer h-full">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="text-3xl">🎯</span>
+                  <div>
+                    <h3 className="font-bold text-amber-900 text-lg group-hover:text-amber-700">
+                      Weakest Questions
+                    </h3>
+                    <span className="text-xs text-amber-600 font-medium">
+                      Focus on what you get wrong
+                    </span>
+                  </div>
+                </div>
+                <p className="text-sm text-amber-800 mb-3 leading-relaxed">
+                  Practice the questions you&apos;ve answered incorrectly or
+                  never seen. <strong>Prioritized by lowest accuracy.</strong>
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="text-xs bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full">
+                    {weakCount} questions
+                  </span>
+                  <span className="text-xs bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full">
+                    Instant feedback
+                  </span>
+                  <span className="text-xs bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full">
+                    Adaptive
+                  </span>
+                </div>
+              </div>
+            </Link>
+          ) : (
+            <div className="bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 p-6 flex flex-col items-center justify-center text-center h-full">
+              <span className="text-3xl mb-2">🎯</span>
+              <h3 className="font-bold text-gray-400 text-lg">Weakest Questions</h3>
+              <p className="text-sm text-gray-400 mt-1">
+                Complete a practice or exam first to unlock this mode
+              </p>
+            </div>
+          )}
         </div>
 
         {/* ── STATISTICS ──────────────────────────────────────────── */}

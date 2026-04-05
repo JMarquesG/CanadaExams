@@ -305,6 +305,43 @@ export function getAggregateStats(data: StatsData) {
   };
 }
 
+/**
+ * Returns question IDs sorted by weakness (worst accuracy first).
+ * Includes: questions answered at least once with <100% accuracy,
+ * plus never-seen questions (treated as weakest).
+ */
+export function getWeakQuestionIds(
+  data: StatsData,
+  allQuestionIds: number[],
+  maxCount: number = 50
+): number[] {
+  const allSet = new Set(allQuestionIds);
+  const scored: { id: number; score: number }[] = [];
+
+  for (const id of allSet) {
+    const qs = data.questionStats[id];
+    if (!qs || qs.timesAnswered === 0) {
+      // Never answered — treat as weakest (score 0)
+      scored.push({ id, score: 0 });
+    } else {
+      const accuracy = qs.timesCorrect / qs.timesAnswered;
+      if (accuracy < 1) {
+        scored.push({ id, score: accuracy });
+      }
+    }
+  }
+
+  // Sort: lowest accuracy first, break ties by fewer attempts
+  scored.sort((a, b) => {
+    if (a.score !== b.score) return a.score - b.score;
+    const aAttempts = data.questionStats[a.id]?.timesAnswered ?? 0;
+    const bAttempts = data.questionStats[b.id]?.timesAnswered ?? 0;
+    return aAttempts - bAttempts;
+  });
+
+  return scored.slice(0, maxCount).map((s) => s.id);
+}
+
 export function clearStats(): void {
   if (typeof window === "undefined") return;
   localStorage.removeItem(STORAGE_KEY);

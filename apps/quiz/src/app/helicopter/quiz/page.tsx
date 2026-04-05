@@ -10,8 +10,10 @@ function QuizRouter() {
   const searchParams = useSearchParams();
   const mode = searchParams.get("mode") ?? "all";
   const sessionId = searchParams.get("session") ?? undefined;
+  const weakParam = searchParams.get("weak");
+  const weakIds = weakParam ? weakParam.split(",").map(Number).filter(Boolean) : undefined;
 
-  if (mode === "practice") return <PracticeClient sessionId={sessionId} />;
+  if (mode === "practice") return <PracticeClient sessionId={sessionId} weakIds={weakIds} />;
   if (mode === "exam") return <ExamClient sessionId={sessionId} />;
   return <QuizClient sessionId={sessionId} />;
 }

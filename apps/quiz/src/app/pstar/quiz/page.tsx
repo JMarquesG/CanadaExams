@@ -10,8 +10,10 @@ function PstarQuizRouter() {
   const searchParams = useSearchParams();
   const mode = searchParams.get("mode") ?? "all";
   const sessionId = searchParams.get("session") ?? undefined;
+  const weakParam = searchParams.get("weak");
+  const weakIds = weakParam ? weakParam.split(",").map(Number).filter(Boolean) : undefined;
 
-  if (mode === "practice") return <PstarPracticeClient sessionId={sessionId} />;
+  if (mode === "practice") return <PstarPracticeClient sessionId={sessionId} weakIds={weakIds} />;
   if (mode === "exam") return <PstarExamClient sessionId={sessionId} />;
   return <PstarQuizClient sessionId={sessionId} />;
 }

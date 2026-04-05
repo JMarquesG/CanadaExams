@@ -25,7 +25,7 @@ function shuffleArray<T>(arr: T[]): T[] {
 type AnswerRecord = { selected: number; correct: boolean };
 type ReviewFilter = "all" | "correct" | "incorrect";
 
-export default function PstarPracticeClient({ sessionId: resumeSessionId }: { sessionId?: string }) {
+export default function PstarPracticeClient({ sessionId: resumeSessionId, weakIds }: { sessionId?: string; weakIds?: number[] }) {
   const [quiz, setQuiz] = useState<PstarQuestion[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, AnswerRecord>>({});
@@ -75,13 +75,19 @@ export default function PstarPracticeClient({ sessionId: resumeSessionId }: { se
     }
 
     // New session
-    const shuffled = shuffleArray(pstarQuestions);
-    setQuiz(shuffled);
+    let pool = pstarQuestions;
+    if (weakIds && weakIds.length > 0) {
+      const idSet = new Set(weakIds);
+      // Maintain weak-first order, don't shuffle
+      pool = weakIds.map((id) => pstarQuestions.find((q) => q.id === id)).filter(Boolean) as PstarQuestion[];
+    }
+    const qs = weakIds && weakIds.length > 0 ? pool : shuffleArray(pool);
+    setQuiz(qs);
     sessionIdRef.current = startPstarSession(
       "practice",
-      shuffled.map((q) => q.id)
+      qs.map((q) => q.id)
     );
-  }, [resumeSessionId]);
+  }, [resumeSessionId, weakIds]);
 
   // Record view for first question once quiz loads
   useEffect(() => {
@@ -438,7 +444,7 @@ export default function PstarPracticeClient({ sessionId: resumeSessionId }: { se
               ← Home
             </Link>
             <span className="text-indigo-500">|</span>
-            <span className="text-sm text-indigo-200 font-medium">⚡ PSTAR Practice</span>
+            <span className="text-sm text-indigo-200 font-medium">{weakIds && weakIds.length > 0 ? "🎯 Weakest Questions" : "⚡ PSTAR Practice"}</span>
           </div>
           <div className="flex items-center gap-4 text-sm text-indigo-200">
             <span>{answeredCount}/{quiz.length} answered</span>

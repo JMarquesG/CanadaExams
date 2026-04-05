@@ -24,7 +24,7 @@ function shuffleArray<T>(arr: T[]): T[] {
 type AnswerRecord = { selected: number; correct: boolean };
 type ReviewFilter = "all" | "correct" | "incorrect";
 
-export default function PracticeClient({ sessionId: resumeSessionId }: { sessionId?: string }) {
+export default function PracticeClient({ sessionId: resumeSessionId, weakIds }: { sessionId?: string; weakIds?: number[] }) {
   const [quiz, setQuiz] = useState<Question[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, AnswerRecord>>({});
@@ -72,13 +72,17 @@ export default function PracticeClient({ sessionId: resumeSessionId }: { session
     }
 
     // New session
-    const shuffled = shuffleArray(questions);
-    setQuiz(shuffled);
+    let pool = questions;
+    if (weakIds && weakIds.length > 0) {
+      pool = weakIds.map((id) => questions.find((q) => q.id === id)).filter(Boolean) as Question[];
+    }
+    const qs = weakIds && weakIds.length > 0 ? pool : shuffleArray(pool);
+    setQuiz(qs);
     sessionIdRef.current = startSession(
       "practice",
-      shuffled.map((q) => q.id)
+      qs.map((q) => q.id)
     );
-  }, [resumeSessionId]);
+  }, [resumeSessionId, weakIds]);
 
   // Track visited questions
   const goTo = useCallback(
@@ -549,7 +553,7 @@ export default function PracticeClient({ sessionId: resumeSessionId }: { session
               ← Home
             </Link>
             <span className="text-emerald-500">|</span>
-            <span className="text-sm text-emerald-200 font-medium">⚡ Practice</span>
+            <span className="text-sm text-emerald-200 font-medium">{weakIds && weakIds.length > 0 ? "🎯 Weakest Questions" : "⚡ Practice"}</span>
           </div>
           <div className="flex items-center gap-4 text-sm text-emerald-200">
             <span>
