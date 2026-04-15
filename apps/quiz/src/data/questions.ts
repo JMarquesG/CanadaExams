@@ -1944,6 +1944,419 @@ export const questions: Question[] = [
       "Deceleration errors in the magnetic compass (also called acceleration/deceleration errors) are most pronounced on headings of East and West. When decelerating on an easterly or westerly heading, the compass will indicate a turn toward South. When accelerating on East or West, the compass will indicate a turn toward North. These errors are due to the pendulous suspension of the compass card and the dip (inclination) of the earth's magnetic field.",
     aimReference: "TC AIM AIR (Instruments – magnetic compass errors)",
   },
+
+  // ===========================
+  // 5: ADDITIONAL QUESTIONS FROM TP 13014 & TP 13728
+  // ===========================
+
+  // --- AIR LAW ---
+  {
+    id: 101,
+    section: "Air Law",
+    question:
+      "\"Day\" in Canada is defined as the period between",
+    options: [
+      { id: 1, text: "sunrise and sunset." },
+      { id: 2, text: "one hour before sunrise and one hour after sunset." },
+      { id: 3, text: "end of morning civil twilight and beginning of evening civil twilight." },
+      { id: 4, text: "beginning of morning civil twilight and end of evening civil twilight." },
+    ],
+    correctAnswer: 4,
+    explanation:
+      "In Canada, 'day' is defined as the period between the beginning of morning civil twilight and the end of evening civil twilight. Civil twilight occurs when the centre of the sun is 6° below the horizon. This gives pilots extra time before sunrise and after sunset for day VFR operations.",
+    aimReference: "CAR 101.01 (Definitions)",
+  },
+  {
+    id: 102,
+    section: "Air Law",
+    question:
+      "Aerobatic manoeuvres are permitted",
+    options: [
+      { id: 1, text: "only without passengers on board." },
+      { id: 2, text: "over built-up areas above 2,000 feet AGL." },
+      { id: 3, text: "within Class F advisory airspace, with visibility of 3 or more miles." },
+      { id: 4, text: "within Class C advisory airspace, with visibility greater than 1 NM." },
+    ],
+    correctAnswer: 3,
+    explanation:
+      "Aerobatic manoeuvres may be performed within Class F advisory airspace designated for that purpose with a visibility of at least 3 miles. No person shall perform aerobatic manoeuvres over built-up areas, assemblies of persons in the open air, or in cloud or controlled airspace unless authorized.",
+    aimReference: "CAR 602.27",
+  },
+  {
+    id: 103,
+    section: "Air Law",
+    question:
+      "Unless taking off, landing or attempting to land, no person shall fly an aeroplane over a built-up area unless at an altitude from which, in the event of engine failure, it would be possible to land without creating a hazard to persons or property on the surface, and in any case, not lower than _____ above the highest obstacle within _____ measured horizontally from the aircraft.",
+    options: [
+      { id: 1, text: "500 feet, 500 feet." },
+      { id: 2, text: "1,000 feet, 2,000 feet." },
+      { id: 3, text: "2,000 feet, 1,000 feet." },
+      { id: 4, text: "3,000 feet, 1 mile." },
+    ],
+    correctAnswer: 2,
+    explanation:
+      "For aeroplanes over built-up areas, the minimum altitude is 1,000 feet above the highest obstacle within a horizontal radius of 2,000 feet (approximately 600 m). This provides adequate clearance for safe operations over populated areas. Helicopters have different requirements (1,000 ft above, 500 ft radius).",
+    aimReference: "CAR 602.14(2)",
+  },
+  {
+    id: 104,
+    section: "Air Law",
+    question:
+      "The minimum fuel required for a day VFR flight in a non-ultralight aeroplane is sufficient to fly to the destination, plus a reserve of",
+    options: [
+      { id: 1, text: "fuel to fly at minimum cruising speed to the destination." },
+      { id: 2, text: "45 minutes at normal cruising speed." },
+      { id: 3, text: "30 minutes at normal cruising speed." },
+      { id: 4, text: "fuel to a specified alternate." },
+    ],
+    correctAnswer: 3,
+    explanation:
+      "For day VFR flight in a non-ultralight aeroplane, the pilot must carry sufficient fuel to fly to the destination plus 30 minutes of reserve at normal cruising speed. Night VFR requires 45 minutes reserve. Ultralight aeroplanes may have different requirements.",
+    aimReference: "CAR 602.88",
+  },
+  {
+    id: 105,
+    section: "Air Law",
+    question:
+      "The selection of cruising altitude for VFR flight above 3,000 feet AGL is based on",
+    options: [
+      { id: 1, text: "true track." },
+      { id: 2, text: "true heading." },
+      { id: 3, text: "magnetic track." },
+      { id: 4, text: "magnetic heading." },
+    ],
+    correctAnswer: 3,
+    explanation:
+      "VFR cruising altitudes above 3,000 feet AGL are based on the magnetic track of the aircraft. Tracks from 000° to 179° magnetic use odd thousands plus 500 feet (e.g., 3,500, 5,500). Tracks from 180° to 359° magnetic use even thousands plus 500 feet (e.g., 4,500, 6,500).",
+    aimReference: "CAR 602.34",
+  },
+  {
+    id: 106,
+    section: "Air Law",
+    question:
+      "No person shall act as a flight crew member of an aircraft if that person is aware of any physical condition that would render them unable to meet the medical standards required for their licence. This applies when",
+    options: [
+      { id: 1, text: "the person is less than 18 years of age." },
+      { id: 2, text: "the person has consumed alcohol or drugs within 72 hours prior to take-off." },
+      { id: 3, text: "the person is aware of a physical disability rendering them unable to meet licence requirements." },
+      { id: 4, text: "the person is over 60 years of age." },
+    ],
+    correctAnswer: 3,
+    explanation:
+      "Under the CARs, no person shall act as a flight crew member if they are aware of any physical condition (disability, injury, or illness) that would render them unable to meet the medical standards for their licence. This is a self-assessment requirement that applies regardless of age.",
+    aimReference: "CAR 404.06",
+  },
+  {
+    id: 107,
+    section: "Air Law",
+    question:
+      "Unless taking off, landing or attempting to land, no person shall fly a helicopter over a built-up area unless at an altitude from which an emergency landing is possible, and in any case, not lower than _____ above the highest obstacle within _____ from the aircraft.",
+    options: [
+      { id: 1, text: "500 feet, 500 feet." },
+      { id: 2, text: "1,000 feet, 500 feet." },
+      { id: 3, text: "2,000 feet, 1,000 feet." },
+      { id: 4, text: "3,000 feet, 1 mile." },
+    ],
+    correctAnswer: 2,
+    explanation:
+      "For helicopters over built-up areas, the minimum altitude is 1,000 feet above the highest obstacle within a horizontal radius of 500 feet. This is different from the aeroplane requirement (1,000 feet above within 2,000 feet radius). The shorter horizontal distance reflects the helicopter's ability to land in smaller areas.",
+    aimReference: "CAR 602.14(3)",
+  },
+  {
+    id: 108,
+    section: "Air Law",
+    question:
+      "The minimum fuel required for a day VFR flight in a helicopter is sufficient to fly to the destination, plus a reserve of",
+    options: [
+      { id: 1, text: "fuel to fly at minimum cruising speed to the destination." },
+      { id: 2, text: "45 minutes at normal cruising speed." },
+      { id: 3, text: "20 minutes at normal cruising speed." },
+      { id: 4, text: "fuel to a specified alternate then 45 minutes at normal cruising speed." },
+    ],
+    correctAnswer: 3,
+    explanation:
+      "For day VFR flight in a helicopter, the pilot must carry sufficient fuel to fly to the destination plus 20 minutes of reserve at normal cruising speed. This differs from the aeroplane requirement of 30 minutes. The shorter reserve reflects the helicopter's ability to land in confined areas if needed.",
+    aimReference: "CAR 602.88",
+  },
+  {
+    id: 109,
+    section: "Air Law",
+    question:
+      "An aircraft in level cruising VFR flight above 3,000 feet AGL in uncontrolled airspace on a magnetic track of 315° shall be operated at",
+    options: [
+      { id: 1, text: "an even thousand foot altitude." },
+      { id: 2, text: "an odd thousand plus 500 foot altitude." },
+      { id: 3, text: "an odd thousand foot altitude." },
+      { id: 4, text: "an even thousand plus 500 foot altitude." },
+    ],
+    correctAnswer: 4,
+    explanation:
+      "A magnetic track of 315° falls in the range 180°–359°, which requires even thousands plus 500 feet for VFR flight (e.g., 4,500, 6,500, 8,500). Tracks 000°–179° use odd thousands plus 500 feet. IFR cruising altitudes use the even/odd thousand foot levels without the +500.",
+    aimReference: "CAR 602.34",
+  },
+  {
+    id: 110,
+    section: "Air Law",
+    question:
+      "Runways at Canadian airports in the Southern Domestic Airspace are numbered to indicate the runway bearing in degrees",
+    options: [
+      { id: 1, text: "true." },
+      { id: 2, text: "magnetic." },
+      { id: 3, text: "compass." },
+      { id: 4, text: "grid." },
+    ],
+    correctAnswer: 2,
+    explanation:
+      "In the Southern Domestic Airspace, runway numbers indicate the magnetic bearing of the runway rounded to the nearest 10 degrees with the last zero dropped. For example, Runway 27 indicates a magnetic bearing of approximately 270°. In the Northern Domestic Airspace, runways are numbered according to true bearing.",
+    aimReference: "TC AIM AGA 5.4",
+  },
+
+  // --- AERONAUTICS - GENERAL KNOWLEDGE ---
+  {
+    id: 111,
+    section: "Aeronautics - General Knowledge",
+    question:
+      "If an aeroplane stalls while descending in a co-ordinated left turn, it may enter",
+    options: [
+      { id: 1, text: "an incipient right spin." },
+      { id: 2, text: "an incipient left spin." },
+      { id: 3, text: "a steep right spiral." },
+      { id: 4, text: "a shallow left spiral." },
+    ],
+    correctAnswer: 2,
+    explanation:
+      "When an aeroplane stalls in a co-ordinated left turn, the inside (left) wing is at a higher angle of attack and stalls first, dropping further. This yaws the aircraft to the left and can develop into an incipient left spin. The spin direction follows the direction of the turn at the point of stall.",
+    aimReference: "TC AIM AIR (Flight Training – stalls and spins)",
+  },
+  {
+    id: 112,
+    section: "Aeronautics - General Knowledge",
+    question:
+      "The manoeuvring speed for an aeroplane is the maximum",
+    options: [
+      { id: 1, text: "speed at which the aeroplane can be safely operated in smooth air." },
+      { id: 2, text: "speed at which full travel of the flight controls may be used without exceeding the design load factor." },
+      { id: 3, text: "speed at which the aeroplane may be flown with the flaps lowered." },
+      { id: 4, text: "safe speed at which the aeroplane should be operated." },
+    ],
+    correctAnswer: 2,
+    explanation:
+      "Manoeuvring speed (Va) is the maximum speed at which full, abrupt control deflection can be applied without exceeding the aircraft's design load factor or causing structural damage. Above Va, full control deflection could overstress the airframe. In turbulence, reduce speed to at or below Va.",
+    aimReference: "TC AIM AIR (Flight Instruments – V-speeds)",
+  },
+  {
+    id: 113,
+    section: "Aeronautics - General Knowledge",
+    question:
+      "The indicated stalling speed of an aeroplane",
+    options: [
+      { id: 1, text: "is higher when flying downwind than upwind." },
+      { id: 2, text: "increases with altitude." },
+      { id: 3, text: "decreases with altitude." },
+      { id: 4, text: "does not change with change of altitude." },
+    ],
+    correctAnswer: 4,
+    explanation:
+      "The indicated stalling speed remains constant regardless of altitude. While the true airspeed at stall increases with altitude (due to decreasing air density), the indicated airspeed at which the stall occurs remains the same because the airspeed indicator also reads lower in thinner air. Wind direction has no effect on stalling speed.",
+    aimReference: "TC AIM AIR (Aerodynamics – stalling speed)",
+  },
+  {
+    id: 114,
+    section: "Aeronautics - General Knowledge",
+    question:
+      "The stalling speed of an aeroplane",
+    options: [
+      { id: 1, text: "is the same in a co-ordinated turn as in straight and level flight." },
+      { id: 2, text: "is less in a co-ordinated turn than in straight and level flight." },
+      { id: 3, text: "is greater in a co-ordinated turn than in straight and level flight." },
+      { id: 4, text: "increases in climbing turns and decreases in gliding turns." },
+    ],
+    correctAnswer: 3,
+    explanation:
+      "The stalling speed increases in a co-ordinated turn because the load factor (G-force) increases in a bank. In a turn, lift must support both the weight of the aircraft and the centripetal force. In a 60° banked turn, the load factor is 2G and the stalling speed increases by approximately 41%.",
+    aimReference: "TC AIM AIR (Aerodynamics – stalling in turns)",
+  },
+  {
+    id: 115,
+    section: "Aeronautics - General Knowledge",
+    question:
+      "The use of low octane fuel in a high compression engine may result in",
+    options: [
+      { id: 1, text: "too lean a mixture for best operation." },
+      { id: 2, text: "carburettor icing." },
+      { id: 3, text: "fouling of the spark plugs." },
+      { id: 4, text: "detonation." },
+    ],
+    correctAnswer: 4,
+    explanation:
+      "Detonation occurs when the fuel-air mixture in the cylinder ignites spontaneously from heat and pressure rather than from the spark plug. Using fuel with a lower octane rating than specified for the engine's compression ratio greatly increases the risk of detonation, which can cause severe engine damage including burned pistons and valves.",
+    aimReference: "TC AIM AIR (Powerplant – detonation)",
+  },
+  {
+    id: 116,
+    section: "Aeronautics - General Knowledge",
+    question:
+      "Prolonged idling of an aircraft engine would most likely cause",
+    options: [
+      { id: 1, text: "detonation." },
+      { id: 2, text: "backfiring in the induction system." },
+      { id: 3, text: "fouled plugs." },
+      { id: 4, text: "pre-ignition." },
+    ],
+    correctAnswer: 3,
+    explanation:
+      "Prolonged idling causes the engine to run at a rich mixture and low temperature, which leads to incomplete combustion. This results in carbon and lead deposits fouling the spark plugs, reducing their ability to produce a good spark. Pilots should avoid prolonged idling and periodically run up the engine to burn off deposits.",
+    aimReference: "TC AIM AIR (Powerplant – engine operation)",
+  },
+  {
+    id: 117,
+    section: "Aeronautics - General Knowledge",
+    question:
+      "Ground effect will enable an aeroplane to become airborne below normal flying speed primarily due to",
+    options: [
+      { id: 1, text: "a decreased lift/drag ratio." },
+      { id: 2, text: "a decrease in induced drag." },
+      { id: 3, text: "an increase in downwash." },
+      { id: 4, text: "an increase in wing tip vortices." },
+    ],
+    correctAnswer: 2,
+    explanation:
+      "In ground effect (within approximately one wingspan of the ground), the ground interferes with wing tip vortices and reduces downwash, which decreases induced drag. This allows the aircraft to become airborne at a lower speed than would be possible out of ground effect. However, once the aircraft climbs out of ground effect, it may not have enough speed to maintain flight.",
+    aimReference: "TC AIM AIR (Aerodynamics – ground effect)",
+  },
+  {
+    id: 118,
+    section: "Aeronautics - General Knowledge",
+    question:
+      "If you are looking at a featureless sky during hazy or dark conditions, your eyes will tend to focus at a point approximately _____ away.",
+    options: [
+      { id: 1, text: "3 to 5 feet." },
+      { id: 2, text: "30 to 50 feet." },
+      { id: 3, text: "300 to 500 feet." },
+      { id: 4, text: "3,000 to 5,000 feet." },
+    ],
+    correctAnswer: 1,
+    explanation:
+      "This phenomenon is called 'empty-field myopia.' When looking at a featureless sky or in hazy/dark conditions with no visual stimulation, the eyes naturally relax to a resting focal distance of approximately 3 to 5 feet. This makes it very difficult to spot other aircraft. Pilots should actively scan and refocus their eyes on distant objects to counteract this effect.",
+    aimReference: "TC AIM AIR 3.7 (Vision – empty-field myopia)",
+  },
+  {
+    id: 119,
+    section: "Aeronautics - General Knowledge",
+    question:
+      "Wheelbarrowing on landing may result from a",
+    options: [
+      { id: 1, text: "low approach speed." },
+      { id: 2, text: "shallow approach angle." },
+      { id: 3, text: "high approach speed." },
+      { id: 4, text: "strong cross-wind." },
+    ],
+    correctAnswer: 3,
+    explanation:
+      "Wheelbarrowing occurs when excess speed on landing causes the nose wheel (in a tricycle gear aircraft) to contact the runway first or bear excessive load. A high approach speed results in the aircraft floating and a flat touchdown attitude with forward momentum transferring weight to the nose wheel, leading to loss of directional control.",
+    aimReference: "TC AIM AIR (Flight Training – landing technique)",
+  },
+  {
+    id: 120,
+    section: "Aeronautics - General Knowledge",
+    question:
+      "Wake turbulence caused by a departing aeroplane is most severe immediately",
+    options: [
+      { id: 1, text: "following full power application." },
+      { id: 2, text: "before rotation." },
+      { id: 3, text: "following rotation." },
+      { id: 4, text: "above its flight path." },
+    ],
+    correctAnswer: 3,
+    explanation:
+      "Wake turbulence vortices are generated whenever an aircraft produces lift. The vortices are most severe at the point of rotation because the aircraft is heavy, slow, and at a high angle of attack — conditions that create the strongest wingtip vortices. The vortices begin at the point of rotation and trail behind and below the flight path.",
+    aimReference: "TC AIM AIR 2.9 (Wake Turbulence)",
+  },
+  {
+    id: 121,
+    section: "Aeronautics - General Knowledge",
+    question:
+      "An aircraft flying an approach into a strong headwind encounters a sudden tailwind near the ground. The wind shear hazard to be expected is a sudden",
+    options: [
+      { id: 1, text: "increase in groundspeed and increase in lift." },
+      { id: 2, text: "decrease in groundspeed and loss of lift." },
+      { id: 3, text: "increase in airspeed and increase in lift." },
+      { id: 4, text: "decrease in airspeed and loss of lift." },
+    ],
+    correctAnswer: 4,
+    explanation:
+      "When a headwind suddenly changes to a tailwind (wind shear), the aircraft momentarily loses airspeed because the relative wind component reverses. The sudden decrease in airspeed causes an immediate loss of lift. At low altitude on approach, this can be extremely dangerous as the aircraft may sink below the glide path with insufficient altitude to recover.",
+    aimReference: "TC AIM AIR 2.11 (Wind Shear)",
+  },
+  {
+    id: 122,
+    section: "Aeronautics - General Knowledge",
+    question:
+      "Refer to Appendix: AIRSPEED INDICATOR (Diagram #1)\n\nThe upper limit of the white arc on an airspeed indicator is the maximum",
+    options: [
+      { id: 1, text: "normal operating speed." },
+      { id: 2, text: "flap extension speed (VFE)." },
+      { id: 3, text: "manoeuvring speed." },
+      { id: 4, text: "range speed." },
+    ],
+    correctAnswer: 2,
+    explanation:
+      "The white arc on an airspeed indicator represents the flap operating range. The lower limit is the stalling speed in the landing configuration (VSO), and the upper limit is the maximum flap extension speed (VFE). Operating with flaps extended above VFE can cause structural damage to the flap mechanism and airframe.",
+    aimReference: "TC AIM AIR (Flight Instruments – airspeed indicator markings)",
+    images: [
+      { src: "/images/appendix/airspeed-indicator-diagram.png", alt: "Airspeed Indicator (Diagram #1)" },
+    ],
+  },
+
+  // --- METEOROLOGY ---
+  {
+    id: 123,
+    section: "Meteorology",
+    question:
+      "The diurnal change of surface wind velocity is such that during the day the surface wind will usually",
+    options: [
+      { id: 1, text: "veer and increase in speed." },
+      { id: 2, text: "veer and decrease in speed." },
+      { id: 3, text: "back and increase in speed." },
+      { id: 4, text: "back and decrease in speed." },
+    ],
+    correctAnswer: 1,
+    explanation:
+      "During the day, surface heating causes convective mixing which brings higher-altitude winds down to the surface. Upper winds are typically faster and veer (turn clockwise) compared to surface winds due to reduced friction aloft. This causes daytime surface winds to veer and increase in speed. At night, the opposite occurs: surface winds back and decrease.",
+    aimReference: "TC AIM MET (Surface winds – diurnal variation)",
+  },
+  {
+    id: 124,
+    section: "Meteorology",
+    question:
+      "In the standard atmosphere, the temperature at an altitude of 5,000 feet will be closest to",
+    options: [
+      { id: 1, text: "0°C." },
+      { id: 2, text: "5°C." },
+      { id: 3, text: "8°C." },
+      { id: 4, text: "10°C." },
+    ],
+    correctAnswer: 2,
+    explanation:
+      "In the International Standard Atmosphere (ISA), sea level temperature is 15°C with a lapse rate of approximately 2°C per 1,000 feet (1.98°C/1,000 ft). At 5,000 feet: 15°C − (5 × 2°C) = 15°C − 10°C = 5°C.",
+    aimReference: "TC AIM MET (Standard atmosphere)",
+  },
+  {
+    id: 125,
+    section: "Meteorology",
+    question:
+      "During an approach to land on an upsloping runway, the pilot may experience the illusion that the aeroplane is _____ than it actually is.",
+    options: [
+      { id: 1, text: "higher" },
+      { id: 2, text: "lower" },
+      { id: 3, text: "closer in" },
+      { id: 4, text: "approaching faster" },
+    ],
+    correctAnswer: 1,
+    explanation:
+      "An upsloping runway creates the illusion that the aircraft is at a higher altitude than actual. This can lead the pilot to fly a lower-than-normal approach, increasing the risk of landing short. Conversely, a downsloping runway creates the illusion of being lower, potentially causing a high approach. Pilots should use PAPI/VASI and instruments to confirm the correct glide path.",
+    aimReference: "TC AIM AIR 3.7 (Vision – spatial disorientation and illusions)",
+  },
 ];
 
 export const SECTIONS: QuestionSection[] = [
