@@ -11,7 +11,10 @@ import {
   loadPstarStats,
   getWeakQuestionIds,
   getMasteryStats,
+  deleteSession,
+  deletePstarSession,
   StatsData,
+  SessionRecord,
 } from "@/lib/stats";
 
 type ExamBank = "pstar" | "license";
@@ -434,6 +437,17 @@ function HomeContent() {
           ))}
         </div>
 
+        {/* ── RECENT SESSIONS ───────────────────────────────────────── */}
+        <RecentSessions
+          stats={currentStats}
+          bank={bank}
+          passPercent={passPercent}
+          onDelete={() => {
+            if (bank === "pstar") setPstarStats(loadPstarStats());
+            else setLicenseStats(loadStats());
+          }}
+        />
+
         {/* ── FULL STATISTICS LINK ─────────────────────────────────── */}
         <Link href="/stats" className="group block mb-8">
           <div className="bg-slate-50 rounded-xl border-2 border-slate-200 p-5 hover:border-slate-400 hover:shadow-md transition-all cursor-pointer">
@@ -444,8 +458,8 @@ function HomeContent() {
                   Full Statistics
                 </h3>
                 <p className="text-sm text-slate-500">
-                  Detailed history, question-by-question accuracy, session records,
-                  and mastery tracking
+                  Question-by-question accuracy, full session history, and detailed
+                  analytics
                 </p>
               </div>
               <span className="text-slate-400 group-hover:text-slate-600 text-lg">
@@ -516,6 +530,175 @@ function HomeContent() {
           Always consult current Transport Canada publications.
         </p>
       </footer>
+    </div>
+  );
+}
+
+// ─── Recent Sessions Component ───────────────────────────────────────────────
+
+function RecentSessions({
+  stats,
+  bank,
+  passPercent,
+  onDelete,
+}: {
+  stats: StatsData | null;
+  bank: ExamBank;
+  passPercent: number;
+  onDelete: () => void;
+}) {
+  if (!stats || stats.sessions.length === 0) return null;
+
+  const quizBase = bank === "pstar" ? "/pstar/quiz" : "/helicopter/quiz";
+
+  const fmtDate = (iso: string) => {
+    const d = new Date(iso);
+    return d.toLocaleDateString("en-CA", {
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+  const modeLabel = (s: SessionRecord) => {
+    if (s.mode === "exam") return "Exam";
+    if (s.mode === "practice") return "Practice";
+    return `Section: ${s.section ?? "?"}`;
+  };
+
+  const inProgress = stats.sessions.filter((s) => !s.finishedAt);
+  const completed = stats.sessions
+    .filter((s) => !!s.finishedAt)
+    .sort((a, b) => new Date(b.finishedAt!).getTime() - new Date(a.finishedAt!).getTime())
+    .slice(0, 5);
+
+  if (inProgress.length === 0 && completed.length === 0) return null;
+
+  return (
+    <div className="mb-8">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-semibold text-gray-800">
+          Recent Sessions
+        </h2>
+        <Link href="/stats" className="text-xs text-gray-500 hover:text-gray-700">
+          View all →
+        </Link>
+      </div>
+
+      {/* In-progress sessions — shown prominently */}
+      {inProgress.length > 0 && (
+        <div className="space-y-2 mb-3">
+          {inProgress.map((s) => {
+            const modeParam = s.mode === "exam" ? "exam" : s.mode === "practice" ? "practice" : `section&section=${encodeURIComponent(s.section ?? "")}`;
+            const sessionUrl = `${quizBase}?mode=${modeParam}&session=${s.id}`;
+            return (
+              <div
+                key={s.id}
+                className="bg-amber-50 border border-amber-200 rounded-lg p-4 flex items-center gap-4"
+              >
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span
+                      className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                        s.mode === "exam"
+                          ? "bg-indigo-100 text-indigo-700"
+                          : s.mode === "practice"
+                          ? "bg-emerald-100 text-emerald-700"
+                          : "bg-blue-100 text-blue-700"
+                      }`}
+                    >
+                      {modeLabel(s)}
+                    </span>
+                    <span className="text-xs text-amber-600 font-medium">
+                      In progress
+                    </span>
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    {s.answered}/{s.totalQuestions} answered · started {fmtDate(s.startedAt)}
+                  </div>
+                  {/* Progress bar */}
+                  <div className="bg-amber-100 rounded-full h-1.5 mt-2">
+                    <div
+                      className="bg-amber-500 h-1.5 rounded-full transition-all"
+                      style={{ width: `${s.totalQuestions > 0 ? (s.answered / s.totalQuestions) * 100 : 0}%` }}
+                    />
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <Link
+                    href={sessionUrl}
+                    className="text-xs font-medium text-amber-800 bg-amber-200 hover:bg-amber-300 px-3 py-1.5 rounded-lg transition-colors"
+                  >
+                    Continue →
+                  </Link>
+                  <button
+                    onClick={() => {
+                      if (bank === "pstar") deletePstarSession(s.id);
+                      else deleteSession(s.id);
+                      onDelete();
+                    }}
+                    className="text-xs text-gray-400 hover:text-red-500 transition-colors p-1"
+                    title="Delete session"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Last completed sessions — compact list */}
+      {completed.length > 0 && (
+        <div className="bg-white border border-gray-200 rounded-lg divide-y divide-gray-100">
+          {completed.map((s) => {
+            const pct = s.totalQuestions > 0 ? Math.round((s.correct / s.totalQuestions) * 100) : 0;
+            const modeParam = s.mode === "exam" ? "exam" : s.mode === "practice" ? "practice" : `section&section=${encodeURIComponent(s.section ?? "")}`;
+            const sessionUrl = `${quizBase}?mode=${modeParam}&session=${s.id}`;
+            return (
+              <Link key={s.id} href={sessionUrl} className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
+                <span
+                  className={`text-xs font-medium px-2 py-0.5 rounded-full shrink-0 ${
+                    s.mode === "exam"
+                      ? "bg-indigo-100 text-indigo-700"
+                      : s.mode === "practice"
+                      ? "bg-emerald-100 text-emerald-700"
+                      : "bg-blue-100 text-blue-700"
+                  }`}
+                >
+                  {modeLabel(s)}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 bg-gray-100 rounded-full h-1.5">
+                      <div
+                        className={`h-1.5 rounded-full ${pct >= passPercent ? "bg-green-500" : "bg-red-400"}`}
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                    <span className={`text-xs font-bold w-10 text-right ${pct >= passPercent ? "text-green-600" : "text-red-600"}`}>
+                      {pct}%
+                    </span>
+                  </div>
+                </div>
+                <span className="text-xs text-gray-400 shrink-0">
+                  {s.correct}/{s.totalQuestions}
+                </span>
+                {s.mode === "exam" && (
+                  <span className={`text-[10px] font-bold shrink-0 ${pct >= passPercent ? "text-green-600" : "text-red-500"}`}>
+                    {pct >= passPercent ? "PASS" : "FAIL"}
+                  </span>
+                )}
+                <span className="text-[10px] text-gray-400 shrink-0 hidden sm:block">
+                  {fmtDate(s.finishedAt!)}
+                </span>
+              </Link>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

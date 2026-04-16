@@ -890,7 +890,7 @@ export const pstarQuestions: PstarQuestion[] = [
     correctAnswer: 4,
     reference: "AIM AGA 6.0",
     explanation: "Marking A (cross with H and runway number) is a hospital heliport. Marking B (triangle with H and north arrow) is a standard heliport. C is an unrelated triangle symbol, and D shows multiple circled H symbols.",
-    images: [{ src: "/images/appendix/heliport-markings.jpg", alt: "Heliport Markings — A: Hospital heliport (cross with H), B: Heliport (triangle with H), C: Triangle, D: Multiple circled H symbols" }],
+    images: [{ src: "/images/appendix/heliport-markings.jpg", alt: "-" }],
   },
 
   // ===========================
