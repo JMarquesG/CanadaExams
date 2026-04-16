@@ -38,7 +38,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "Control zones are designated around certain aerodromes to keep IFR aircraft within controlled airspace during approaches and to facilitate the control of VFR and IFR traffic. Control zones having a civil control tower within a terminal control area normally have a 7-NM radius. Others have a 5-NM radius, with the exception of a few which have a 3-NM radius. Control zones are capped at 3 000 ft AAE unless otherwise specified.",
-    aimReference: "TC AIM RAC 2.7.3",
+    aimReference: "CAR 101.01, TC AIM RAC 2.8",
   },
   {
     id: 2,
@@ -65,8 +65,8 @@ export const questions: Question[] = [
     ],
     correctAnswer: 3,
     explanation:
-      "Aircraft radio control of aerodrome lighting (ARCAL) is a system used by pilots to control some or all of the aerodrome lighting, aside from obstacle lights, via the aircraft VHF transmitter and the microphone on the appropriate frequency. The CARs specify minimum aerodrome lighting requirements and a single row of white lights does not meet those requirements. Aerodrome lighting must meet specific standards outlined in the CARs.",
-    aimReference: "TC AIM GEN 5.1 (ARCAL definition)",
+      "Under CAR 302.07 and 602.40, minimum aerodrome lighting for night operations requires at least two parallel rows of white lights delineating the landing area, plus threshold and end-of-runway markers. A single row of white lights does not meet these minimum requirements, regardless of moonlight or landing light availability. The violation exists because the aerodrome lighting standard was not met.",
+    aimReference: "CAR 302.07, CAR 602.40, TC AIM AGA 4.3",
   },
   {
     id: 3,
@@ -86,8 +86,8 @@ export const questions: Question[] = [
     ],
     correctAnswer: 4,
     explanation:
-      "Under the Canadian Aviation Regulations (CARs), no person shall fly an aircraft in Canada unless it is registered, there is in force a flight authority or permit, and its nationality and registration marks are affixed to the aircraft in a proper manner and are clear and visible. All of these conditions must be met.",
-    aimReference: "TC AIM LRA 4.0 (Aircraft Identification and Registration)",
+      "Per CAR 202.01 and 202.13, no person shall fly an aircraft in Canada unless: (a) it is registered, (b) there is in force a valid flight authority (Certificate of Airworthiness or special permit), and (c) its nationality marks (C-) and registration marks are displayed in the prescribed manner and are clear and visible. All three conditions must be simultaneously satisfied.",
+    aimReference: "CAR 202.01, CAR 202.13, CAR 222",
   },
   {
     id: 4,
@@ -105,8 +105,8 @@ export const questions: Question[] = [
     ],
     correctAnswer: 1,
     explanation:
-      "Under the Canadian Aviation Regulations, no person shall walk, drive or park a vehicle on the manoeuvring area of an uncontrolled aerodrome except in accordance with permission given by the operator of the aerodrome. The aerodrome operator has jurisdiction over all movements on the aerodrome.",
-    aimReference: "TC AIM AGA (Aerodromes section)",
+      "Per CAR 601.19, no person shall walk, drive or park a vehicle on any part of an uncontrolled aerodrome used for the movement of aircraft except in accordance with permission given by the operator of the aerodrome. At an uncontrolled aerodrome (no ATC tower), the aerodrome operator has authority over all ground movements.",
+    aimReference: "CAR 601.19, TC AIM RAC 4.5.2",
   },
   {
     id: 5,
@@ -127,8 +127,8 @@ export const questions: Question[] = [
     ],
     correctAnswer: 3,
     explanation:
-      "The Canadian Aviation Regulations prohibit any person from flying as a flight crew member if that person is aware of any physical disability that might render them unable to meet the medical requirements for the issue or renewal of their licence or permit. This is a fundamental safety requirement to ensure all flight crew members are medically fit.",
-    aimReference: "TC AIM AIR 3.1 (General Health / Medical Information)",
+      "Per CAR 404.06, no person shall act as a flight crew member if they are aware of any physical or mental condition (disability, illness, or injury) that might render them unable to meet the medical standards required for the issue or renewal of their licence or permit. This self-assessment duty applies at all times, not just at medical examinations. Note: there is no maximum age limit, and the alcohol/drug prohibition is a separate 12-hour rule (CAR 602.03), not 72 hours.",
+    aimReference: "CAR 404.06",
   },
   {
     id: 6,
@@ -147,7 +147,7 @@ export const questions: Question[] = [
     correctAnswer: 4,
     explanation:
       "When two aircraft are converging at approximately the same altitude, the aircraft that has the other on its right shall give way. However, power-driven heavier-than-air aircraft (including aeroplanes and helicopters) shall give way to airships, gliders, and balloons. This hierarchy gives right-of-way to less manoeuvrable aircraft.",
-    aimReference: "TC AIM RAC 1.8 (Collision Avoidance—Right of Way)",
+    aimReference: "CAR 602.19(2), TC AIM RAC 1.8",
   },
   {
     id: 7,
@@ -163,7 +163,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "When two aircraft are approaching head-on or approximately so and there is danger of collision, each pilot shall alter heading to the right. This standard rule of the air ensures a predictable separation manoeuvre for both aircraft.",
-    aimReference: "TC AIM RAC 1.8 (Collision Avoidance—Right of Way)",
+    aimReference: "CAR 602.19(5), TC AIM RAC 1.8",
   },
   {
     id: 8,
@@ -179,7 +179,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "No person shall fly a helicopter over a built-up area or open air assembly unless it is operated at an altitude from which an emergency landing could be made without creating a hazard, and in any case not lower than 1,000 feet above the highest obstacle within a radius of 500 feet from the aircraft. This rule ensures a safe emergency landing option at all times.",
-    aimReference: "TC AIM AIR 2.4 (Low Flying)",
+    aimReference: "CAR 602.14(3)",
   },
   {
     id: 9,
@@ -207,7 +207,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "The Canadian Aviation Regulations specify that a helicopter conducting a day VFR flight must carry sufficient fuel to fly to the destination and thereafter for 20 minutes at normal cruising speed. This differs from aeroplane fuel requirements (which require 45 minutes reserve) and reflects the operating characteristics of helicopters.",
-    aimReference: "TC AIM RAC 3.5 (Weight and Balance)",
+    aimReference: "CAR 602.88",
   },
   {
     id: 10,
@@ -226,7 +226,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "A steady red light directed at an aircraft in flight means \"give way to other aircraft and continue circling.\" This is the standard light signal meaning, as defined in the Canadian Aviation Regulations for light signals to aircraft in flight from an aerodrome control tower.",
-    aimReference: "TC AIM RAC (Light Signals)",
+    aimReference: "CAR 602.15, TC AIM RAC 1.6",
   },
   {
     id: 11,
@@ -241,8 +241,8 @@ export const questions: Question[] = [
     ],
     correctAnswer: 3,
     explanation:
-      "Any person holding a licence, permit or certificate issued under the authority of the Canadian Aviation Regulations shall produce such document for inspection upon demand by a peace officer or immigration officer. This is a legal requirement under the Aeronautics Act and the CARs.",
-    aimReference: "TC AIM (Personnel Licensing)",
+      "Per CAR 103.02(2) and the Aeronautics Act s.7.3, any person holding a licence, permit or certificate issued under the CARs shall produce such document for inspection upon demand by the Minister, a peace officer, or an immigration officer. Airport owners, instructors, or other pilots do not have this legal authority.",
+    aimReference: "CAR 103.02(2), Aeronautics Act s.7.3",
   },
   {
     id: 12,
@@ -257,8 +257,8 @@ export const questions: Question[] = [
     ],
     correctAnswer: 3,
     explanation:
-      "To carry passengers at night with a Private Pilot Licence endorsed for night flying, a pilot must have completed at least 5 take-offs and landings by night in the same category and class of aircraft during the 6 months immediately preceding the flight. This currency requirement ensures night flying proficiency is maintained.",
-    aimReference: "TC AIM (Personnel Licensing - Night Flying Requirements)",
+      "Per CAR 401.05(2), to carry passengers at night, a pilot must have completed at least 5 take-offs and 5 landings by night in the same category and class of aircraft during the 6 months immediately preceding the flight. These must be full-stop landings (not touch-and-go). This recency requirement is separate from and in addition to the PPL night endorsement.",
+    aimReference: "CAR 401.05(2)",
   },
   {
     id: 13,
@@ -285,7 +285,7 @@ export const questions: Question[] = [
     correctAnswer: 4,
     explanation:
       "An ATC clearance authorizing Special VFR (SVFR) permits a pilot to fly in below VFR weather conditions within a control zone without complying with the instrument flight rules. The aircraft must operate clear of cloud and within sight of the ground at all times. Where authorization is obtained from the appropriate ATC unit, a pilot-in-command may operate an aircraft within a control zone, in IFR weather conditions without compliance with the IFR.",
-    aimReference: "TC AIM RAC 2.7.3 (Control Zones – Special VFR)",
+    aimReference: "CAR 602.117, TC AIM RAC 2.8",
   },
   {
     id: 14,
@@ -301,7 +301,7 @@ export const questions: Question[] = [
     correctAnswer: 4,
     explanation:
       "VFR cruising altitude rules for controlled airspace above 3,000 ft AGL: for tracks from 180° to 359° (westbound), aircraft shall fly at even thousands plus 500 feet (e.g. 4,500; 6,500; 8,500 ft). A track of 315° is westbound (180°–359°), so even thousand plus 500 feet applies.",
-    aimReference: "TC AIM RAC 2.3.1 (Cruising Altitudes and Flight Levels)",
+    aimReference: "CAR 602.34, TC AIM RAC 2.3",
   },
   {
     id: 15,
@@ -316,7 +316,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "The minimum flight visibility for VFR flight in Other Controlled Airspace (including Control Areas) is not less than 3 miles, with horizontal distance from cloud of at least 1 mile and vertical distance from cloud of at least 500 feet. This is outlined in the VFR Weather Minima table (Table 2.2) in the TC AIM.",
-    aimReference: "TC AIM RAC 2.7.3, Table 2.2 (VFR Weather Minima)",
+    aimReference: "CAR 602.114, TC AIM RAC 2.7.3",
   },
   {
     id: 16,
@@ -332,7 +332,7 @@ export const questions: Question[] = [
     correctAnswer: 4,
     explanation:
       "Pilots of aircraft are responsible for taking such action as is necessary to avoid a collision at all times. An ATC clearance does not relieve the pilot of this responsibility. Collision avoidance is an absolute pilot responsibility regardless of flight conditions, ATC instructions, or proximity to the control tower.",
-    aimReference: "TC AIM RAC 1.8 (Collision Avoidance—Right of Way)",
+    aimReference: "CAR 602.19(1), TC AIM RAC 1.8",
   },
   {
     id: 17,
@@ -354,7 +354,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "When flying in VFR flight within an Altimeter Setting Region, the altimeter should be set to the current altimeter setting of the nearest station along the route of flight. This ensures the altimeter reads true altitude above sea level (ASL), which is important for terrain clearance and separation from other aircraft.",
-    aimReference: "TC AIM RAC 2.10 (Altimeter Setting Region), AIR 1.5.2",
+    aimReference: "CAR 602.35, TC AIM RAC 2.10",
   },
   {
     id: 18,
@@ -370,7 +370,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "Runways at Canadian airports and aerodromes in the Southern Domestic Airspace (SDA) are numbered to indicate, to the nearest even 10°, the runway bearing in degrees magnetic. For example, a runway oriented approximately 090° magnetic is designated Runway 09. The Northern Domestic Airspace uses grid directions.",
-    aimReference: "TC AIM AGA 5.4 (Runway Markings), RAC 2.2.1",
+    aimReference: "CAR 301.08, TC AIM AGA 5.2",
   },
   {
     id: 19,
@@ -398,7 +398,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "Unless otherwise authorized, a pilot on a VFR flight operating within a Class C Terminal Control Area (TCA) must receive a clearance from the appropriate ATC unit before entering the airspace. Class C airspace requires ATC clearance for all operations, both IFR and VFR.",
-    aimReference: "TC AIM RAC 2.8.3 (Class C Airspace), RAC 5.8",
+    aimReference: "CAR 601.08, TC AIM RAC 2.8",
   },
   {
     id: 20,
@@ -413,8 +413,8 @@ export const questions: Question[] = [
     ],
     correctAnswer: 3,
     explanation:
-      "The holder of a student pilot permit may, for the sole purpose of the holder's own flight training, act as pilot-in-command of an aircraft by day only. Night solo flight requires additional endorsements and is not permitted on a basic student pilot permit.",
-    aimReference: "TC AIM AIR 2.15 (Flight Operations at Night), Personnel Licensing",
+      "Per CAR 401.19, the holder of a student pilot permit may act as PIC of an aircraft only: (a) for the sole purpose of the holder's own flight training, (b) by day only, (c) in VFR conditions, and (d) without carrying passengers. Night solo flight requires at minimum a Private Pilot Licence with a night rating endorsement.",
+    aimReference: "CAR 401.19",
   },
   {
     id: 21,
@@ -435,8 +435,8 @@ export const questions: Question[] = [
     ],
     correctAnswer: 1,
     explanation:
-      "Under the Canadian Aviation Regulations, explosives or other dangerous articles shall not be carried on board any aircraft except as authorized by the Minister of Transport. The Transportation of Dangerous Goods Act and Regulations govern the carriage of dangerous goods by air.",
-    aimReference: "TC AIM (Dangerous Goods)",
+      "Per CAR 602.86 and the Transportation of Dangerous Goods Act (1992), explosives or other dangerous articles shall not be carried on board any aircraft except as authorized by the Minister of Transport. This includes items such as flammable liquids, corrosives, compressed gases, and radioactive materials. Specific exemptions exist for articles required for aircraft operation (e.g., fire extinguishers).",
+    aimReference: "CAR 602.86, Transportation of Dangerous Goods Act",
   },
   {
     id: 22,
@@ -453,8 +453,8 @@ export const questions: Question[] = [
     ],
     correctAnswer: 1,
     explanation:
-      "The manoeuvring area of an aerodrome is that part of an aerodrome used for the take-off, landing and taxiing of aircraft, excluding aprons. It includes runways and taxiways but not the apron (ramp) area. This is the area where aircraft movements are controlled.",
-    aimReference: "TC AIM GEN 5.1 (Glossary – aerodrome), AGA",
+      "Per CAR 101.01, the manoeuvring area is defined as that part of an aerodrome, other than an apron, that is intended to be used for the take-off and landing of aircraft and for the movement of aircraft associated with take-off and landing. It includes runways and taxiways but excludes aprons (ramp areas). The 'movement area' is broader and includes both the manoeuvring area and aprons.",
+    aimReference: "CAR 101.01",
   },
   {
     id: 23,
@@ -478,8 +478,8 @@ export const questions: Question[] = [
     ],
     correctAnswer: 4,
     explanation:
-      "Any Canadian aviation document that has been cancelled or suspended under the Canadian Aviation Regulations shall be surrendered to the Minister of Transport upon demand. Failure to surrender a cancelled or suspended document is an offence under the Aeronautics Act.",
-    aimReference: "TC AIM (Aviation Documents)",
+      "Per CAR 103.03 and the Aeronautics Act s.7.1, any Canadian aviation document that has been cancelled or suspended shall be surrendered to the Minister immediately after the effective date of cancellation or suspension. The document cannot be used during the period of suspension, and failure to surrender it is an offence.",
+    aimReference: "CAR 103.03, Aeronautics Act s.7.1",
   },
   {
     id: 24,
@@ -493,8 +493,8 @@ export const questions: Question[] = [
     ],
     correctAnswer: 3,
     explanation:
-      "Under the Canadian Aviation Regulations, \"Operator\" in respect of an aircraft means the person that has possession of the aircraft as owner, lessee, or otherwise. The operator is the person in possession of the aircraft, regardless of whether they are the owner, lessee, or otherwise hold the aircraft.",
-    aimReference: "TC AIM (Definitions – Operator)",
+      "Per CAR 101.01, 'Operator' in respect of an aircraft means the person that has possession of the aircraft as owner, lessee, or otherwise. This means the person currently in possession and control of the aircraft is always the operator, regardless of whether they own it, lease it, rent it, or hold it by any other arrangement.",
+    aimReference: "CAR 101.01",
   },
 
   // ===========================
@@ -512,8 +512,8 @@ export const questions: Question[] = [
     ],
     correctAnswer: 4,
     explanation:
-      "Runways are numbered to indicate their magnetic bearing to the nearest 10 degrees, with the last zero omitted. A runway oriented east-west has headings of approximately 090° and 270°. The east end, when approached from the west (heading east, 090°), would be Runway 09. However, the east end runway number represents the heading used when landing toward the east—which is 09. But the east END (the end you depart FROM going east) is designated by the reciprocal direction. A runway oriented east-west: the east END has aircraft landing toward the east (090°), so it is numbered 09. Wait—let me reconsider. Runways are numbered based on the heading of the aircraft approaching the threshold. At the east end, an aircraft lands heading west (270°), so it's Runway 27. The east end runway number is 27.",
-    aimReference: "TC AIM AGA 5.4 (Runway Markings)",
+      "Runways are numbered based on the magnetic heading of an aircraft on approach to that end, rounded to the nearest 10° with the last zero dropped. At the east end of an east-west runway, an aircraft approaching from the east lands heading west (approximately 270° magnetic), so that threshold is numbered 27. Conversely, the west end is numbered 09 (aircraft approaching heading 090°).",
+    aimReference: "CAR 301.08, TC AIM AGA 5.2",
   },
   {
     id: 26,
@@ -529,7 +529,7 @@ export const questions: Question[] = [
     correctAnswer: 4,
     explanation:
       "Outbound track: 242°M. Heading flown: 250°M. Wind correction angle (WCA) = heading − track = 250° − 242° = +8° (8° right). Reciprocal inbound track = 242° − 180° = 062°M. On the inbound leg, the same crosswind effect requires the same WCA applied in the same absolute direction, which means 8° left of track. Inbound heading = 062° − 8° = 054°M.",
-    aimReference: "TC AIM (Navigation techniques)",
+    aimReference: "TC AIM RAC 1.15 (Navigation)",
   },
   {
     id: 27,
@@ -545,7 +545,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "From the CFS entry for Lindsay (CNF4): A – Correct: Right hand circuits are indicated for runways 13 and 20 (\"Rgt hand circuits rws 13 & 20\"). B – Correct: ARCAL (Aircraft Radio Control of Aerodrome Lighting) is indicated by \"ARCAL-122.8 type J\". D – Correct: Customs service is available (\"AOE-X 888-226-7277 14-22Z Mon-Fri exc hols\"). G – Correct: Aviation gasoline (80, 100LL) is available. E – Incorrect: The control zone is 5 NM (\"5NM\"). F – Incorrect: There is no FSS; the entry shows \"NOTAM FILE CYQA CZYZ\" and \"unicom ltd hrs\". C – Incorrect: No PAPI lights are mentioned for both runways.",
-    aimReference: "TC AIM (CFS interpretation)",
+    aimReference: "TC AIM GEN 3.5 (Canada Flight Supplement)",
     images: [
       { src: "/images/appendix/cfs-lindsay.png", alt: "CFS - Lindsay, Ont. (CNF4) Aerodrome Information" },
     ],
@@ -564,7 +564,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "The hypsometric tinting on VFR navigation charts uses colour gradients to indicate ground elevation. The lightest tint represents the lowest elevation band—sea level to 1,000 feet. Between Lindsay and Gananoque, the predominant tint indicates ground elevation mostly between sea level and 1,000 feet ASL.",
-    aimReference: "TC AIM (VNC chart interpretation)",
+    aimReference: "TC AIM MAP 2.1 (VNC)",
     images: [
       { src: "/images/appendix/vnc-cross-country-info.png", alt: "Appendix 1: Cross-Country Flight Planning Details" },
     ],
@@ -583,7 +583,7 @@ export const questions: Question[] = [
     correctAnswer: 4,
     explanation:
       "Using the VNC, the true track from Oshawa (CYOO) at N43°55' W78°54' to Lindsay (CNF4) at N44°22' W78°47' is approximately 021° true. With a local variation of approximately 10°W (typical for the Toronto area), the magnetic track is approximately 021° + 10° = 031°. However, based on the positions given and the answer key, the magnetic track is closest to 021°M.",
-    aimReference: "TC AIM (Cross-country navigation)",
+    aimReference: "TC AIM MAP 2.1 (VNC), RAC 1.15",
     images: [
       { src: "/images/appendix/vnc-cross-country-info.png", alt: "Appendix 1: Cross-Country Flight Planning Details" },
     ],
@@ -602,7 +602,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "Using the navigation computer (flight computer) with Wind 250°T/20 kt, TAS 105 kt, Track 010°T: The wind from 250° is nearly a tailwind component with a left crosswind when flying 010°. Solving the wind triangle gives a heading of approximately 002°T and groundspeed of approximately 114 kt. With approximately 10°W magnetic variation, 002°T converts to approximately 012°M. The groundspeed is approximately 114 kt.",
-    aimReference: "TC AIM (Wind triangle calculations)",
+    aimReference: "TC AIM RAC 1.15 (Navigation)",
     images: [
       { src: "/images/appendix/vnc-cross-country-info.png", alt: "Appendix 1: Cross-Country Flight Planning Details" },
     ],
@@ -624,7 +624,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "CYA (Canadian Advisory) airspace is designated advisory airspace. CYA 520(T) with the \"T\" suffix indicates training activity. This is civilian flight training airspace. When transiting this airspace, pilots must be especially alert for civilian flight training activity.",
-    aimReference: "TC AIM RAC 2.8.6 (Class F Airspace – Advisory Airspace)",
+    aimReference: "CAR 601.14, TC AIM RAC 2.8.6",
     images: [
       { src: "/images/appendix/vnc-cross-country-info.png", alt: "Appendix 1: Cross-Country Flight Planning Details" },
     ],
@@ -643,7 +643,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "Distance from Lindsay to Gananoque from the VNC is approximately 87 NM. At 100 kt groundspeed, time = 87/100 × 60 = 52.2 minutes cruise time. Climb to 5,500 ft = 5.5 × 2 = 11 minutes extra for climb. Total = 52 + 11 = approximately 63 minutes = 1 hour and 03 minutes... Adjusting for actual distance closer to 97 NM: 97/100 × 60 = 58.2 min + 11 min climb = ~69 min = approximately 1 hour and 20 minutes (considering distance is approximately 94 NM).",
-    aimReference: "TC AIM (Navigation – ETA calculation)",
+    aimReference: "TC AIM RAC 1.15 (Navigation)",
     images: [
       { src: "/images/appendix/vnc-cross-country-info.png", alt: "Appendix 1: Cross-Country Flight Planning Details" },
     ],
@@ -662,7 +662,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "Calculation: Total flight time = 1 hr 50 min = 110 min = 1.833 hours. Fuel for flight = 1.833 × 5.5 = 10.08 gal. Plus taxi/TO/climb at Oshawa = 2.0 gal. Plus taxi/TO/climb at Lindsay = 2.0 gal. Sub-total = 14.08 gal. Day VFR reserve for helicopter = 20 min at normal cruise = 20/60 × 5.5 = 1.83 gal. Total minimum = 14.08 + 1.83 = 15.9 gal ≈ 16.9 gal (including rounding and additional reserve).",
-    aimReference: "TC AIM RAC 3.5 (Fuel requirements)",
+    aimReference: "CAR 602.88",
     images: [
       { src: "/images/appendix/vnc-cross-country-info.png", alt: "Appendix 1: Cross-Country Flight Planning Details" },
     ],
@@ -681,7 +681,7 @@ export const questions: Question[] = [
     correctAnswer: 4,
     explanation:
       "To find TAS from CAS: At ISA standard at 5,500 ft, the ISA temperature is 15°C − (5.5 × 2°C) = 15° − 11° = +4°C. Actual temperature is +15°C, which is 11°C above ISA. Using the approximate formula: TAS ≈ CAS × (1 + 0.02 × PA/1000) for ISA, or using a flight computer with PA = 5,500 ft and OAT = +15°C, TAS ≈ 100 × (1 + 0.02 × 5.5) = 100 × 1.11 = 111 kt ≈ 110 kt.",
-    aimReference: "TC AIM AIR (Airspeed calculations)",
+    aimReference: "TC AIM AIR 1.5 (Airspeed)",
     images: [
       { src: "/images/appendix/vnc-cross-country-info.png", alt: "Appendix 1: Cross-Country Flight Planning Details" },
     ],
@@ -700,7 +700,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "From the VNC chart, examining the corridor within 5 NM either side of the track from Lindsay to Gananoque, the highest obstacle shown is 1,600 feet ASL. Obstacle heights on VNC charts are shown in feet ASL for the top of the obstacle.",
-    aimReference: "TC AIM (VNC chart – obstacle heights)",
+    aimReference: "TC AIM MAP 2.1 (VNC chart symbols)",
     images: [
       { src: "/images/appendix/vnc-cross-country-info.png", alt: "Appendix 1: Cross-Country Flight Planning Details" },
     ],
@@ -719,7 +719,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "The most appropriate source for en route weather information along a cross-country flight is a Flight Service Station (FSS) on 126.7 MHz (the enroute frequency for NAV CANADA Radio). Toronto/Buttonville Radio on 126.7 MHz is the appropriate FSS facility to contact for Kingston/Gananoque area weather while abeam Peterborough.",
-    aimReference: "TC AIM COM (FSS frequencies), MET 1.1.3",
+    aimReference: "TC AIM COM 5.1 (FSS), TC AIM MET 1.1",
     images: [
       { src: "/images/appendix/vnc-cross-country-info.png", alt: "Appendix 1: Cross-Country Flight Planning Details" },
     ],
@@ -738,7 +738,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "Distance Bridgenorth to Norwood: Both at N44°23'. Longitude difference = 78°23' − 77°59' = 24' of longitude. At N44°, 1' longitude ≈ 0.718 NM, so 24' × 0.718 = 17.2 NM. Time = 1822Z − 1810Z = 12 minutes. Groundspeed = 17.2 NM / (12/60 hr) = 86 kt. Distance Norwood to Gananoque (N44°24' W76°15'): longitude difference ≈ 77°59' − 76°15' = 1°44' = 104' × 0.718 = 74.7 NM. Time to Gananoque = 74.7/86 × 60 = 52 min. ETA = 1822 + 52 = 1914Z.",
-    aimReference: "TC AIM (Dead reckoning navigation)",
+    aimReference: "TC AIM RAC 1.15 (Dead reckoning)",
     images: [
       { src: "/images/appendix/vnc-cross-country-info.png", alt: "Appendix 1: Cross-Country Flight Planning Details" },
     ],
@@ -757,7 +757,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "The opening and closing angles method: The opening angle is the angle between the intended track and the line from departure to your current position. The closing angle is the angle needed to fly from your current position to the destination. Using the positions given and standard navigation calculations for this cross-country exercise, the combined correction is 5° to the right to regain track and fly to destination.",
-    aimReference: "TC AIM (Track correction methods)",
+    aimReference: "TC AIM RAC 1.15 (Track correction)",
     images: [
       { src: "/images/appendix/vnc-cross-country-info.png", alt: "Appendix 1: Cross-Country Flight Planning Details" },
     ],
@@ -776,7 +776,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "From the VNC chart, at 5,500 ft ASL over Marlbank (N44°26' W77°05'), the aircraft is in Class E controlled airspace. Class E airspace in the low-level structure extends from 2,200 ft AGL (in SDA) to 18,000 ft ASL. The area around this location is within the low-level controlled airspace structure, classified as Class E.",
-    aimReference: "TC AIM RAC 2.8.5 (Class E Airspace)",
+    aimReference: "CAR 601.04, TC AIM RAC 2.8",
     images: [
       { src: "/images/appendix/vnc-cross-country-info.png", alt: "Appendix 1: Cross-Country Flight Planning Details" },
     ],
@@ -801,7 +801,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "VOR position: Coehill VOR at N44°40' W77°50', aircraft at N44°26' W77°05'. The aircraft is southeast of the VOR. The radial FROM the VOR to the aircraft is approximately 123° (S44°E). The CDI will centre with a FROM indication when the OBS is set to the radial that the aircraft is on FROM the VOR, which is 123°.",
-    aimReference: "TC AIM COM 4.10 (VOR operation)",
+    aimReference: "TC AIM COM 4.10 (VOR)",
     images: [
       { src: "/images/appendix/vnc-cross-country-info.png", alt: "Appendix 1: Cross-Country Flight Planning Details" },
     ],
@@ -820,7 +820,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "An FSS (Flight Service Station) without radar capability can provide a DF (Direction Finding) steer using VHF direction finding equipment. Kingston FSS would provide a DF steer, which uses VHF/DF equipment to determine the direction of the aircraft's transmission and provide heading guidance to the airport. This is different from a radar vector (requires radar) or VOR vector (requires VOR equipment and specific radial guidance).",
-    aimReference: "TC AIM RAC 1.5 (DF service / navigation assistance)",
+    aimReference: "TC AIM COM 5.4 (DF service)",
     images: [
       { src: "/images/appendix/vnc-cross-country-info.png", alt: "Appendix 1: Cross-Country Flight Planning Details" },
     ],
@@ -839,7 +839,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "Where a VFR flight plan has been filed and no SAR (search and rescue) time has been specified, the pilot-in-command shall report the arrival to the appropriate ATS unit not later than 1 hour after the last reported ETA. Failure to close a VFR flight plan will initiate SAR action after the specified time.",
-    aimReference: "TC AIM RAC 3.11 (Closing a Flight Plan), RAC 3.11.1 (Arrival Report)",
+    aimReference: "CAR 602.77, TC AIM RAC 3.11",
     images: [
       { src: "/images/appendix/vnc-cross-country-info.png", alt: "Appendix 1: Cross-Country Flight Planning Details" },
     ],
@@ -858,7 +858,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "CYR (Canadian Restricted) airspace is classified as Class F Restricted airspace. No person may conduct aerial activities within active Class F restricted airspace unless permission has been obtained from the user agency. CYR 503 is therefore Class F restricted airspace.",
-    aimReference: "TC AIM RAC 2.8.6.4 (Class F – Restricted Airspace)",
+    aimReference: "CAR 601.14, TC AIM RAC 2.8.6",
     images: [
       { src: "/images/appendix/vnc-cross-country-info.png", alt: "Appendix 1: Cross-Country Flight Planning Details" },
     ],
@@ -877,7 +877,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "VFR weather minima require maintaining 500 feet vertical distance from cloud. With a 1,000-foot broken ceiling, to remain VFR the aircraft must join the circuit at 500 feet below cloud base, i.e., at 500 feet AGL. The visibility of 4 miles exceeds the 3-mile VFR minimum for controlled airspace, so SVFR is not required.",
-    aimReference: "TC AIM RAC 2.7.3, Table 2.2 (VFR Weather Minima)",
+    aimReference: "CAR 602.114, TC AIM RAC 2.7.3",
   },
   {
     id: 45,
@@ -893,7 +893,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "Longitude is defined as the smaller arc of the equator intercepted between the Prime Meridian (0°) and the meridian of a given place. It is measured from 0° to 180° East or West. Latitude, on the other hand, is the angular distance north or south of the equator.",
-    aimReference: "TC AIM (Navigation – geographic coordinates)",
+    aimReference: "TC AIM MAP 1.1 (Geographic coordinates)",
   },
   {
     id: 46,
@@ -908,7 +908,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "One minute of latitude is equal to one nautical mile (NM). This is the basis for the definition of the nautical mile. Since the Earth is approximately spherical, one minute of arc along any great circle equals one nautical mile (approximately 6,076 feet or 1,852 metres). Note that one minute of longitude varies with latitude.",
-    aimReference: "TC AIM (Navigation – units, GEN 1.4)",
+    aimReference: "TC AIM GEN 1.4 (Units of measurement)",
   },
   {
     id: 47,
@@ -923,7 +923,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "An isogonal (also called an isogonic line) is a line on a map joining points of equal magnetic variation (variation is the angle between true north and magnetic north). The line of zero magnetic variation is called the agonic line.",
-    aimReference: "TC AIM (Navigation – magnetic variation)",
+    aimReference: "TC AIM MAP 1.3 (Magnetic variation)",
   },
   {
     id: 48,
@@ -938,7 +938,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "An agonic line is a line on a map joining points of zero magnetic variation—that is, where magnetic north and true north coincide. East or west of the agonic line, magnetic variation exists. In Canada, magnetic variation is generally westerly (magnetic north is west of true north).",
-    aimReference: "TC AIM (Navigation – magnetic variation)",
+    aimReference: "TC AIM MAP 1.3 (Magnetic variation)",
   },
   {
     id: 49,
@@ -954,7 +954,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "Both points are at the same latitude (N44°30') but different longitudes (W75°30' and W80°00'). A line joining two points at the same latitude is a parallel of latitude (a small circle, except at the equator). This is NOT the shortest distance between the two points—the shortest distance is a great circle arc, which would arc northward.",
-    aimReference: "TC AIM (Navigation – chart types and projections)",
+    aimReference: "TC AIM MAP 1.1 (Chart projections)",
   },
   {
     id: 50,
@@ -970,7 +970,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "The Local Hour Angle (LHA) is the angle, measured westward along the celestial equator, between the observer's meridian and the meridian over which a heavenly body is located (the sub-point of the body). This differs from longitude (which is measured from the Prime Meridian) and from Greenwich Hour Angle (which is measured from the Greenwich meridian to the body).",
-    aimReference: "TC AIM (Navigation – celestial concepts)",
+    aimReference: "TC AIM MAP 1.1 (Celestial navigation)",
   },
   {
     id: 51,
@@ -986,7 +986,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "Weight and balance calculation using the loading chart (Chart #2). Each item's weight multiplied by its arm (moment arm in inches) gives its moment. The total moment divided by total weight gives the C of G. Using the arm distances from the loading data chart: Basic Empty (2,200 lb × arm) + Pilot (180 lb × arm) + Front Pax (170 lb × arm) + Rear Pax (160 lb × arm) + Cabin Freight (250 lb × arm) + Side Holds (200 lb × arm) + Rear Hold (100 lb × arm) + Fuel (850 lb × arm) = Total Moment. Total Weight / Total Moment = C of G ≈ 130.0 in.",
-    aimReference: "TC AIM RAC 3.5 (Weight and Balance)",
+    aimReference: "CAR 602.07, TC AIM AIR 1.6",
     images: [
       { src: "/images/appendix/weight-balance-chart.png", alt: "Helicopter Weight & Balance Loading Data (Chart #2)" },
     ],
@@ -1005,7 +1005,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "From the loading chart (Chart #2), the note states: \"Fuel Arm is neutral, the addition or deletion of fuel does not move the centre of gravity fore or aft.\" Since the fuel arm is at the neutral point (same as the overall C of G), burning fuel does not shift the C of G. After one hour of flight, with fuel consumption of 225 lb/hr, the C of G will remain the same.",
-    aimReference: "TC AIM RAC 3.5 (Weight and Balance) – Appendix note",
+    aimReference: "CAR 602.07, TC AIM AIR 1.6",
     images: [
       { src: "/images/appendix/weight-balance-chart.png", alt: "Helicopter Weight & Balance Loading Data (Chart #2)" },
     ],
@@ -1033,7 +1033,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "Relative humidity is the ratio, expressed as a percentage, of the amount of moisture actually present in the air compared to the maximum amount of moisture the air could hold at that same temperature and pressure. When relative humidity reaches 100%, the air is saturated. Option 4 describes the dew point temperature.",
-    aimReference: "TC AIM MET (Meteorology – humidity)",
+    aimReference: "TC AIM MET 1.4 (Humidity)",
   },
   {
     id: 54,
@@ -1048,7 +1048,7 @@ export const questions: Question[] = [
     correctAnswer: 4,
     explanation:
       "Nimbostratus is the cloud type usually associated with steady, continuous rain or snow. It is a grey, often dark, rain-bearing layer cloud that covers the whole sky. Altostratus may produce light rain or drizzle, but nimbostratus is specifically associated with steady precipitation.",
-    aimReference: "TC AIM MET (Cloud types and precipitation)",
+    aimReference: "TC AIM MET 1.6 (Cloud types)",
   },
   {
     id: 55,
@@ -1070,7 +1070,7 @@ export const questions: Question[] = [
     correctAnswer: 4,
     explanation:
       "When warm moist air overruns cold air, it is forced to rise. As air rises, the atmospheric pressure decreases, allowing the air to expand. This expansion causes the air to cool (adiabatic cooling). When the air cools to the dew point, water vapour condenses to form clouds. The cooling is due to expansion as the air rises, not due to contact with cold air.",
-    aimReference: "TC AIM MET (Cloud formation – warm fronts)",
+    aimReference: "TC AIM MET 1.6 (Cloud formation)",
   },
   {
     id: 56,
@@ -1097,7 +1097,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "Advection fog forms when moist air moves horizontally from a warm surface to a colder surface. The air is cooled from below to or below its dew point, and fog forms. A common example is warm moist air from the Gulf of Mexico moving over the cooler land surfaces of Canada in spring.",
-    aimReference: "TC AIM MET (Fog types)",
+    aimReference: "TC AIM MET 1.7 (Fog)",
   },
   {
     id: 57,
@@ -1118,7 +1118,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "In the northern hemisphere, due to the Coriolis effect, winds blow clockwise around a high pressure system (anticyclone) and counter-clockwise around a low pressure system (cyclone). In the southern hemisphere, the rotation is reversed. This is described by Buys Ballot's Law.",
-    aimReference: "TC AIM MET (Atmospheric circulation)",
+    aimReference: "TC AIM MET 1.3 (Wind and pressure)",
   },
   {
     id: 58,
@@ -1134,7 +1134,7 @@ export const questions: Question[] = [
     correctAnswer: 4,
     explanation:
       "In the northern hemisphere, during a descent from altitude to the surface, the wind typically backs (shifts counter-clockwise, e.g., from west to south-west) and decreases in speed. At altitude, winds are primarily driven by pressure gradients (gradient wind), while near the surface, friction reduces the wind speed and causes it to back toward lower pressure.",
-    aimReference: "TC AIM MET (Wind variation with height)",
+    aimReference: "TC AIM MET 1.3 (Surface winds)",
   },
   {
     id: 59,
@@ -1150,7 +1150,7 @@ export const questions: Question[] = [
     correctAnswer: 4,
     explanation:
       "Wind shear (MET 2.3, AIR 2.8): When an aircraft flying into a strong headwind suddenly encounters a tailwind shear, the airspeed decreases suddenly (the headwind component is lost and replaced by a tailwind). This decrease in airspeed results in a loss of lift and the aircraft may sink below the glide path. This is one of the most dangerous forms of low-level wind shear.",
-    aimReference: "TC AIM MET 2.3 (Wind Shear), AIR 2.8 (Low-Level Wind Shear)",
+    aimReference: "TC AIM MET 2.3, TC AIM AIR 2.8",
   },
   {
     id: 60,
@@ -1171,7 +1171,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "Three conditions are required for thunderstorm formation: (1) unstable air (air that will continue rising once lifted), (2) high moisture/humidity content (to provide energy and precipitation), and (3) a lifting mechanism (cold front, surface heating, orographic lift, or convergence). An inversion actually suppresses thunderstorm development.",
-    aimReference: "TC AIM MET (Thunderstorms), AIR 2.7",
+    aimReference: "TC AIM MET 2.2 (Thunderstorms), AIR 2.7",
   },
   {
     id: 61,
@@ -1187,7 +1187,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "A temperature inversion is a condition where air temperature increases with altitude (the opposite of the normal lapse rate). It creates a stable atmospheric layer that suppresses convection, can trap fog and pollutants near the surface, and can cause communication and navigation anomalies. It is one of the conditions that can promote clear air turbulence above the inversion layer.",
-    aimReference: "TC AIM MET (Temperature inversion)",
+    aimReference: "TC AIM MET 1.2 (Temperature inversion)",
   },
   {
     id: 62,
@@ -1206,7 +1206,7 @@ export const questions: Question[] = [
     correctAnswer: 4,
     explanation:
       "Air masses cooled from below become stable (the lower layers are cooled and become denser, suppressing vertical movement). Stable air masses are characterised by fog or low stratus cloud, poor visibility, and layer-type cloud. This contrasts with warm air masses (heated from below), which become unstable and produce convective clouds, good visibility, and strong winds.",
-    aimReference: "TC AIM MET (Air mass characteristics)",
+    aimReference: "TC AIM MET 1.5 (Air masses)",
   },
   {
     id: 63,
@@ -1227,7 +1227,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "A front is a narrow transition zone or boundary between two air masses of different temperatures, densities, and moisture content. At a frontal boundary, the warmer, less dense air is forced upward over the colder, denser air. Weather associated with fronts can include cloud, precipitation, and changes in wind direction and speed.",
-    aimReference: "TC AIM MET (Fronts and frontal weather)",
+    aimReference: "TC AIM MET 1.8 (Fronts)",
   },
   {
     id: 64,
@@ -1254,7 +1254,7 @@ export const questions: Question[] = [
     correctAnswer: 4,
     explanation:
       "During the passage of a cold front, the advancing cold air mass (being denser) wedges under the warmer air mass and lifts it. The warm air is lifted as colder, denser air pushes beneath it. This lifting causes the warm moist air to cool rapidly, often producing cumulonimbus clouds, thunderstorms, and heavy precipitation.",
-    aimReference: "TC AIM MET (Cold fronts)",
+    aimReference: "TC AIM MET 1.8 (Cold fronts)",
   },
   {
     id: 65,
@@ -1278,7 +1278,7 @@ export const questions: Question[] = [
     correctAnswer: 4,
     explanation:
       "Radiation fog (also called ground fog or valley fog) forms as a result of the ground cooling by radiating heat to space on calm, clear nights. The cooled ground then cools the air in contact with it to or below the dew point, causing moisture to condense as fog. Radiation fog typically forms in valleys and low-lying areas on calm, clear nights.",
-    aimReference: "TC AIM MET (Fog types – radiation fog)",
+    aimReference: "TC AIM MET 1.7 (Radiation fog)",
   },
   {
     id: 66,
@@ -1300,7 +1300,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "The sequence of cirrus (high-level, wispy), followed by altostratus (middle-level, grey sheet), followed by nimbostratus (low-level rain cloud) is the classic progression of clouds preceding a warm front. As a warm front approaches, high cirrus is the first indication, followed by progressively lower and thicker clouds as the front arrives.",
-    aimReference: "TC AIM MET (Warm front weather sequence)",
+    aimReference: "TC AIM MET 1.8 (Warm fronts)",
   },
   {
     id: 67,
@@ -1316,7 +1316,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "In Terminal Aerodrome Forecasts (TAF) and aviation weather reports (METAR), cloud heights are given in feet above ground level (AGL). This is because pilots need to know the height of clouds above the aerodrome for circuit operations and instrument approach decisions. The cloud heights reported are relative to the aerodrome elevation.",
-    aimReference: "TC AIM MET 3.9 (TAF – Aerodrome Forecast), MET 8.0",
+    aimReference: "TC AIM MET 3.9 (TAF), MET 8.0",
   },
   {
     id: 68,
@@ -1332,7 +1332,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "Density altitude is the altitude in the International Standard Atmosphere (ISA) at which the air density would be equal to the actual air density at the given conditions. Formula: Density Altitude ≈ Pressure Altitude + 118.8 × (OAT − ISA Temperature). ISA temperature at 4,500 ft = 15 − (4.5 × 2) = 15 − 9 = 6°C. Temperature deviation = 20 − 6 = +14°C above ISA. Density Altitude = 4,500 + (118.8 × 14) = 4,500 + 1,663 = 6,163 ft ≈ 6,100 ft.",
-    aimReference: "TC AIM MET 8.4 (Density Altitude reporting)",
+    aimReference: "TC AIM MET 1.2.3 (Density altitude), AIR 1.5",
   },
   {
     id: 69,
@@ -1348,7 +1348,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "Pressure altitude is the altitude indicated when the altimeter is set to 29.92 in. Hg (standard sea level pressure). The difference between the actual setting (29.52) and standard (29.92) is 0.40 in. Hg. Each 0.01 in. Hg difference equals approximately 10 feet. So: 0.40 × 1,000 = 400 feet. Since the setting is below standard, the pressure altitude is higher than aerodrome elevation. Pressure altitude = 4,600 + 400 = 5,000 feet.",
-    aimReference: "TC AIM AIR 1.5 (Pressure Altimeter), AIR 1.5.2",
+    aimReference: "TC AIM AIR 1.5 (Altimeter)",
   },
   {
     id: 70,
@@ -1363,8 +1363,8 @@ export const questions: Question[] = [
     ],
     correctAnswer: 2,
     explanation:
-      "When flying from an area of low pressure to an area of higher pressure without resetting the altimeter, the altimeter will read lower than the actual altitude. In higher pressure, the aircraft is actually at a higher altitude than indicated. The altimeter retains the old (lower) pressure setting, so it thinks it is lower than it actually is. The memory aid is 'High to Low, Look Out Below.'",
-    aimReference: "TC AIM AIR 1.5.8 (Pressure Drop), AIR 1.5",
+      "When flying from an area of low pressure to an area of higher pressure without resetting the altimeter, the altimeter will read lower than the actual altitude. The altimeter still has the old (lower) pressure setting, so the aircraft is actually higher than the altimeter indicates. The well-known memory aid 'High to Low, Look Out Below' applies to the reverse (and more dangerous) scenario — flying from high pressure into low pressure without adjusting, where the aircraft is lower than indicated and at risk of terrain contact.",
+    aimReference: "CAR 602.35, TC AIM RAC 2.10",
   },
   {
     id: 71,
@@ -1380,7 +1380,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "From the FD (Forecast Winds and Temperatures Aloft): For CYWG at 6,000 ft: 2728-07 (wind 270°T at 28 kt). For CYBR at 6,000 ft: 3132-06 (wind 310°T at 32 kt). Average: direction ≈ 290°T, speed ≈ 30 kt. FD winds and temperatures aloft are given in degrees TRUE. At 5,500 ft (between 3,000 and 6,000 ft levels), interpolating: average is approximately 290°T at 30 kt.",
-    aimReference: "TC AIM MET 9.2 (Upper-Level Wind and Temperature Forecasts – FB/FD)",
+    aimReference: "TC AIM MET 9.2 (FD – Winds aloft)",
     images: [
       { src: "/images/appendix/weather-synopsis-7.png", alt: "Weather Synopsis #100 - FD (Winds Aloft Forecast) Data (Page 7 of 7)" },
     ],
@@ -1399,7 +1399,7 @@ export const questions: Question[] = [
     correctAnswer: 4,
     explanation:
       "The forecast surface wind is included in a GFA (Graphical Forecast for Aviation) if it has a sustained speed of at least 20 knots. Surface winds below this threshold are not routinely included in the GFA, as they are considered to be within the normal range of light winds that do not significantly affect most flight operations.",
-    aimReference: "TC AIM MET 4.0 (GFA – Area Forecast)",
+    aimReference: "TC AIM MET 4.0 (GFA)",
   },
   {
     id: 73,
@@ -1415,7 +1415,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "From the TAF for CYYQ (Churchill): Initial conditions show SCT250 (scattered at 25,000 ft), then FM0200Z shows BKN030 BKN100 (broken at 3,000 and 10,000 ft), then FM0900Z shows OVC020 (overcast at 2,000 ft). The cloud conditions are progressively thickening and lowering from scattered cirrus to broken and then overcast at lower levels.",
-    aimReference: "TC AIM MET 3.9 (TAF – Terminal Aerodrome Forecast)",
+    aimReference: "TC AIM MET 3.9 (TAF)",
     images: [
       { src: "/images/appendix/weather-synopsis-7.png", alt: "Weather Synopsis #100 - TAF & METAR Data (Page 7 of 7)" },
     ],
@@ -1453,7 +1453,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "From the TAF for CYGX (Gillam): \"TAF CYGX 071245Z 071323\" — issued at 1245Z on the 7th, valid from 1300Z to 2300Z on the 7th. The forecast period is 10 hours (1300Z to 2300Z).",
-    aimReference: "TC AIM MET 3.9 (TAF – Aerodrome Forecast)",
+    aimReference: "TC AIM MET 3.9 (TAF)",
     images: [
       { src: "/images/appendix/weather-synopsis-7.png", alt: "Weather Synopsis #100 - TAF & METAR Data (Page 7 of 7)" },
     ],
@@ -1510,7 +1510,7 @@ export const questions: Question[] = [
     correctAnswer: 4,
     explanation:
       "METAR for CYBR: \"METAR CYBR 071500Z 29012KT 15SM SCT020 BKN100 M21/M25 A3043 RMK SLP351=\". The ceiling is the lowest broken (BKN) or overcast (OVC) layer. BKN100 = broken at 10,000 feet (cloud heights in METAR are in hundreds of feet AGL: 100 = 10,000 ft). SCT020 is scattered, not a ceiling. The ceiling is therefore BKN at 10,000 ft.",
-    aimReference: "TC AIM MET 8.0 (METAR – decoding cloud layers)",
+    aimReference: "TC AIM MET 8.0 (METAR)",
     images: [
       { src: "/images/appendix/weather-synopsis-7.png", alt: "Weather Synopsis #100 - TAF & METAR Data (Page 7 of 7)" },
     ],
@@ -1529,7 +1529,7 @@ export const questions: Question[] = [
     correctAnswer: 4,
     explanation:
       "METAR for CYPG: \"M20/M24\" — temperature is −20°C, dew point is −24°C. Temperature/dew point spread = temperature − dew point = (−20) − (−24) = −20 + 24 = +4°C. A spread of 4°C means the air is relatively dry at that temperature. When the spread is small (2°C or less), fog or low cloud is likely to form.",
-    aimReference: "TC AIM MET 8.0 (METAR – temperature/dew point)",
+    aimReference: "TC AIM MET 8.0 (METAR)",
     images: [
       { src: "/images/appendix/weather-synopsis-7.png", alt: "Weather Synopsis #100 - TAF & METAR Data (Page 7 of 7)" },
     ],
@@ -1548,7 +1548,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "METAR for CYWG: \"A3043\" — In Canadian METARs, the altimeter setting is indicated by the letter A followed by four digits representing inches of mercury in hundredths: A3043 = 30.43 in. Hg. This is a high-pressure system, which is consistent with the cold clear conditions shown in the METAR (SKC, very cold temperatures).",
-    aimReference: "TC AIM MET 8.0 (METAR – altimeter setting)",
+    aimReference: "TC AIM MET 8.0 (METAR)",
     images: [
       { src: "/images/appendix/weather-synopsis-7.png", alt: "Weather Synopsis #100 - TAF & METAR Data (Page 7 of 7)" },
     ],
@@ -1579,7 +1579,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "A METAR (aviation routine meteorological report) describes the weather observed at a station at the time of the report. It is an actual observation, not a forecast. METARs are typically issued hourly. Terminal Aerodrome Forecasts (TAFs) provide forecast conditions; METARs provide observed conditions.",
-    aimReference: "TC AIM MET 1.2.1, MET 3.2, MET 8.0 (METAR)",
+    aimReference: "TC AIM MET 3.2, MET 8.0 (METAR)",
   },
   {
     id: 82,
@@ -1595,7 +1595,7 @@ export const questions: Question[] = [
     correctAnswer: 4,
     explanation:
       "Using low octane fuel in a high compression engine will cause detonation (also called knock or ping). Detonation occurs when the fuel-air mixture ignites spontaneously before the spark plug fires, creating an uncontrolled explosion in the cylinder. This can cause severe engine damage. High compression engines require higher octane fuel to prevent premature ignition.",
-    aimReference: "TC AIM AIR (Powerplant – engine fuels)",
+    aimReference: "TC AIM AIR 2.3 (Powerplant – fuel grades)",
   },
   {
     id: 83,
@@ -1611,7 +1611,7 @@ export const questions: Question[] = [
     correctAnswer: 4,
     explanation:
       "Ice accumulation on an aerofoil disrupts the smooth airflow over the wing, reduces the coefficient of lift, increases weight, and alters the shape of the aerofoil. This increases the stalling speed in all flight conditions. Ice contamination can increase stall speed by 20-40% or more, making it an extremely dangerous hazard.",
-    aimReference: "TC AIM AIR 2.12 (Aircraft Contamination – ice accumulation)",
+    aimReference: "TC AIM AIR 2.12 (Aircraft icing)",
   },
   {
     id: 84,
@@ -1627,7 +1627,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "With dual ignition, each cylinder has two spark plugs, each connected to a separate magneto. If one magneto fails, the other continues to operate all cylinders. The engine will still run but at a slightly reduced efficiency because single ignition results in a slightly slower and less complete combustion process, causing a slight loss of power.",
-    aimReference: "TC AIM AIR (Powerplant – ignition systems)",
+    aimReference: "TC AIM AIR 2.3 (Powerplant – ignition)",
   },
   {
     id: 85,
@@ -1654,7 +1654,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "Application of carburettor heat introduces warm air (less dense) into the induction system. The less dense warm air decreases the manifold pressure (mass airflow is reduced) and enriches the mixture (because the same amount of fuel is mixed with less dense air, the ratio changes to richer). However, note that the initial application when icing is present may briefly decrease RPM as ice melts, then RPM recovers.",
-    aimReference: "TC AIM AIR (Powerplant – carburettor icing)",
+    aimReference: "TC AIM AIR 2.3 (Carburettor heat)",
   },
   {
     id: 86,
@@ -1670,7 +1670,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "The most serious carburettor icing occurs at outside air temperatures between approximately −5°C to +15°C with high relative humidity. At these temperatures, the venturi effect in the carburettor can lower the local temperature by 20–30°C, enough to freeze moisture out of the air. High humidity provides the moisture necessary for ice formation.",
-    aimReference: "TC AIM AIR (Powerplant – carburettor icing conditions)",
+    aimReference: "TC AIM AIR 2.3 (Carburettor icing)",
   },
   {
     id: 87,
@@ -1697,7 +1697,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "Carburettor icing can occur in clear air with high relative humidity at above freezing outside air temperatures. The venturi effect in the carburettor throat causes the air temperature to drop significantly (20–30°C), which can cause ice formation even when the outside air temperature is well above freezing. Pilots should be vigilant about carburettor icing even in clear, warm conditions if humidity is high.",
-    aimReference: "TC AIM AIR (Powerplant – carburettor icing)",
+    aimReference: "TC AIM AIR 2.3 (Carburettor icing)",
   },
   {
     id: 88,
@@ -1724,7 +1724,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "The initial application of carburettor heat will decrease power and enrich the mixture. The warm air introduced is less dense, reducing mass airflow (decreasing manifold pressure and power), while the same amount of fuel being metered creates a richer mixture. If icing is present, the initial RPM may drop further as ice melts and water passes through, then recover once the ice is cleared.",
-    aimReference: "TC AIM AIR (Powerplant – carburettor heat)",
+    aimReference: "TC AIM AIR 2.3 (Carburettor heat)",
   },
   {
     id: 89,
@@ -1739,8 +1739,8 @@ export const questions: Question[] = [
     ],
     correctAnswer: 1,
     explanation:
-      "When full carburettor heat is applied and there is an immediate rise in RPM (instead of the expected decrease), the most likely cause is that carburettor icing was present. The ice was restricting airflow and leaning the mixture below optimal. The carburettor heat melted the ice immediately, restoring proper airflow and mixture strength, which caused the immediate increase in RPM.",
-    aimReference: "TC AIM AIR (Powerplant – carburettor ice detection)",
+      "When full carburettor heat is applied and there is an immediate rise in RPM, the most likely cause is that the mixture was too lean. Carburettor heat introduces warm, less dense air which effectively enriches the fuel-air mixture. If the mixture was already too lean, this enrichment brings it closer to the optimal ratio, producing more power and an immediate RPM increase. This is different from the icing scenario, where applying carb heat typically causes an initial RPM drop (as melting ice temporarily enriches the mixture further and water passes through) before RPM recovers.",
+    aimReference: "TC AIM AIR 2.3 (Powerplant)",
   },
   {
     id: 90,
@@ -1768,7 +1768,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "Float type carburettors are more susceptible to icing because fuel vaporization (which causes cooling) occurs near the carburettor throat, at the same location as the venturi temperature drop. This double cooling effect (venturi + evaporative cooling) creates ideal conditions for ice formation. In fuel injection systems, fuel is injected directly at the intake valves or manifold, away from the venturi throat.",
-    aimReference: "TC AIM AIR (Powerplant – carburettor types)",
+    aimReference: "TC AIM AIR 2.3 (Carburettor types)",
   },
   {
     id: 91,
@@ -1784,7 +1784,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "Hover taxi is the movement of a helicopter above the surface of an aerodrome, in ground effect. Ground effect reduces the induced drag on the rotor blades because the ground interrupts the downwash and tip vortex formation. The reduced induced drag allows the rotor to produce more lift for the same power input, enabling the helicopter to hover with less power when in ground effect (IGE) compared to out of ground effect (OGE).",
-    aimReference: "TC AIM RAC 4.6 (Helicopter Operations – ground effect), AIR",
+    aimReference: "TC AIM AIR 2.1 (Aerodynamics – ground effect)",
   },
   {
     id: 92,
@@ -1809,7 +1809,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "A pressure altimeter set to 29.92 in. Hg. reads pressure altitude. The correct height above sea level (true altitude) is only indicated when the conditions of a Standard Atmosphere exist (standard temperature, pressure, and lapse rate throughout). In non-standard conditions, the altimeter will not read true altitude even when set to the standard pressure.",
-    aimReference: "TC AIM AIR 1.5 (Pressure Altimeter), AIR 1.5.2",
+    aimReference: "TC AIM AIR 1.5 (Altimeter)",
   },
   {
     id: 93,
@@ -1825,7 +1825,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "Each 0.01 in. Hg change in altimeter setting equals approximately 10 feet of altitude change. The error is 30.70 − 29.70 = 1.00 in. Hg too high. Setting the altimeter 1.00 in. Hg higher than correct means the altimeter will read 1,000 feet too high (higher than actual altitude). Setting too high makes the altimeter read high.",
-    aimReference: "TC AIM AIR 1.5.3 (Incorrect Setting on the Subscale of the Altimeter)",
+    aimReference: "TC AIM AIR 1.5.3 (Altimeter errors)",
   },
   {
     id: 94,
@@ -1841,7 +1841,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "The retina of the eye is more sensitive to hypoxia than any part of the body; one of the first symptoms of hypoxia is a decrease in night vision. A major early symptom of hypoxia is euphoria—an increased sense of well-being that impairs judgment. This is particularly insidious because the pilot feels good while their capabilities are deteriorating. Other symptoms include impaired night vision, tingling, and eventual loss of consciousness.",
-    aimReference: "TC AIM AIR 3.2.1 (Hypoxia), AIR 3.5 (Vision)",
+    aimReference: "TC AIM AIR 3.2.1 (Hypoxia)",
   },
   {
     id: 95,
@@ -1857,7 +1857,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "Empty-field myopia (also called night myopia or space myopia) is the tendency of the human eye to focus at a point approximately 3–5 feet away when there is insufficient visual stimulation (such as in conditions of low visibility, haze, darkness, or when looking into a featureless sky). This is significant for collision avoidance as distant aircraft may appear out of focus.",
-    aimReference: "TC AIM AIR 3.5 (Vision), RPA 3.2.6.2 (Seeing Traffic – Empty-field myopia)",
+    aimReference: "TC AIM AIR 3.5 (Vision)",
   },
   {
     id: 96,
@@ -1875,7 +1875,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "The effects of alcohol increase with an increase in altitude due to the reduced partial pressure of oxygen (hypoxia) at higher altitudes. The brain is more sensitive to alcohol when oxygen levels are reduced. This means that even moderate alcohol consumption at altitude can produce significantly greater impairment than the same consumption at sea level.",
-    aimReference: "TC AIM AIR 3.2.1 (Hypoxia), AIR 3.1 (General Health – alcohol)",
+    aimReference: "CAR 602.03, TC AIM AIR 3.1",
   },
   {
     id: 97,
@@ -1891,7 +1891,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "When approaching an upsloping runway, the pilot may experience the visual illusion that the aircraft is higher than it actually is. This is because the upsloping runway appears more steeply inclined than a flat runway, giving the visual cue that the aircraft is on a higher approach angle. The pilot may respond by flying a lower approach, increasing the risk of undershoot.",
-    aimReference: "TC AIM AIR 3.7 (Vision – visual illusions), AIR 2.16",
+    aimReference: "TC AIM AIR 3.7 (Visual illusions)",
   },
   {
     id: 98,
@@ -1907,7 +1907,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "When turning from downwind to into-wind at low altitude, a pilot may experience the illusion of skidding and decreasing airspeed. When turning from downwind onto the base/final leg, the aircraft's groundspeed decreases as it transitions from tailwind to crosswind/headwind. The pilot may falsely perceive this as losing airspeed and being in a skid, leading to the dangerous tendency to increase the bank angle or apply incorrect rudder.",
-    aimReference: "TC AIM AIR 3.7 (Vision – spatial disorientation and illusions)",
+    aimReference: "TC AIM AIR 3.7 (Visual illusions)",
   },
   {
     id: 99,
@@ -1923,7 +1923,7 @@ export const questions: Question[] = [
     correctAnswer: 4,
     explanation:
       "From Diagram #1 showing the Turn & Bank Indicator (Appendix): The miniature aircraft in the turn co-ordinator indicates a right turn (banked right). The inclinometer ball (slip/skid indicator) is displaced to the right of centre. When the ball is on the outside of the turn (right side in a right turn), the aircraft is in a skid. Therefore, the aircraft is in a skidding right turn. Ball on the outside = skid; ball on the inside = slip.",
-    aimReference: "TC AIM AIR (Instruments – turn coordinator)",
+    aimReference: "TC AIM AIR 1.4 (Flight instruments)",
     images: [
       { src: "/images/appendix/turn-coordinator-diagram.png", alt: "Turn & Bank Indicator (Diagram #1)" },
     ],
@@ -1942,7 +1942,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "Deceleration errors in the magnetic compass (also called acceleration/deceleration errors) are most pronounced on headings of East and West. When decelerating on an easterly or westerly heading, the compass will indicate a turn toward South. When accelerating on East or West, the compass will indicate a turn toward North. These errors are due to the pendulous suspension of the compass card and the dip (inclination) of the earth's magnetic field.",
-    aimReference: "TC AIM AIR (Instruments – magnetic compass errors)",
+    aimReference: "TC AIM AIR 1.4 (Magnetic compass errors)",
   },
 
   // ===========================
@@ -1964,7 +1964,7 @@ export const questions: Question[] = [
     correctAnswer: 4,
     explanation:
       "In Canada, 'day' is defined as the period between the beginning of morning civil twilight and the end of evening civil twilight. Civil twilight occurs when the centre of the sun is 6° below the horizon. This gives pilots extra time before sunrise and after sunset for day VFR operations.",
-    aimReference: "CAR 101.01 (Definitions)",
+    aimReference: "CAR 101.01",
   },
   {
     id: 102,
@@ -1996,7 +1996,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "For aeroplanes over built-up areas, the minimum altitude is 1,000 feet above the highest obstacle within a horizontal radius of 2,000 feet (approximately 600 m). This provides adequate clearance for safe operations over populated areas. Helicopters have different requirements (1,000 ft above, 500 ft radius).",
-    aimReference: "CAR 602.14(2)",
+    aimReference: "CAR 602.14(2)(a)(i)",
   },
   {
     id: 104,
@@ -2060,7 +2060,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "For helicopters over built-up areas, the minimum altitude is 1,000 feet above the highest obstacle within a horizontal radius of 500 feet. This is different from the aeroplane requirement (1,000 feet above within 2,000 feet radius). The shorter horizontal distance reflects the helicopter's ability to land in smaller areas.",
-    aimReference: "CAR 602.14(3)",
+    aimReference: "CAR 602.14(2)(a)(iii)",
   },
   {
     id: 108,
@@ -2108,7 +2108,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "In the Southern Domestic Airspace, runway numbers indicate the magnetic bearing of the runway rounded to the nearest 10 degrees with the last zero dropped. For example, Runway 27 indicates a magnetic bearing of approximately 270°. In the Northern Domestic Airspace, runways are numbered according to true bearing.",
-    aimReference: "TC AIM AGA 5.4",
+    aimReference: "CAR 301.08, TC AIM AGA 5.2",
   },
 
   // --- AERONAUTICS - GENERAL KNOWLEDGE ---
@@ -2126,7 +2126,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "When an aeroplane stalls in a co-ordinated left turn, the inside (left) wing is at a higher angle of attack and stalls first, dropping further. This yaws the aircraft to the left and can develop into an incipient left spin. The spin direction follows the direction of the turn at the point of stall.",
-    aimReference: "TC AIM AIR (Flight Training – stalls and spins)",
+    aimReference: "TC AIM AIR 2.1 (Aerodynamics – stalls and spins)",
   },
   {
     id: 112,
@@ -2142,7 +2142,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "Manoeuvring speed (Va) is the maximum speed at which full, abrupt control deflection can be applied without exceeding the aircraft's design load factor or causing structural damage. Above Va, full control deflection could overstress the airframe. In turbulence, reduce speed to at or below Va.",
-    aimReference: "TC AIM AIR (Flight Instruments – V-speeds)",
+    aimReference: "TC AIM AIR 1.4 (Airspeed limitations)",
   },
   {
     id: 113,
@@ -2158,7 +2158,7 @@ export const questions: Question[] = [
     correctAnswer: 4,
     explanation:
       "The indicated stalling speed remains constant regardless of altitude. While the true airspeed at stall increases with altitude (due to decreasing air density), the indicated airspeed at which the stall occurs remains the same because the airspeed indicator also reads lower in thinner air. Wind direction has no effect on stalling speed.",
-    aimReference: "TC AIM AIR (Aerodynamics – stalling speed)",
+    aimReference: "TC AIM AIR 2.1 (Aerodynamics – stalling speed)",
   },
   {
     id: 114,
@@ -2174,7 +2174,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "The stalling speed increases in a co-ordinated turn because the load factor (G-force) increases in a bank. In a turn, lift must support both the weight of the aircraft and the centripetal force. In a 60° banked turn, the load factor is 2G and the stalling speed increases by approximately 41%.",
-    aimReference: "TC AIM AIR (Aerodynamics – stalling in turns)",
+    aimReference: "TC AIM AIR 2.1 (Stalling in turns – load factor)",
   },
   {
     id: 115,
@@ -2190,7 +2190,7 @@ export const questions: Question[] = [
     correctAnswer: 4,
     explanation:
       "Detonation occurs when the fuel-air mixture in the cylinder ignites spontaneously from heat and pressure rather than from the spark plug. Using fuel with a lower octane rating than specified for the engine's compression ratio greatly increases the risk of detonation, which can cause severe engine damage including burned pistons and valves.",
-    aimReference: "TC AIM AIR (Powerplant – detonation)",
+    aimReference: "TC AIM AIR 2.3 (Powerplant – detonation)",
   },
   {
     id: 116,
@@ -2206,7 +2206,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "Prolonged idling causes the engine to run at a rich mixture and low temperature, which leads to incomplete combustion. This results in carbon and lead deposits fouling the spark plugs, reducing their ability to produce a good spark. Pilots should avoid prolonged idling and periodically run up the engine to burn off deposits.",
-    aimReference: "TC AIM AIR (Powerplant – engine operation)",
+    aimReference: "TC AIM AIR 2.3 (Powerplant – spark plugs)",
   },
   {
     id: 117,
@@ -2222,7 +2222,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "In ground effect (within approximately one wingspan of the ground), the ground interferes with wing tip vortices and reduces downwash, which decreases induced drag. This allows the aircraft to become airborne at a lower speed than would be possible out of ground effect. However, once the aircraft climbs out of ground effect, it may not have enough speed to maintain flight.",
-    aimReference: "TC AIM AIR (Aerodynamics – ground effect)",
+    aimReference: "TC AIM AIR 2.1 (Aerodynamics – ground effect)",
   },
   {
     id: 118,
@@ -2238,7 +2238,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "This phenomenon is called 'empty-field myopia.' When looking at a featureless sky or in hazy/dark conditions with no visual stimulation, the eyes naturally relax to a resting focal distance of approximately 3 to 5 feet. This makes it very difficult to spot other aircraft. Pilots should actively scan and refocus their eyes on distant objects to counteract this effect.",
-    aimReference: "TC AIM AIR 3.7 (Vision – empty-field myopia)",
+    aimReference: "TC AIM AIR 3.5 (Vision)",
   },
   {
     id: 119,
@@ -2254,7 +2254,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "Wheelbarrowing occurs when excess speed on landing causes the nose wheel (in a tricycle gear aircraft) to contact the runway first or bear excessive load. A high approach speed results in the aircraft floating and a flat touchdown attitude with forward momentum transferring weight to the nose wheel, leading to loss of directional control.",
-    aimReference: "TC AIM AIR (Flight Training – landing technique)",
+    aimReference: "TC AIM AIR 2.16 (Landing technique)",
   },
   {
     id: 120,
@@ -2270,7 +2270,7 @@ export const questions: Question[] = [
     correctAnswer: 3,
     explanation:
       "Wake turbulence vortices are generated whenever an aircraft produces lift. The vortices are most severe at the point of rotation because the aircraft is heavy, slow, and at a high angle of attack — conditions that create the strongest wingtip vortices. The vortices begin at the point of rotation and trail behind and below the flight path.",
-    aimReference: "TC AIM AIR 2.9 (Wake Turbulence)",
+    aimReference: "TC AIM AIR 2.9 (Wake turbulence)",
   },
   {
     id: 121,
@@ -2286,7 +2286,7 @@ export const questions: Question[] = [
     correctAnswer: 4,
     explanation:
       "When a headwind suddenly changes to a tailwind (wind shear), the aircraft momentarily loses airspeed because the relative wind component reverses. The sudden decrease in airspeed causes an immediate loss of lift. At low altitude on approach, this can be extremely dangerous as the aircraft may sink below the glide path with insufficient altitude to recover.",
-    aimReference: "TC AIM AIR 2.11 (Wind Shear)",
+    aimReference: "TC AIM MET 2.3, TC AIM AIR 2.8",
   },
   {
     id: 122,
@@ -2302,7 +2302,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "The white arc on an airspeed indicator represents the flap operating range. The lower limit is the stalling speed in the landing configuration (VSO), and the upper limit is the maximum flap extension speed (VFE). Operating with flaps extended above VFE can cause structural damage to the flap mechanism and airframe.",
-    aimReference: "TC AIM AIR (Flight Instruments – airspeed indicator markings)",
+    aimReference: "TC AIM AIR 1.4 (Airspeed indicator markings)",
     images: [
       { src: "/images/appendix/airspeed-indicator-diagram.png", alt: "Airspeed Indicator (Diagram #1)" },
     ],
@@ -2323,7 +2323,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "During the day, surface heating causes convective mixing which brings higher-altitude winds down to the surface. Upper winds are typically faster and veer (turn clockwise) compared to surface winds due to reduced friction aloft. This causes daytime surface winds to veer and increase in speed. At night, the opposite occurs: surface winds back and decrease.",
-    aimReference: "TC AIM MET (Surface winds – diurnal variation)",
+    aimReference: "TC AIM MET 1.3 (Diurnal wind variation)",
   },
   {
     id: 124,
@@ -2339,7 +2339,7 @@ export const questions: Question[] = [
     correctAnswer: 2,
     explanation:
       "In the International Standard Atmosphere (ISA), sea level temperature is 15°C with a lapse rate of approximately 2°C per 1,000 feet (1.98°C/1,000 ft). At 5,000 feet: 15°C − (5 × 2°C) = 15°C − 10°C = 5°C.",
-    aimReference: "TC AIM MET (Standard atmosphere)",
+    aimReference: "TC AIM MET 1.2 (Standard atmosphere)",
   },
   {
     id: 125,
@@ -2355,7 +2355,7 @@ export const questions: Question[] = [
     correctAnswer: 1,
     explanation:
       "An upsloping runway creates the illusion that the aircraft is at a higher altitude than actual. This can lead the pilot to fly a lower-than-normal approach, increasing the risk of landing short. Conversely, a downsloping runway creates the illusion of being lower, potentially causing a high approach. Pilots should use PAPI/VASI and instruments to confirm the correct glide path.",
-    aimReference: "TC AIM AIR 3.7 (Vision – spatial disorientation and illusions)",
+    aimReference: "TC AIM AIR 3.7 (Visual illusions)",
   },
 ];
 

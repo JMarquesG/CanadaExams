@@ -77,43 +77,43 @@ export default function PstarHomePage() {
               Reference material (TC AIM 2026-1)
             </p>
             <div className="flex flex-wrap gap-2">
-              <a href="https://www.canada.ca/sites/default/files/2026-03/aim-2026-1_access_en.pdf" target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-600 hover:underline">
-                Full TC AIM PDF
+              <a href="https://tc.canada.ca/en/aviation/publications/transport-canada-aeronautical-information-manual-tc-aim-tp-14371" target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-600 hover:underline">
+                TC AIM Index
               </a>
               <span className="text-gray-300">|</span>
-              <a href="https://www.canada.ca/sites/default/files/2026-03/aim-2026-1_com_en.pdf" target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-600 hover:underline">
+              <a href="https://tc.canada.ca/sites/default/files/2026-03/aim-2026-1_com_en.pdf" target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-600 hover:underline">
                 COM — Communications
               </a>
               <span className="text-gray-300">|</span>
-              <a href="https://www.canada.ca/sites/default/files/2026-03/aim-2026-1_rac_en.pdf" target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-600 hover:underline">
+              <a href="https://tc.canada.ca/sites/default/files/2026-03/aim-2026-1_rac_en.pdf" target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-600 hover:underline">
                 RAC — Rules of the Air
               </a>
               <span className="text-gray-300">|</span>
-              <a href="https://www.canada.ca/sites/default/files/2026-03/aim-2026-1_gen_en.pdf" target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-600 hover:underline">
+              <a href="https://tc.canada.ca/sites/default/files/2026-03/aim-2026-1_gen_en.pdf" target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-600 hover:underline">
                 GEN — General
               </a>
               <span className="text-gray-300">|</span>
-              <a href="https://www.canada.ca/sites/default/files/2026-03/aim-2026-1_aga_en.pdf" target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-600 hover:underline">
+              <a href="https://tc.canada.ca/sites/default/files/2026-03/aim-2026-1_aga_en.pdf" target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-600 hover:underline">
                 AGA — Aerodromes
               </a>
               <span className="text-gray-300">|</span>
-              <a href="https://www.canada.ca/sites/default/files/2026-03/aim-2026-1_air_en.pdf" target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-600 hover:underline">
+              <a href="https://tc.canada.ca/sites/default/files/2026-03/aim-2026-1_air_en.pdf" target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-600 hover:underline">
                 AIR — Airmanship
               </a>
               <span className="text-gray-300">|</span>
-              <a href="https://www.canada.ca/sites/default/files/2026-03/aim-2026-1_met_en.pdf" target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-600 hover:underline">
+              <a href="https://tc.canada.ca/sites/default/files/2026-03/aim-2026-1_met_en.pdf" target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-600 hover:underline">
                 MET — Meteorology
               </a>
               <span className="text-gray-300">|</span>
-              <a href="https://www.canada.ca/sites/default/files/2026-03/aim-2026-1_sar_en.pdf" target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-600 hover:underline">
+              <a href="https://tc.canada.ca/sites/default/files/2026-03/aim-2026-1_sar_en.pdf" target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-600 hover:underline">
                 SAR — Search &amp; Rescue
               </a>
               <span className="text-gray-300">|</span>
-              <a href="https://www.canada.ca/sites/default/files/2026-03/aim-2026-1_map_en.pdf" target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-600 hover:underline">
+              <a href="https://tc.canada.ca/sites/default/files/2026-03/aim-2026-1_map_en.pdf" target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-600 hover:underline">
                 MAP — Charts &amp; Pubs
               </a>
               <span className="text-gray-300">|</span>
-              <a href="https://www.canada.ca/sites/default/files/2026-03/aim-2026-1_lra_en.pdf" target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-600 hover:underline">
+              <a href="https://tc.canada.ca/sites/default/files/2026-03/aim-2026-1_lra_en.pdf" target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-600 hover:underline">
                 LRA — Licensing
               </a>
             </div>

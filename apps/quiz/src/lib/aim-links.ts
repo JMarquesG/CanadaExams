@@ -1,18 +1,18 @@
 const AIM_PDF_MAP: Record<string, { url: string; label: string }> = {
-  GEN: { url: "https://www.canada.ca/sites/default/files/2026-03/aim-2026-1_gen_en.pdf", label: "GEN — General" },
-  AGA: { url: "https://www.canada.ca/sites/default/files/2026-03/aim-2026-1_aga_en.pdf", label: "AGA — Aerodromes" },
-  COM: { url: "https://www.canada.ca/sites/default/files/2026-03/aim-2026-1_com_en.pdf", label: "COM — Communications" },
-  MET: { url: "https://www.canada.ca/sites/default/files/2026-03/aim-2026-1_met_en.pdf", label: "MET — Meteorology" },
-  RAC: { url: "https://www.canada.ca/sites/default/files/2026-03/aim-2026-1_rac_en.pdf", label: "RAC — Rules of the Air" },
-  SAR: { url: "https://www.canada.ca/sites/default/files/2026-03/aim-2026-1_sar_en.pdf", label: "SAR — Search & Rescue" },
-  MAP: { url: "https://www.canada.ca/sites/default/files/2026-03/aim-2026-1_map_en.pdf", label: "MAP — Charts & Pubs" },
-  LRA: { url: "https://www.canada.ca/sites/default/files/2026-03/aim-2026-1_lra_en.pdf", label: "LRA — Licensing" },
-  AIR: { url: "https://www.canada.ca/sites/default/files/2026-03/aim-2026-1_air_en.pdf", label: "AIR — Airmanship" },
-  NAT: { url: "https://www.canada.ca/sites/default/files/2026-03/aim-2026-1_nat_en.pdf", label: "NAT — North Atlantic" },
-  RPA: { url: "https://www.canada.ca/sites/default/files/2026-03/aim-2026-1_rpa_en.pdf", label: "RPA — RPAS" },
+  GEN: { url: "https://tc.canada.ca/sites/default/files/2026-03/aim-2026-1_gen_en.pdf", label: "GEN — General" },
+  AGA: { url: "https://tc.canada.ca/sites/default/files/2026-03/aim-2026-1_aga_en.pdf", label: "AGA — Aerodromes" },
+  COM: { url: "https://tc.canada.ca/sites/default/files/2026-03/aim-2026-1_com_en.pdf", label: "COM — Communications" },
+  MET: { url: "https://tc.canada.ca/sites/default/files/2026-03/aim-2026-1_met_en.pdf", label: "MET — Meteorology" },
+  RAC: { url: "https://tc.canada.ca/sites/default/files/2026-03/aim-2026-1_rac_en.pdf", label: "RAC — Rules of the Air" },
+  SAR: { url: "https://tc.canada.ca/sites/default/files/2026-03/aim-2026-1_sar_en.pdf", label: "SAR — Search & Rescue" },
+  MAP: { url: "https://tc.canada.ca/sites/default/files/2026-03/aim-2026-1_map_en.pdf", label: "MAP — Charts & Pubs" },
+  LRA: { url: "https://tc.canada.ca/sites/default/files/2026-03/aim-2026-1_lra_en.pdf", label: "LRA — Licensing" },
+  AIR: { url: "https://tc.canada.ca/sites/default/files/2026-03/aim-2026-1_air_en.pdf", label: "AIR — Airmanship" },
+  NAT: { url: "https://tc.canada.ca/sites/default/files/2026-03/aim-2026-1_nat_en.pdf", label: "NAT — North Atlantic" },
+  RPA: { url: "https://tc.canada.ca/sites/default/files/2026-03/aim-2026-1_rpa_en.pdf", label: "RPA — RPAS" },
 };
 
-const AIM_FULL_PDF = "https://www.canada.ca/sites/default/files/2026-03/aim-2026-1_access_en.pdf";
+const AIM_FULL_PDF = "https://tc.canada.ca/en/aviation/publications/transport-canada-aeronautical-information-manual-tc-aim-tp-14371";
 
 /**
  * Given a reference string like "AIM RAC 4.3.2" or "CAR 602.19",
