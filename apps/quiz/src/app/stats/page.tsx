@@ -163,7 +163,7 @@ export default function StatsPage() {
                 onClick={() => setShowClearConfirm(true)}
                 className="text-xs text-slate-400 hover:text-red-400 transition-colors"
               >
-                Clear {bank === "helicopter" ? "helicopter" : "PSTAR"} data
+                Clear {bank === "helicopter" ? "License" : "PSTAR"} data
               </button>
             ) : (
               <div className="flex gap-2 items-center">
@@ -202,7 +202,7 @@ export default function StatsPage() {
                   : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
               }`}
             >
-              🚁 Helicopter
+              License (CPL Helicopter)
             </button>
             <button
               onClick={() => {

@@ -198,7 +198,7 @@ export default function PstarExamClient({ sessionId: resumeSessionId }: { sessio
           className={`${passed ? "bg-indigo-900" : "bg-red-900"} text-white py-6 px-4`}
         >
           <div className="max-w-3xl mx-auto flex items-center gap-4">
-            <Link href="/pstar" className="text-blue-300 hover:text-white text-sm">
+            <Link href="/?bank=pstar" className="text-blue-300 hover:text-white text-sm">
               ← Home
             </Link>
             <h1 className="text-xl font-semibold">PSTAR Exam — Report</h1>
@@ -259,7 +259,7 @@ export default function PstarExamClient({ sessionId: resumeSessionId }: { sessio
                 New Exam
               </button>
               <Link
-                href="/pstar"
+                href="/?bank=pstar"
                 className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 rounded-lg text-sm font-medium transition-colors"
               >
                 Home
@@ -537,7 +537,7 @@ export default function PstarExamClient({ sessionId: resumeSessionId }: { sessio
       <header className="bg-indigo-900 text-white py-4 px-4">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link href="/pstar" className="text-indigo-300 hover:text-white text-sm">
+            <Link href="/?bank=pstar" className="text-indigo-300 hover:text-white text-sm">
               ← Home
             </Link>
             <span className="text-indigo-500">|</span>

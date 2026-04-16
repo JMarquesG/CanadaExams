@@ -11,6 +11,7 @@ export interface QuestionStat {
   timesAnswered: number;
   timesCorrect: number;
   lastAnsweredAt: string | null; // ISO date
+  lastCorrect: boolean | null; // was the most recent answer correct?
 }
 
 export interface SessionAnswer {
@@ -81,6 +82,7 @@ export function recordPstarQuestionView(questionId: number): void {
     timesAnswered: 0,
     timesCorrect: 0,
     lastAnsweredAt: null,
+    lastCorrect: null,
   };
   qs.timesViewed++;
   stats.questionStats[questionId] = qs;
@@ -95,10 +97,12 @@ export function recordPstarQuestionAnswer(questionId: number, correct: boolean):
     timesAnswered: 0,
     timesCorrect: 0,
     lastAnsweredAt: null,
+    lastCorrect: null,
   };
   qs.timesAnswered++;
   if (correct) qs.timesCorrect++;
   qs.lastAnsweredAt = new Date().toISOString();
+  qs.lastCorrect = correct;
   stats.questionStats[questionId] = qs;
   savePstarStats(stats);
 }
@@ -182,6 +186,7 @@ export function recordQuestionView(questionId: number): void {
     timesAnswered: 0,
     timesCorrect: 0,
     lastAnsweredAt: null,
+    lastCorrect: null,
   };
   qs.timesViewed++;
   stats.questionStats[questionId] = qs;
@@ -196,10 +201,12 @@ export function recordQuestionAnswer(questionId: number, correct: boolean): void
     timesAnswered: 0,
     timesCorrect: 0,
     lastAnsweredAt: null,
+    lastCorrect: null,
   };
   qs.timesAnswered++;
   if (correct) qs.timesCorrect++;
   qs.lastAnsweredAt = new Date().toISOString();
+  qs.lastCorrect = correct;
   stats.questionStats[questionId] = qs;
   saveStats(stats);
 }
@@ -340,6 +347,40 @@ export function getWeakQuestionIds(
   });
 
   return scored.slice(0, maxCount).map((s) => s.id);
+}
+
+/**
+ * Returns mastery stats based on the LAST answer for each question.
+ * A question is "mastered" if the most recent answer was correct.
+ */
+export function getMasteryStats(
+  data: StatsData,
+  allQuestionIds: number[]
+): { mastered: number; failed: number; unanswered: number; total: number } {
+  let mastered = 0;
+  let failed = 0;
+  let unanswered = 0;
+  for (const id of allQuestionIds) {
+    const qs = data.questionStats[id];
+    if (!qs || qs.lastCorrect === null || qs.lastCorrect === undefined) {
+      unanswered++;
+    } else if (qs.lastCorrect) {
+      mastered++;
+    } else {
+      failed++;
+    }
+  }
+  return { mastered, failed, unanswered, total: allQuestionIds.length };
+}
+
+/**
+ * Returns per-section mastery stats based on last answer correctness.
+ */
+export function getSectionMasteryStats(
+  data: StatsData,
+  sectionQuestionIds: number[]
+): { mastered: number; failed: number; unanswered: number; total: number } {
+  return getMasteryStats(data, sectionQuestionIds);
 }
 
 export function clearStats(): void {

@@ -23,7 +23,7 @@ function shuffleArray<T>(arr: T[]): T[] {
 
 type AnswerState = { selected: number | null; revealed: boolean };
 
-export default function PstarQuizClient({ sessionId: resumeSessionId }: { sessionId?: string }) {
+export default function PstarQuizClient({ sessionId: resumeSessionId, count }: { sessionId?: string; count?: number }) {
   const searchParams = useSearchParams();
   const mode = searchParams.get("mode") ?? "all";
   const sectionParam = searchParams.get("section");
@@ -76,6 +76,9 @@ export default function PstarQuizClient({ sessionId: resumeSessionId }: { sessio
     if (mode === "random") {
       qs = shuffleArray(qs);
     }
+    if (count && count > 0 && count < qs.length) {
+      qs = shuffleArray(qs).slice(0, count);
+    }
     setQuizQuestions(qs);
     setCurrentIndex(0);
     setAnswers({});
@@ -85,7 +88,7 @@ export default function PstarQuizClient({ sessionId: resumeSessionId }: { sessio
       qs.map((q) => q.id),
       sectionParam ? decodeURIComponent(sectionParam) : undefined
     );
-  }, [mode, sectionParam, resumeSessionId]);
+  }, [mode, sectionParam, resumeSessionId, count]);
 
   const current = quizQuestions[currentIndex];
 
@@ -151,7 +154,7 @@ export default function PstarQuizClient({ sessionId: resumeSessionId }: { sessio
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <p className="text-gray-500 mb-4">No questions found.</p>
-          <Link href="/pstar" className="text-indigo-600 hover:underline">Back to home</Link>
+          <Link href="/?bank=pstar" className="text-indigo-600 hover:underline">Back to home</Link>
         </div>
       </div>
     );
@@ -172,7 +175,7 @@ export default function PstarQuizClient({ sessionId: resumeSessionId }: { sessio
       <div className="min-h-screen bg-gray-50">
         <header className="bg-indigo-900 text-white py-6 px-4">
           <div className="max-w-3xl mx-auto flex items-center gap-4">
-            <Link href="/pstar" className="text-indigo-300 hover:text-white text-sm">← Home</Link>
+            <Link href="/?bank=pstar" className="text-indigo-300 hover:text-white text-sm">← Home</Link>
             <h1 className="text-xl font-semibold">PSTAR Quiz Results</h1>
           </div>
         </header>
@@ -183,7 +186,7 @@ export default function PstarQuizClient({ sessionId: resumeSessionId }: { sessio
             <p className="text-gray-400 text-sm mb-6">{total - answered} question{total - answered !== 1 ? "s" : ""} not answered</p>
             <div className="flex gap-3 justify-center flex-wrap">
               <button onClick={handleRestart} className="bg-indigo-700 hover:bg-indigo-800 text-white px-6 py-2 rounded-lg text-sm font-medium transition-colors">Try Again</button>
-              <Link href="/pstar" className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 rounded-lg text-sm font-medium transition-colors">Back to Home</Link>
+              <Link href="/?bank=pstar" className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 rounded-lg text-sm font-medium transition-colors">Back to Home</Link>
             </div>
           </div>
           <h2 className="text-lg font-semibold text-gray-800 mb-4">Review</h2>
@@ -229,7 +232,7 @@ export default function PstarQuizClient({ sessionId: resumeSessionId }: { sessio
       <header className="bg-indigo-900 text-white py-4 px-4">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link href="/pstar" className="text-indigo-300 hover:text-white text-sm">← Home</Link>
+            <Link href="/?bank=pstar" className="text-indigo-300 hover:text-white text-sm">← Home</Link>
             <span className="text-indigo-400">|</span>
             <span className="text-sm text-indigo-200">{sectionLabel}</span>
           </div>

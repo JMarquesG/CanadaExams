@@ -12,10 +12,12 @@ function PstarQuizRouter() {
   const sessionId = searchParams.get("session") ?? undefined;
   const weakParam = searchParams.get("weak");
   const weakIds = weakParam ? weakParam.split(",").map(Number).filter(Boolean) : undefined;
+  const countParam = searchParams.get("count");
+  const count = countParam ? Number(countParam) : undefined;
 
-  if (mode === "practice") return <PstarPracticeClient sessionId={sessionId} weakIds={weakIds} />;
+  if (mode === "practice") return <PstarPracticeClient sessionId={sessionId} weakIds={weakIds} count={count} />;
   if (mode === "exam") return <PstarExamClient sessionId={sessionId} />;
-  return <PstarQuizClient sessionId={sessionId} />;
+  return <PstarQuizClient sessionId={sessionId} count={count} />;
 }
 
 export default function PstarQuizPage() {

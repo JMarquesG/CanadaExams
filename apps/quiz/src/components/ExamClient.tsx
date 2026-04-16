@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { questions, QuestionSection } from "@/data/questions";
+import { questions, SECTIONS } from "@/data/questions";
 import Link from "next/link";
 import {
   recordQuestionView,
@@ -13,15 +13,8 @@ import {
 } from "@/lib/stats";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
-const EXAM_SIZE = 50;
+const EXAM_SIZE = 100;
 const PASS_PERCENT = 60;
-
-const DISTRIBUTION: Record<QuestionSection, number> = {
-  "Air Law": 12,
-  Navigation: 14,
-  Meteorology: 14,
-  "Aeronautics - General Knowledge": 10,
-};
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function shuffleArray<T>(arr: T[]): T[] {
@@ -34,13 +27,7 @@ function shuffleArray<T>(arr: T[]): T[] {
 }
 
 function buildExam() {
-  const picked = (
-    Object.entries(DISTRIBUTION) as [QuestionSection, number][]
-  ).flatMap(([section, count]) => {
-    const pool = questions.filter((q) => q.section === section);
-    return shuffleArray(pool).slice(0, count);
-  });
-  return shuffleArray(picked);
+  return shuffleArray([...questions]);
 }
 
 type ReviewFilter = "all" | "correct" | "incorrect";
@@ -247,7 +234,7 @@ export default function ExamClient({ sessionId: resumeSessionId }: { sessionId?:
           } text-white py-6 px-4`}
         >
           <div className="max-w-3xl mx-auto flex items-center gap-4">
-            <Link href="/helicopter" className="text-blue-300 hover:text-white text-sm">
+            <Link href="/?bank=license" className="text-blue-300 hover:text-white text-sm">
               ← Home
             </Link>
             <h1 className="text-xl font-semibold">Exam Results — Report</h1>
@@ -316,7 +303,7 @@ export default function ExamClient({ sessionId: resumeSessionId }: { sessionId?:
                 Go to Practice Mode
               </Link>
               <Link
-                href="/helicopter"
+                href="/?bank=license"
                 className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 rounded-lg text-sm font-medium transition-colors"
               >
                 Home
@@ -330,7 +317,7 @@ export default function ExamClient({ sessionId: resumeSessionId }: { sessionId?:
               Score by section
             </h2>
             <div className="space-y-2">
-              {(Object.keys(DISTRIBUTION) as QuestionSection[]).map((section) => {
+              {SECTIONS.map((section) => {
                 const sectionQs = examQuestions
                   .map((q, idx) => ({ q, idx }))
                   .filter(({ q }) => q.section === section);
@@ -631,7 +618,7 @@ export default function ExamClient({ sessionId: resumeSessionId }: { sessionId?:
       <header className="bg-indigo-900 text-white py-4 px-4">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link href="/helicopter" className="text-indigo-300 hover:text-white text-sm">
+            <Link href="/?bank=license" className="text-indigo-300 hover:text-white text-sm">
               ← Home
             </Link>
             <span className="text-indigo-500">|</span>

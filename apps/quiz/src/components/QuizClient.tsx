@@ -27,7 +27,7 @@ type AnswerState = {
   revealed: boolean;
 };
 
-export default function QuizClient({ sessionId: resumeSessionId }: { sessionId?: string }) {
+export default function QuizClient({ sessionId: resumeSessionId, count }: { sessionId?: string; count?: number }) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -83,6 +83,9 @@ export default function QuizClient({ sessionId: resumeSessionId }: { sessionId?:
     if (mode === "random") {
       qs = shuffleArray(qs);
     }
+    if (count && count > 0 && count < qs.length) {
+      qs = shuffleArray(qs).slice(0, count);
+    }
     setQuizQuestions(qs);
     setCurrentIndex(0);
     setAnswers({});
@@ -93,7 +96,7 @@ export default function QuizClient({ sessionId: resumeSessionId }: { sessionId?:
       sectionParam ? decodeURIComponent(sectionParam) : undefined
     );
     if (qs.length > 0) recordQuestionView(qs[0].id);
-  }, [mode, sectionParam, resumeSessionId]);
+  }, [mode, sectionParam, resumeSessionId, count]);
 
   const current = quizQuestions[currentIndex];
 
@@ -184,7 +187,7 @@ export default function QuizClient({ sessionId: resumeSessionId }: { sessionId?:
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <p className="text-gray-500 mb-4">No questions found.</p>
-          <Link href="/helicopter" className="text-blue-600 hover:underline">
+          <Link href="/?bank=license" className="text-blue-600 hover:underline">
             Back to home
           </Link>
         </div>
@@ -207,7 +210,7 @@ export default function QuizClient({ sessionId: resumeSessionId }: { sessionId?:
       <div className="min-h-screen bg-gray-50">
         <header className="bg-blue-900 text-white py-6 px-4">
           <div className="max-w-3xl mx-auto flex items-center gap-4">
-            <Link href="/helicopter" className="text-blue-300 hover:text-white text-sm">
+            <Link href="/?bank=license" className="text-blue-300 hover:text-white text-sm">
               ← Home
             </Link>
             <h1 className="text-xl font-semibold">Quiz Results</h1>
@@ -244,7 +247,7 @@ export default function QuizClient({ sessionId: resumeSessionId }: { sessionId?:
                 Try Again
               </button>
               <Link
-                href="/helicopter"
+                href="/?bank=license"
                 className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 rounded-lg text-sm font-medium transition-colors"
               >
                 Back to Home
@@ -305,7 +308,7 @@ export default function QuizClient({ sessionId: resumeSessionId }: { sessionId?:
       <header className="bg-blue-900 text-white py-4 px-4">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link href="/helicopter" className="text-blue-300 hover:text-white text-sm">
+            <Link href="/?bank=license" className="text-blue-300 hover:text-white text-sm">
               ← Home
             </Link>
             <span className="text-blue-400">|</span>

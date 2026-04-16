@@ -25,7 +25,7 @@ function shuffleArray<T>(arr: T[]): T[] {
 type AnswerRecord = { selected: number; correct: boolean };
 type ReviewFilter = "all" | "correct" | "incorrect";
 
-export default function PstarPracticeClient({ sessionId: resumeSessionId, weakIds }: { sessionId?: string; weakIds?: number[] }) {
+export default function PstarPracticeClient({ sessionId: resumeSessionId, weakIds, count }: { sessionId?: string; weakIds?: number[]; count?: number }) {
   const [quiz, setQuiz] = useState<PstarQuestion[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, AnswerRecord>>({});
@@ -77,17 +77,19 @@ export default function PstarPracticeClient({ sessionId: resumeSessionId, weakId
     // New session
     let pool = pstarQuestions;
     if (weakIds && weakIds.length > 0) {
-      const idSet = new Set(weakIds);
       // Maintain weak-first order, don't shuffle
       pool = weakIds.map((id) => pstarQuestions.find((q) => q.id === id)).filter(Boolean) as PstarQuestion[];
     }
-    const qs = weakIds && weakIds.length > 0 ? pool : shuffleArray(pool);
+    let qs = weakIds && weakIds.length > 0 ? pool : shuffleArray(pool);
+    if (count && count > 0 && count < qs.length) {
+      qs = qs.slice(0, count);
+    }
     setQuiz(qs);
     sessionIdRef.current = startPstarSession(
       "practice",
       qs.map((q) => q.id)
     );
-  }, [resumeSessionId, weakIds]);
+  }, [resumeSessionId, weakIds, count]);
 
   // Record view for first question once quiz loads
   useEffect(() => {
@@ -207,7 +209,7 @@ export default function PstarPracticeClient({ sessionId: resumeSessionId, weakId
       <div className="min-h-screen bg-gray-50">
         <header className="bg-indigo-800 text-white py-6 px-4">
           <div className="max-w-3xl mx-auto flex items-center gap-4">
-            <Link href="/pstar" className="text-indigo-300 hover:text-white text-sm">
+            <Link href="/?bank=pstar" className="text-indigo-300 hover:text-white text-sm">
               ← Home
             </Link>
             <h1 className="text-xl font-semibold">PSTAR Practice — Report</h1>
@@ -235,7 +237,7 @@ export default function PstarPracticeClient({ sessionId: resumeSessionId, weakId
                 Practice Again
               </button>
               <Link
-                href="/pstar"
+                href="/?bank=pstar"
                 className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 rounded-lg text-sm font-medium transition-colors"
               >
                 Home
@@ -443,7 +445,7 @@ export default function PstarPracticeClient({ sessionId: resumeSessionId, weakId
       <header className="bg-indigo-800 text-white py-4 px-4">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link href="/pstar" className="text-indigo-300 hover:text-white text-sm">
+            <Link href="/?bank=pstar" className="text-indigo-300 hover:text-white text-sm">
               ← Home
             </Link>
             <span className="text-indigo-500">|</span>
