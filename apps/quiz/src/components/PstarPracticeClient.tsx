@@ -418,6 +418,9 @@ export default function PstarPracticeClient({ sessionId: resumeSessionId, weakId
         correct,
       });
     }
+    if (correct) {
+      setTimeout(() => handleNext(), 300);
+    }
   };
 
   const handleNext = () => {

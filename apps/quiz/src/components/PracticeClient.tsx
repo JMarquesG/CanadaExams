@@ -525,6 +525,9 @@ export default function PracticeClient({ sessionId: resumeSessionId, weakIds }: 
         correct,
       });
     }
+    if (correct) {
+      setTimeout(() => handleNext(), 300);
+    }
   };
 
   const handleNext = () => {
