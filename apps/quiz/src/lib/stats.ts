@@ -2,6 +2,7 @@
 
 const STORAGE_KEY = "canada-exam-stats";
 const PSTAR_STORAGE_KEY = "canada-pstar-stats";
+const TIMMINS_STORAGE_KEY = "canada-timmins-stats";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -174,6 +175,118 @@ export function getPstarSession(sessionId: string): SessionRecord | undefined {
 export function clearPstarStats(): void {
   if (typeof window === "undefined") return;
   localStorage.removeItem(PSTAR_STORAGE_KEY);
+}
+
+// ─── Timmins-specific wrappers ─────────────────────────────────────────────
+
+export function loadTimminsStats(): StatsData {
+  return loadStats(TIMMINS_STORAGE_KEY);
+}
+
+export function saveTimminsStats(data: StatsData): void {
+  saveStats(data, TIMMINS_STORAGE_KEY);
+}
+
+export function recordTimminsQuestionView(questionId: number): void {
+  const stats = loadTimminsStats();
+  const qs = stats.questionStats[questionId] ?? {
+    questionId,
+    timesViewed: 0,
+    timesAnswered: 0,
+    timesCorrect: 0,
+    lastAnsweredAt: null,
+    lastCorrect: null,
+  };
+  qs.timesViewed++;
+  stats.questionStats[questionId] = qs;
+  saveTimminsStats(stats);
+}
+
+export function recordTimminsQuestionAnswer(questionId: number, correct: boolean): void {
+  const stats = loadTimminsStats();
+  const qs = stats.questionStats[questionId] ?? {
+    questionId,
+    timesViewed: 0,
+    timesAnswered: 0,
+    timesCorrect: 0,
+    lastAnsweredAt: null,
+    lastCorrect: null,
+  };
+  qs.timesAnswered++;
+  if (correct) qs.timesCorrect++;
+  qs.lastAnsweredAt = new Date().toISOString();
+  qs.lastCorrect = correct;
+  stats.questionStats[questionId] = qs;
+  saveTimminsStats(stats);
+}
+
+export function startTimminsSession(
+  mode: SessionRecord["mode"],
+  questionIds: number[],
+  section?: string
+): string {
+  const stats = loadTimminsStats();
+  const id = `timmins-${mode}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  stats.sessions.push({
+    id,
+    mode,
+    section,
+    startedAt: new Date().toISOString(),
+    finishedAt: null,
+    totalQuestions: questionIds.length,
+    answered: 0,
+    correct: 0,
+    questionIds,
+  });
+  saveTimminsStats(stats);
+  return id;
+}
+
+export function finishTimminsSession(
+  sessionId: string,
+  answered: number,
+  correct: number
+): void {
+  const stats = loadTimminsStats();
+  const session = stats.sessions.find((s) => s.id === sessionId);
+  if (session) {
+    session.finishedAt = new Date().toISOString();
+    session.answered = answered;
+    session.correct = correct;
+  }
+  saveTimminsStats(stats);
+}
+
+export function updateTimminsSessionAnswer(
+  sessionId: string,
+  questionIndex: number,
+  answer: SessionAnswer
+): void {
+  const stats = loadTimminsStats();
+  const session = stats.sessions.find((s) => s.id === sessionId);
+  if (session) {
+    if (!session.questionAnswers) session.questionAnswers = {};
+    session.questionAnswers[questionIndex] = answer;
+    session.answered = Object.keys(session.questionAnswers).length;
+    session.correct = Object.values(session.questionAnswers).filter((a) => a.correct).length;
+  }
+  saveTimminsStats(stats);
+}
+
+export function deleteTimminsSession(sessionId: string): void {
+  const stats = loadTimminsStats();
+  stats.sessions = stats.sessions.filter((s) => s.id !== sessionId);
+  saveTimminsStats(stats);
+}
+
+export function getTimminsSession(sessionId: string): SessionRecord | undefined {
+  const stats = loadTimminsStats();
+  return stats.sessions.find((s) => s.id === sessionId);
+}
+
+export function clearTimminsStats(): void {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem(TIMMINS_STORAGE_KEY);
 }
 
 // ─── Question-level tracking ─────────────────────────────────────────────────

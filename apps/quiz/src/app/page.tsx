@@ -6,58 +6,64 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { questions, SECTIONS } from "@/data/questions";
 import { pstarQuestions, PSTAR_SECTIONS } from "@/data/pstar-questions";
+import { timminsQuestions, TIMMINS_SECTIONS } from "@/data/timmins-questions";
 import {
   loadStats,
   loadPstarStats,
+  loadTimminsStats,
   getWeakQuestionIds,
   getMasteryStats,
   deleteSession,
   deletePstarSession,
+  deleteTimminsSession,
   StatsData,
   SessionRecord,
 } from "@/lib/stats";
 
-type ExamBank = "pstar" | "license";
+type ExamBank = "pstar" | "license" | "timmins";
 
 const QUESTION_COUNT_OPTIONS_PSTAR = [10, 20, 50, 100, 192];
 const QUESTION_COUNT_OPTIONS_LICENSE = [10, 20, 50, 100];
+const QUESTION_COUNT_OPTIONS_TIMMINS = [10, 20, 50, 101];
 
 function HomeContent() {
   const searchParams = useSearchParams();
   const bankParam = searchParams.get("bank");
   const [bank, setBank] = useState<ExamBank>(
-    bankParam === "license" ? "license" : "pstar"
+    bankParam === "license" ? "license" : bankParam === "timmins" ? "timmins" : "pstar"
   );
   const [pstarStats, setPstarStats] = useState<StatsData | null>(null);
   const [licenseStats, setLicenseStats] = useState<StatsData | null>(null);
+  const [timminsStats, setTimminsStats] = useState<StatsData | null>(null);
   const [practiceCount, setPracticeCount] = useState<number | "all">("all");
   const [weakIds, setWeakIds] = useState<number[]>([]);
 
   useEffect(() => {
     setPstarStats(loadPstarStats());
     setLicenseStats(loadStats());
+    setTimminsStats(loadTimminsStats());
   }, []);
 
   useEffect(() => {
     setPracticeCount("all");
-    const stats = bank === "pstar" ? pstarStats : licenseStats;
-    const qs = bank === "pstar" ? pstarQuestions : questions;
+    const stats = bank === "pstar" ? pstarStats : bank === "timmins" ? timminsStats : licenseStats;
+    const qs = bank === "pstar" ? pstarQuestions : bank === "timmins" ? timminsQuestions : questions;
     if (stats) {
       const ids = getWeakQuestionIds(stats, qs.map((q) => q.id), 50);
       setWeakIds(ids);
     } else {
       setWeakIds([]);
     }
-  }, [bank, pstarStats, licenseStats]);
+  }, [bank, pstarStats, licenseStats, timminsStats]);
 
-  const currentStats = bank === "pstar" ? pstarStats : licenseStats;
-  const currentQuestions = bank === "pstar" ? pstarQuestions : questions;
-  const currentSections = bank === "pstar" ? PSTAR_SECTIONS : SECTIONS;
-  const quizBase = bank === "pstar" ? "/pstar/quiz" : "/helicopter/quiz";
+  const currentStats = bank === "pstar" ? pstarStats : bank === "timmins" ? timminsStats : licenseStats;
+  const currentQuestions = bank === "pstar" ? pstarQuestions : bank === "timmins" ? timminsQuestions : questions;
+  const currentSections = bank === "pstar" ? PSTAR_SECTIONS : bank === "timmins" ? TIMMINS_SECTIONS : SECTIONS;
+  const quizBase = bank === "pstar" ? "/pstar/quiz" : bank === "timmins" ? "/timmins/quiz" : "/helicopter/quiz";
   const examQuestionCount = bank === "pstar" ? 50 : 100;
-  const passPercent = bank === "pstar" ? 90 : 60;
+  const passPercent = bank === "pstar" ? 90 : 70;
   const totalQuestions = currentQuestions.length;
-  const countOptions = bank === "pstar" ? QUESTION_COUNT_OPTIONS_PSTAR : QUESTION_COUNT_OPTIONS_LICENSE;
+  const countOptions = bank === "pstar" ? QUESTION_COUNT_OPTIONS_PSTAR : bank === "timmins" ? QUESTION_COUNT_OPTIONS_TIMMINS : QUESTION_COUNT_OPTIONS_LICENSE;
 
   // Section stats
   const sectionBreakdown = currentSections.map((section) => {
@@ -126,6 +132,9 @@ function HomeContent() {
     "Regulations - Canadian Airspace": "🇨🇦",
     "Controlled Airspace": "📡",
     "Aviation Occurrences": "🚨",
+    // Timmins
+    "Helicopter Theory": "🚁",
+    "Weather Reports": "📋",
   };
 
   return (
@@ -165,6 +174,16 @@ function HomeContent() {
             }`}
           >
             License (CPL Helicopter)
+          </button>
+          <button
+            onClick={() => setBank("timmins")}
+            className={`px-5 py-2.5 text-sm font-semibold rounded-lg transition-colors ${
+              bank === "timmins"
+                ? "bg-teal-100 text-teal-800 shadow-sm"
+                : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+            }`}
+          >
+            Timmins Exam
           </button>
 
           {/* Quick stats in the tab bar */}
@@ -444,6 +463,7 @@ function HomeContent() {
           passPercent={passPercent}
           onDelete={() => {
             if (bank === "pstar") setPstarStats(loadPstarStats());
+            else if (bank === "timmins") setTimminsStats(loadTimminsStats());
             else setLicenseStats(loadStats());
           }}
         />
@@ -519,6 +539,18 @@ function HomeContent() {
             </div>
           </div>
         )}
+        {bank === "timmins" && (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-5 mb-6">
+            <h2 className="text-sm font-semibold text-gray-800 mb-2">
+              About Timmins Exam
+            </h2>
+            <p className="text-gray-600 text-xs mb-2">
+              {totalQuestions} questions covering Air Law, Helicopter Theory,
+              Aeromedical, Meteorology, Weather Reports, and Navigation.
+              Pass mark: 70%.
+            </p>
+          </div>
+        )}
       </main>
 
       <footer className="border-t border-gray-200 py-6 px-4 text-center text-xs text-gray-400">
@@ -549,7 +581,7 @@ function RecentSessions({
 }) {
   if (!stats || stats.sessions.length === 0) return null;
 
-  const quizBase = bank === "pstar" ? "/pstar/quiz" : "/helicopter/quiz";
+  const quizBase = bank === "pstar" ? "/pstar/quiz" : bank === "timmins" ? "/timmins/quiz" : "/helicopter/quiz";
 
   const fmtDate = (iso: string) => {
     const d = new Date(iso);
@@ -635,6 +667,7 @@ function RecentSessions({
                   <button
                     onClick={() => {
                       if (bank === "pstar") deletePstarSession(s.id);
+                      else if (bank === "timmins") deleteTimminsSession(s.id);
                       else deleteSession(s.id);
                       onDelete();
                     }}
