@@ -219,7 +219,7 @@ export default function StatsPage() {
                   : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
               }`}
             >
-              License (CPL Helicopter)
+              TC Exam
             </button>
             <button
               onClick={() => {
