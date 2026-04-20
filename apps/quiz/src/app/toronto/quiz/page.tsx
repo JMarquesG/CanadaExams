@@ -6,19 +6,23 @@ import UnifiedPracticeClient from "@/components/UnifiedPracticeClient";
 import UnifiedExamClient from "@/components/UnifiedExamClient";
 import { getBankConfig } from "@/lib/bankConfig";
 
-const bank = getBankConfig("license");
+const bank = getBankConfig("toronto");
 
 function QuizRouter() {
   const searchParams = useSearchParams();
   const mode = searchParams.get("mode") ?? "all";
   const sessionId = searchParams.get("session") ?? undefined;
+  const weakParam = searchParams.get("weak");
+  const weakIds = weakParam ? weakParam.split(",").map(Number).filter(Boolean) : undefined;
+  const countParam = searchParams.get("count");
+  const count = countParam ? Number(countParam) : undefined;
   const section = searchParams.get("section") ?? undefined;
 
   if (mode === "exam") return <UnifiedExamClient bank={bank} sessionId={sessionId} />;
-  return <UnifiedPracticeClient bank={bank} sessionId={sessionId} section={section} />;
+  return <UnifiedPracticeClient bank={bank} sessionId={sessionId} weakIds={weakIds} count={count} section={section} />;
 }
 
-export default function QuizPage() {
+export default function TorontoQuizPage() {
   return (
     <Suspense
       fallback={

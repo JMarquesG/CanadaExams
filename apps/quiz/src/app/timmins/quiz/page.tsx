@@ -2,11 +2,13 @@
 
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import TimminsQuizClient from "@/components/TimminsQuizClient";
-import TimminsPracticeClient from "@/components/TimminsPracticeClient";
-import TimminsExamClient from "@/components/TimminsExamClient";
+import UnifiedPracticeClient from "@/components/UnifiedPracticeClient";
+import UnifiedExamClient from "@/components/UnifiedExamClient";
+import { getBankConfig } from "@/lib/bankConfig";
 
-function TimminsQuizRouter() {
+const bank = getBankConfig("timmins");
+
+function QuizRouter() {
   const searchParams = useSearchParams();
   const mode = searchParams.get("mode") ?? "all";
   const sessionId = searchParams.get("session") ?? undefined;
@@ -14,10 +16,10 @@ function TimminsQuizRouter() {
   const weakIds = weakParam ? weakParam.split(",").map(Number).filter(Boolean) : undefined;
   const countParam = searchParams.get("count");
   const count = countParam ? Number(countParam) : undefined;
+  const section = searchParams.get("section") ?? undefined;
 
-  if (mode === "practice") return <TimminsPracticeClient sessionId={sessionId} weakIds={weakIds} count={count} />;
-  if (mode === "exam") return <TimminsExamClient sessionId={sessionId} />;
-  return <TimminsQuizClient sessionId={sessionId} count={count} />;
+  if (mode === "exam") return <UnifiedExamClient bank={bank} sessionId={sessionId} />;
+  return <UnifiedPracticeClient bank={bank} sessionId={sessionId} weakIds={weakIds} count={count} section={section} />;
 }
 
 export default function TimminsQuizPage() {
@@ -29,7 +31,7 @@ export default function TimminsQuizPage() {
         </div>
       }
     >
-      <TimminsQuizRouter />
+      <QuizRouter />
     </Suspense>
   );
 }

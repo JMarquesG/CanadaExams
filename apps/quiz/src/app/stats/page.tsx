@@ -6,21 +6,25 @@ import {
   loadStats,
   loadPstarStats,
   loadTimminsStats,
+  loadTorontoStats,
   clearStats,
   clearPstarStats,
   clearTimminsStats,
+  clearTorontoStats,
   getAggregateStats,
   deleteSession,
   deletePstarSession,
   deleteTimminsSession,
+  deleteTorontoSession,
   StatsData,
   SessionRecord,
 } from "@/lib/stats";
 import { questions, SECTIONS } from "@/data/questions";
 import { pstarQuestions, PSTAR_SECTIONS } from "@/data/pstar-questions";
 import { timminsQuestions, TIMMINS_SECTIONS } from "@/data/timmins-questions";
+import { torontoQuestions, TORONTO_SECTIONS } from "@/data/toronto-questions";
 
-type ExamBank = "helicopter" | "pstar" | "timmins";
+type ExamBank = "helicopter" | "pstar" | "timmins" | "toronto";
 type Tab = "overview" | "questions" | "sessions";
 type QuestionSort = "id" | "answered" | "accuracy" | "viewed";
 
@@ -29,6 +33,7 @@ export default function StatsPage() {
   const [heliData, setHeliData] = useState<StatsData | null>(null);
   const [pstarData, setPstarData] = useState<StatsData | null>(null);
   const [timminsData, setTimminsData] = useState<StatsData | null>(null);
+  const [torontoData, setTorontoData] = useState<StatsData | null>(null);
   const [tab, setTab] = useState<Tab>("overview");
   const [questionSort, setQuestionSort] = useState<QuestionSort>("id");
   const [showClearConfirm, setShowClearConfirm] = useState(false);
@@ -37,12 +42,41 @@ export default function StatsPage() {
     setHeliData(loadStats());
     setPstarData(loadPstarStats());
     setTimminsData(loadTimminsStats());
+    setTorontoData(loadTorontoStats());
   }, []);
 
-  const data = bank === "helicopter" ? heliData : bank === "timmins" ? timminsData : pstarData;
-  const allQuestions = bank === "helicopter" ? questions : bank === "timmins" ? timminsQuestions : pstarQuestions;
-  const sections = bank === "helicopter" ? SECTIONS : bank === "timmins" ? TIMMINS_SECTIONS : PSTAR_SECTIONS;
-  const passPercent = bank === "helicopter" ? 60 : bank === "timmins" ? 70 : 90;
+  const data =
+    bank === "helicopter"
+      ? heliData
+      : bank === "timmins"
+      ? timminsData
+      : bank === "toronto"
+      ? torontoData
+      : pstarData;
+  const allQuestions =
+    bank === "helicopter"
+      ? questions
+      : bank === "timmins"
+      ? timminsQuestions
+      : bank === "toronto"
+      ? torontoQuestions
+      : pstarQuestions;
+  const sections =
+    bank === "helicopter"
+      ? SECTIONS
+      : bank === "timmins"
+      ? TIMMINS_SECTIONS
+      : bank === "toronto"
+      ? TORONTO_SECTIONS
+      : PSTAR_SECTIONS;
+  const passPercent =
+    bank === "helicopter"
+      ? 60
+      : bank === "timmins"
+      ? 70
+      : bank === "toronto"
+      ? 70
+      : 90;
 
   if (!data) {
     return (
@@ -71,6 +105,14 @@ export default function StatsPage() {
               s.totalQuestions > 0 &&
               (s.correct / s.totalQuestions) * 100 >= 70
           ).length
+      : bank === "toronto"
+      ? data.sessions
+          .filter((s) => s.finishedAt && s.mode === "exam")
+          .filter(
+            (s) =>
+              s.totalQuestions > 0 &&
+              (s.correct / s.totalQuestions) * 100 >= 70
+          ).length
       : agg.examsPassed;
 
   const totalQuestions = allQuestions.length;
@@ -82,6 +124,9 @@ export default function StatsPage() {
     } else if (bank === "timmins") {
       clearTimminsStats();
       setTimminsData(loadTimminsStats());
+    } else if (bank === "toronto") {
+      clearTorontoStats();
+      setTorontoData(loadTorontoStats());
     } else {
       clearPstarStats();
       setPstarData(loadPstarStats());
@@ -151,9 +196,22 @@ export default function StatsPage() {
     return `Section: ${s.section ?? "?"}`;
   };
 
-  const accentColor = bank === "helicopter" ? "blue" : bank === "timmins" ? "teal" : "indigo";
+  const accentColor =
+    bank === "helicopter"
+      ? "blue"
+      : bank === "timmins"
+      ? "teal"
+      : bank === "toronto"
+      ? "rose"
+      : "indigo";
   const headerBg =
-    bank === "helicopter" ? "bg-slate-800" : bank === "timmins" ? "bg-teal-900" : "bg-indigo-900";
+    bank === "helicopter"
+      ? "bg-slate-800"
+      : bank === "timmins"
+      ? "bg-teal-900"
+      : bank === "toronto"
+      ? "bg-rose-900"
+      : "bg-indigo-900";
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -180,7 +238,7 @@ export default function StatsPage() {
                 onClick={() => setShowClearConfirm(true)}
                 className="text-xs text-slate-400 hover:text-red-400 transition-colors"
               >
-                Clear {bank === "helicopter" ? "License" : bank === "timmins" ? "Timmins" : "PSTAR"} data
+                Clear {bank === "helicopter" ? "License" : bank === "timmins" ? "Timmins" : bank === "toronto" ? "Toronto" : "PSTAR"} data
               </button>
             ) : (
               <div className="flex gap-2 items-center">
@@ -248,6 +306,20 @@ export default function StatsPage() {
               }`}
             >
               Timmins Exam
+            </button>
+            <button
+              onClick={() => {
+                setBank("toronto");
+                setTab("overview");
+                setShowClearConfirm(false);
+              }}
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                bank === "toronto"
+                  ? "bg-rose-100 text-rose-800"
+                  : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+              }`}
+            >
+              Toronto Exam
             </button>
           </div>
 
@@ -557,7 +629,14 @@ export default function StatsPage() {
                       : 0;
                   const isFinished = !!s.finishedAt;
                   const passMark = passPercent;
-                  const quizBase = bank === "helicopter" ? "/helicopter/quiz" : bank === "timmins" ? "/timmins/quiz" : "/pstar/quiz";
+                  const quizBase =
+                    bank === "helicopter"
+                      ? "/helicopter/quiz"
+                      : bank === "timmins"
+                      ? "/timmins/quiz"
+                      : bank === "toronto"
+                      ? "/toronto/quiz"
+                      : "/pstar/quiz";
                   const modeParam = s.mode === "exam" ? "exam" : s.mode === "practice" ? "practice" : `section&section=${encodeURIComponent(s.section ?? "")}`;
                   const sessionUrl = `${quizBase}?mode=${modeParam}&session=${s.id}`;
 
@@ -669,6 +748,9 @@ export default function StatsPage() {
                                 } else if (bank === "timmins") {
                                   deleteTimminsSession(s.id);
                                   setTimminsData(loadTimminsStats());
+                                } else if (bank === "toronto") {
+                                  deleteTorontoSession(s.id);
+                                  setTorontoData(loadTorontoStats());
                                 } else {
                                   deletePstarSession(s.id);
                                   setPstarData(loadPstarStats());

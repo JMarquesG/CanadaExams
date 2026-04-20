@@ -3,6 +3,7 @@
 const STORAGE_KEY = "canada-exam-stats";
 const PSTAR_STORAGE_KEY = "canada-pstar-stats";
 const TIMMINS_STORAGE_KEY = "canada-timmins-stats";
+const TORONTO_STORAGE_KEY = "canada-toronto-stats";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -39,7 +40,7 @@ export interface StatsData {
   sessions: SessionRecord[];
 }
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
+// ─── Core generic functions ─────────────────────────────────────────────────
 
 function getDefaultStats(): StatsData {
   return { questionStats: {}, sessions: [] };
@@ -65,18 +66,10 @@ export function saveStats(data: StatsData, key: string = STORAGE_KEY): void {
   }
 }
 
-// ─── PSTAR-specific wrappers ────────────────────────────────────────────────
+// ─── Generic bank-keyed operations ──────────────────────────────────────────
 
-export function loadPstarStats(): StatsData {
-  return loadStats(PSTAR_STORAGE_KEY);
-}
-
-export function savePstarStats(data: StatsData): void {
-  saveStats(data, PSTAR_STORAGE_KEY);
-}
-
-export function recordPstarQuestionView(questionId: number): void {
-  const stats = loadPstarStats();
+export function recordQuestionViewForBank(storageKey: string, questionId: number): void {
+  const stats = loadStats(storageKey);
   const qs = stats.questionStats[questionId] ?? {
     questionId,
     timesViewed: 0,
@@ -87,11 +80,11 @@ export function recordPstarQuestionView(questionId: number): void {
   };
   qs.timesViewed++;
   stats.questionStats[questionId] = qs;
-  savePstarStats(stats);
+  saveStats(stats, storageKey);
 }
 
-export function recordPstarQuestionAnswer(questionId: number, correct: boolean): void {
-  const stats = loadPstarStats();
+export function recordQuestionAnswerForBank(storageKey: string, questionId: number, correct: boolean): void {
+  const stats = loadStats(storageKey);
   const qs = stats.questionStats[questionId] ?? {
     questionId,
     timesViewed: 0,
@@ -105,16 +98,25 @@ export function recordPstarQuestionAnswer(questionId: number, correct: boolean):
   qs.lastAnsweredAt = new Date().toISOString();
   qs.lastCorrect = correct;
   stats.questionStats[questionId] = qs;
-  savePstarStats(stats);
+  saveStats(stats, storageKey);
 }
 
-export function startPstarSession(
+export function startSessionForBank(
+  storageKey: string,
   mode: SessionRecord["mode"],
   questionIds: number[],
   section?: string
 ): string {
-  const stats = loadPstarStats();
-  const id = `pstar-${mode}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  const stats = loadStats(storageKey);
+  const prefix =
+    storageKey === PSTAR_STORAGE_KEY
+      ? "pstar-"
+      : storageKey === TIMMINS_STORAGE_KEY
+      ? "timmins-"
+      : storageKey === TORONTO_STORAGE_KEY
+      ? "toronto-"
+      : "";
+  const id = `${prefix}${mode}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   stats.sessions.push({
     id,
     mode,
@@ -126,31 +128,28 @@ export function startPstarSession(
     correct: 0,
     questionIds,
   });
-  savePstarStats(stats);
+  saveStats(stats, storageKey);
   return id;
 }
 
-export function finishPstarSession(
-  sessionId: string,
-  answered: number,
-  correct: number
-): void {
-  const stats = loadPstarStats();
+export function finishSessionForBank(storageKey: string, sessionId: string, answered: number, correct: number): void {
+  const stats = loadStats(storageKey);
   const session = stats.sessions.find((s) => s.id === sessionId);
   if (session) {
     session.finishedAt = new Date().toISOString();
     session.answered = answered;
     session.correct = correct;
   }
-  savePstarStats(stats);
+  saveStats(stats, storageKey);
 }
 
-export function updatePstarSessionAnswer(
+export function updateSessionAnswerForBank(
+  storageKey: string,
   sessionId: string,
   questionIndex: number,
   answer: SessionAnswer
 ): void {
-  const stats = loadPstarStats();
+  const stats = loadStats(storageKey);
   const session = stats.sessions.find((s) => s.id === sessionId);
   if (session) {
     if (!session.questionAnswers) session.questionAnswers = {};
@@ -158,237 +157,39 @@ export function updatePstarSessionAnswer(
     session.answered = Object.keys(session.questionAnswers).length;
     session.correct = Object.values(session.questionAnswers).filter((a) => a.correct).length;
   }
-  savePstarStats(stats);
+  saveStats(stats, storageKey);
 }
 
-export function deletePstarSession(sessionId: string): void {
-  const stats = loadPstarStats();
-  stats.sessions = stats.sessions.filter((s) => s.id !== sessionId);
-  savePstarStats(stats);
-}
-
-export function getPstarSession(sessionId: string): SessionRecord | undefined {
-  const stats = loadPstarStats();
+export function getSessionForBank(storageKey: string, sessionId: string): SessionRecord | undefined {
+  const stats = loadStats(storageKey);
   return stats.sessions.find((s) => s.id === sessionId);
 }
 
-export function clearPstarStats(): void {
-  if (typeof window === "undefined") return;
-  localStorage.removeItem(PSTAR_STORAGE_KEY);
-}
-
-// ─── Timmins-specific wrappers ─────────────────────────────────────────────
-
-export function loadTimminsStats(): StatsData {
-  return loadStats(TIMMINS_STORAGE_KEY);
-}
-
-export function saveTimminsStats(data: StatsData): void {
-  saveStats(data, TIMMINS_STORAGE_KEY);
-}
-
-export function recordTimminsQuestionView(questionId: number): void {
-  const stats = loadTimminsStats();
-  const qs = stats.questionStats[questionId] ?? {
-    questionId,
-    timesViewed: 0,
-    timesAnswered: 0,
-    timesCorrect: 0,
-    lastAnsweredAt: null,
-    lastCorrect: null,
-  };
-  qs.timesViewed++;
-  stats.questionStats[questionId] = qs;
-  saveTimminsStats(stats);
-}
-
-export function recordTimminsQuestionAnswer(questionId: number, correct: boolean): void {
-  const stats = loadTimminsStats();
-  const qs = stats.questionStats[questionId] ?? {
-    questionId,
-    timesViewed: 0,
-    timesAnswered: 0,
-    timesCorrect: 0,
-    lastAnsweredAt: null,
-    lastCorrect: null,
-  };
-  qs.timesAnswered++;
-  if (correct) qs.timesCorrect++;
-  qs.lastAnsweredAt = new Date().toISOString();
-  qs.lastCorrect = correct;
-  stats.questionStats[questionId] = qs;
-  saveTimminsStats(stats);
-}
-
-export function startTimminsSession(
-  mode: SessionRecord["mode"],
-  questionIds: number[],
-  section?: string
-): string {
-  const stats = loadTimminsStats();
-  const id = `timmins-${mode}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-  stats.sessions.push({
-    id,
-    mode,
-    section,
-    startedAt: new Date().toISOString(),
-    finishedAt: null,
-    totalQuestions: questionIds.length,
-    answered: 0,
-    correct: 0,
-    questionIds,
-  });
-  saveTimminsStats(stats);
-  return id;
-}
-
-export function finishTimminsSession(
-  sessionId: string,
-  answered: number,
-  correct: number
-): void {
-  const stats = loadTimminsStats();
-  const session = stats.sessions.find((s) => s.id === sessionId);
-  if (session) {
-    session.finishedAt = new Date().toISOString();
-    session.answered = answered;
-    session.correct = correct;
-  }
-  saveTimminsStats(stats);
-}
-
-export function updateTimminsSessionAnswer(
-  sessionId: string,
-  questionIndex: number,
-  answer: SessionAnswer
-): void {
-  const stats = loadTimminsStats();
-  const session = stats.sessions.find((s) => s.id === sessionId);
-  if (session) {
-    if (!session.questionAnswers) session.questionAnswers = {};
-    session.questionAnswers[questionIndex] = answer;
-    session.answered = Object.keys(session.questionAnswers).length;
-    session.correct = Object.values(session.questionAnswers).filter((a) => a.correct).length;
-  }
-  saveTimminsStats(stats);
-}
-
-export function deleteTimminsSession(sessionId: string): void {
-  const stats = loadTimminsStats();
+export function deleteSessionForBank(storageKey: string, sessionId: string): void {
+  const stats = loadStats(storageKey);
   stats.sessions = stats.sessions.filter((s) => s.id !== sessionId);
-  saveTimminsStats(stats);
+  saveStats(stats, storageKey);
 }
 
-export function getTimminsSession(sessionId: string): SessionRecord | undefined {
-  const stats = loadTimminsStats();
-  return stats.sessions.find((s) => s.id === sessionId);
-}
+// ─── Legacy wrappers (used by home page) ────────────────────────────────────
 
-export function clearTimminsStats(): void {
-  if (typeof window === "undefined") return;
-  localStorage.removeItem(TIMMINS_STORAGE_KEY);
-}
+export function loadPstarStats(): StatsData { return loadStats(PSTAR_STORAGE_KEY); }
+export function loadTimminsStats(): StatsData { return loadStats(TIMMINS_STORAGE_KEY); }
+export function loadTorontoStats(): StatsData { return loadStats(TORONTO_STORAGE_KEY); }
 
-// ─── Question-level tracking ─────────────────────────────────────────────────
+// Legacy default-key functions (used by home page)
+export function recordQuestionView(questionId: number): void { recordQuestionViewForBank(STORAGE_KEY, questionId); }
+export function recordQuestionAnswer(questionId: number, correct: boolean): void { recordQuestionAnswerForBank(STORAGE_KEY, questionId, correct); }
+export function startSession(mode: SessionRecord["mode"], questionIds: number[], section?: string): string { return startSessionForBank(STORAGE_KEY, mode, questionIds, section); }
+export function finishSession(sessionId: string, answered: number, correct: number): void { finishSessionForBank(STORAGE_KEY, sessionId, answered, correct); }
+export function updateSessionAnswer(sessionId: string, questionIndex: number, answer: SessionAnswer): void { updateSessionAnswerForBank(STORAGE_KEY, sessionId, questionIndex, answer); }
+export function getSession(sessionId: string): SessionRecord | undefined { return getSessionForBank(STORAGE_KEY, sessionId); }
+export function deleteSession(sessionId: string): void { deleteSessionForBank(STORAGE_KEY, sessionId); }
 
-export function recordQuestionView(questionId: number): void {
-  const stats = loadStats();
-  const qs = stats.questionStats[questionId] ?? {
-    questionId,
-    timesViewed: 0,
-    timesAnswered: 0,
-    timesCorrect: 0,
-    lastAnsweredAt: null,
-    lastCorrect: null,
-  };
-  qs.timesViewed++;
-  stats.questionStats[questionId] = qs;
-  saveStats(stats);
-}
-
-export function recordQuestionAnswer(questionId: number, correct: boolean): void {
-  const stats = loadStats();
-  const qs = stats.questionStats[questionId] ?? {
-    questionId,
-    timesViewed: 0,
-    timesAnswered: 0,
-    timesCorrect: 0,
-    lastAnsweredAt: null,
-    lastCorrect: null,
-  };
-  qs.timesAnswered++;
-  if (correct) qs.timesCorrect++;
-  qs.lastAnsweredAt = new Date().toISOString();
-  qs.lastCorrect = correct;
-  stats.questionStats[questionId] = qs;
-  saveStats(stats);
-}
-
-// ─── Session-level tracking ──────────────────────────────────────────────────
-
-export function startSession(
-  mode: SessionRecord["mode"],
-  questionIds: number[],
-  section?: string
-): string {
-  const stats = loadStats();
-  const id = `${mode}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-  stats.sessions.push({
-    id,
-    mode,
-    section,
-    startedAt: new Date().toISOString(),
-    finishedAt: null,
-    totalQuestions: questionIds.length,
-    answered: 0,
-    correct: 0,
-    questionIds,
-  });
-  saveStats(stats);
-  return id;
-}
-
-export function finishSession(
-  sessionId: string,
-  answered: number,
-  correct: number
-): void {
-  const stats = loadStats();
-  const session = stats.sessions.find((s) => s.id === sessionId);
-  if (session) {
-    session.finishedAt = new Date().toISOString();
-    session.answered = answered;
-    session.correct = correct;
-  }
-  saveStats(stats);
-}
-
-export function updateSessionAnswer(
-  sessionId: string,
-  questionIndex: number,
-  answer: SessionAnswer
-): void {
-  const stats = loadStats();
-  const session = stats.sessions.find((s) => s.id === sessionId);
-  if (session) {
-    if (!session.questionAnswers) session.questionAnswers = {};
-    session.questionAnswers[questionIndex] = answer;
-    session.answered = Object.keys(session.questionAnswers).length;
-    session.correct = Object.values(session.questionAnswers).filter((a) => a.correct).length;
-  }
-  saveStats(stats);
-}
-
-export function deleteSession(sessionId: string): void {
-  const stats = loadStats();
-  stats.sessions = stats.sessions.filter((s) => s.id !== sessionId);
-  saveStats(stats);
-}
-
-export function getSession(sessionId: string): SessionRecord | undefined {
-  const stats = loadStats();
-  return stats.sessions.find((s) => s.id === sessionId);
-}
+// Legacy PSTAR wrappers (used by home page)
+export function deletePstarSession(sessionId: string): void { deleteSessionForBank(PSTAR_STORAGE_KEY, sessionId); }
+export function deleteTimminsSession(sessionId: string): void { deleteSessionForBank(TIMMINS_STORAGE_KEY, sessionId); }
+export function deleteTorontoSession(sessionId: string): void { deleteSessionForBank(TORONTO_STORAGE_KEY, sessionId); }
 
 // ─── Aggregate helpers (used by the stats dashboard) ─────────────────────────
 
@@ -441,7 +242,6 @@ export function getWeakQuestionIds(
   for (const id of allSet) {
     const qs = data.questionStats[id];
     if (!qs || qs.timesAnswered === 0) {
-      // Never answered — treat as weakest (score 0)
       scored.push({ id, score: 0 });
     } else {
       const accuracy = qs.timesCorrect / qs.timesAnswered;
@@ -451,7 +251,6 @@ export function getWeakQuestionIds(
     }
   }
 
-  // Sort: lowest accuracy first, break ties by fewer attempts
   scored.sort((a, b) => {
     if (a.score !== b.score) return a.score - b.score;
     const aAttempts = data.questionStats[a.id]?.timesAnswered ?? 0;
@@ -464,7 +263,6 @@ export function getWeakQuestionIds(
 
 /**
  * Returns mastery stats based on the LAST answer for each question.
- * A question is "mastered" if the most recent answer was correct.
  */
 export function getMasteryStats(
   data: StatsData,
@@ -486,9 +284,6 @@ export function getMasteryStats(
   return { mastered, failed, unanswered, total: allQuestionIds.length };
 }
 
-/**
- * Returns per-section mastery stats based on last answer correctness.
- */
 export function getSectionMasteryStats(
   data: StatsData,
   sectionQuestionIds: number[]
@@ -499,4 +294,19 @@ export function getSectionMasteryStats(
 export function clearStats(): void {
   if (typeof window === "undefined") return;
   localStorage.removeItem(STORAGE_KEY);
+}
+
+export function clearPstarStats(): void {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem(PSTAR_STORAGE_KEY);
+}
+
+export function clearTimminsStats(): void {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem(TIMMINS_STORAGE_KEY);
+}
+
+export function clearTorontoStats(): void {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem(TORONTO_STORAGE_KEY);
 }

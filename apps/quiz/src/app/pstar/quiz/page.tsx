@@ -2,11 +2,13 @@
 
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import PstarQuizClient from "@/components/PstarQuizClient";
-import PstarPracticeClient from "@/components/PstarPracticeClient";
-import PstarExamClient from "@/components/PstarExamClient";
+import UnifiedPracticeClient from "@/components/UnifiedPracticeClient";
+import UnifiedExamClient from "@/components/UnifiedExamClient";
+import { getBankConfig } from "@/lib/bankConfig";
 
-function PstarQuizRouter() {
+const bank = getBankConfig("pstar");
+
+function QuizRouter() {
   const searchParams = useSearchParams();
   const mode = searchParams.get("mode") ?? "all";
   const sessionId = searchParams.get("session") ?? undefined;
@@ -14,10 +16,10 @@ function PstarQuizRouter() {
   const weakIds = weakParam ? weakParam.split(",").map(Number).filter(Boolean) : undefined;
   const countParam = searchParams.get("count");
   const count = countParam ? Number(countParam) : undefined;
+  const section = searchParams.get("section") ?? undefined;
 
-  if (mode === "practice") return <PstarPracticeClient sessionId={sessionId} weakIds={weakIds} count={count} />;
-  if (mode === "exam") return <PstarExamClient sessionId={sessionId} />;
-  return <PstarQuizClient sessionId={sessionId} count={count} />;
+  if (mode === "exam") return <UnifiedExamClient bank={bank} sessionId={sessionId} />;
+  return <UnifiedPracticeClient bank={bank} sessionId={sessionId} weakIds={weakIds} count={count} section={section} />;
 }
 
 export default function PstarQuizPage() {
@@ -29,7 +31,7 @@ export default function PstarQuizPage() {
         </div>
       }
     >
-      <PstarQuizRouter />
+      <QuizRouter />
     </Suspense>
   );
 }

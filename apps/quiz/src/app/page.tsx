@@ -7,34 +7,45 @@ import { Suspense } from "react";
 import { questions, SECTIONS } from "@/data/questions";
 import { pstarQuestions, PSTAR_SECTIONS } from "@/data/pstar-questions";
 import { timminsQuestions, TIMMINS_SECTIONS } from "@/data/timmins-questions";
+import { torontoQuestions, TORONTO_SECTIONS } from "@/data/toronto-questions";
 import {
   loadStats,
   loadPstarStats,
   loadTimminsStats,
+  loadTorontoStats,
   getWeakQuestionIds,
   getMasteryStats,
   deleteSession,
   deletePstarSession,
   deleteTimminsSession,
+  deleteTorontoSession,
   StatsData,
   SessionRecord,
 } from "@/lib/stats";
 
-type ExamBank = "pstar" | "license" | "timmins";
+type ExamBank = "pstar" | "license" | "timmins" | "toronto";
 
 const QUESTION_COUNT_OPTIONS_PSTAR = [10, 20, 50, 100, 192];
 const QUESTION_COUNT_OPTIONS_LICENSE = [10, 20, 50, 100];
 const QUESTION_COUNT_OPTIONS_TIMMINS = [10, 20, 50, 101];
+const QUESTION_COUNT_OPTIONS_TORONTO = [10, 20, 50, 104];
 
 function HomeContent() {
   const searchParams = useSearchParams();
   const bankParam = searchParams.get("bank");
   const [bank, setBank] = useState<ExamBank>(
-    bankParam === "license" ? "license" : bankParam === "timmins" ? "timmins" : "pstar"
+    bankParam === "license"
+      ? "license"
+      : bankParam === "timmins"
+      ? "timmins"
+      : bankParam === "toronto"
+      ? "toronto"
+      : "pstar"
   );
   const [pstarStats, setPstarStats] = useState<StatsData | null>(null);
   const [licenseStats, setLicenseStats] = useState<StatsData | null>(null);
   const [timminsStats, setTimminsStats] = useState<StatsData | null>(null);
+  const [torontoStats, setTorontoStats] = useState<StatsData | null>(null);
   const [practiceCount, setPracticeCount] = useState<number | "all">("all");
   const [weakIds, setWeakIds] = useState<number[]>([]);
 
@@ -42,28 +53,79 @@ function HomeContent() {
     setPstarStats(loadPstarStats());
     setLicenseStats(loadStats());
     setTimminsStats(loadTimminsStats());
+    setTorontoStats(loadTorontoStats());
   }, []);
 
   useEffect(() => {
     setPracticeCount("all");
-    const stats = bank === "pstar" ? pstarStats : bank === "timmins" ? timminsStats : licenseStats;
-    const qs = bank === "pstar" ? pstarQuestions : bank === "timmins" ? timminsQuestions : questions;
+    const stats =
+      bank === "pstar"
+        ? pstarStats
+        : bank === "timmins"
+        ? timminsStats
+        : bank === "toronto"
+        ? torontoStats
+        : licenseStats;
+    const qs =
+      bank === "pstar"
+        ? pstarQuestions
+        : bank === "timmins"
+        ? timminsQuestions
+        : bank === "toronto"
+        ? torontoQuestions
+        : questions;
     if (stats) {
       const ids = getWeakQuestionIds(stats, qs.map((q) => q.id), 50);
       setWeakIds(ids);
     } else {
       setWeakIds([]);
     }
-  }, [bank, pstarStats, licenseStats, timminsStats]);
+  }, [bank, pstarStats, licenseStats, timminsStats, torontoStats]);
 
-  const currentStats = bank === "pstar" ? pstarStats : bank === "timmins" ? timminsStats : licenseStats;
-  const currentQuestions = bank === "pstar" ? pstarQuestions : bank === "timmins" ? timminsQuestions : questions;
-  const currentSections = bank === "pstar" ? PSTAR_SECTIONS : bank === "timmins" ? TIMMINS_SECTIONS : SECTIONS;
-  const quizBase = bank === "pstar" ? "/pstar/quiz" : bank === "timmins" ? "/timmins/quiz" : "/helicopter/quiz";
+  const currentStats =
+    bank === "pstar"
+      ? pstarStats
+      : bank === "timmins"
+      ? timminsStats
+      : bank === "toronto"
+      ? torontoStats
+      : licenseStats;
+  const currentQuestions =
+    bank === "pstar"
+      ? pstarQuestions
+      : bank === "timmins"
+      ? timminsQuestions
+      : bank === "toronto"
+      ? torontoQuestions
+      : questions;
+  const currentSections =
+    bank === "pstar"
+      ? PSTAR_SECTIONS
+      : bank === "timmins"
+      ? TIMMINS_SECTIONS
+      : bank === "toronto"
+      ? TORONTO_SECTIONS
+      : SECTIONS;
+  const quizBase =
+    bank === "pstar"
+      ? "/pstar/quiz"
+      : bank === "timmins"
+      ? "/timmins/quiz"
+      : bank === "toronto"
+      ? "/toronto/quiz"
+      : "/helicopter/quiz";
   const examQuestionCount = bank === "pstar" ? 50 : 100;
-  const passPercent = bank === "pstar" ? 90 : 70;
+  const passPercent =
+    bank === "pstar" ? 90 : bank === "license" ? 60 : bank === "toronto" ? 70 : 70;
   const totalQuestions = currentQuestions.length;
-  const countOptions = bank === "pstar" ? QUESTION_COUNT_OPTIONS_PSTAR : bank === "timmins" ? QUESTION_COUNT_OPTIONS_TIMMINS : QUESTION_COUNT_OPTIONS_LICENSE;
+  const countOptions =
+    bank === "pstar"
+      ? QUESTION_COUNT_OPTIONS_PSTAR
+      : bank === "timmins"
+      ? QUESTION_COUNT_OPTIONS_TIMMINS
+      : bank === "toronto"
+      ? QUESTION_COUNT_OPTIONS_TORONTO
+      : QUESTION_COUNT_OPTIONS_LICENSE;
 
   // Section stats
   const sectionBreakdown = currentSections.map((section) => {
@@ -184,6 +246,16 @@ function HomeContent() {
             }`}
           >
             Timmins Exam
+          </button>
+          <button
+            onClick={() => setBank("toronto")}
+            className={`px-5 py-2.5 text-sm font-semibold rounded-lg transition-colors ${
+              bank === "toronto"
+                ? "bg-rose-100 text-rose-800 shadow-sm"
+                : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+            }`}
+          >
+            Toronto Exam
           </button>
 
           {/* Quick stats in the tab bar */}
@@ -464,6 +536,7 @@ function HomeContent() {
           onDelete={() => {
             if (bank === "pstar") setPstarStats(loadPstarStats());
             else if (bank === "timmins") setTimminsStats(loadTimminsStats());
+            else if (bank === "toronto") setTorontoStats(loadTorontoStats());
             else setLicenseStats(loadStats());
           }}
         />
@@ -551,6 +624,18 @@ function HomeContent() {
             </p>
           </div>
         )}
+        {bank === "toronto" && (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-5 mb-6">
+            <h2 className="text-sm font-semibold text-gray-800 mb-2">
+              About Toronto Exam
+            </h2>
+            <p className="text-gray-600 text-xs mb-2">
+              {totalQuestions} questions covering Air Law, Helicopter Theory,
+              Aeromedical, Meteorology, Weather Reports, and Navigation.
+              Pass mark: 70%.
+            </p>
+          </div>
+        )}
       </main>
 
       <footer className="border-t border-gray-200 py-6 px-4 text-center text-xs text-gray-400">
@@ -581,7 +666,14 @@ function RecentSessions({
 }) {
   if (!stats || stats.sessions.length === 0) return null;
 
-  const quizBase = bank === "pstar" ? "/pstar/quiz" : bank === "timmins" ? "/timmins/quiz" : "/helicopter/quiz";
+  const quizBase =
+    bank === "pstar"
+      ? "/pstar/quiz"
+      : bank === "timmins"
+      ? "/timmins/quiz"
+      : bank === "toronto"
+      ? "/toronto/quiz"
+      : "/helicopter/quiz";
 
   const fmtDate = (iso: string) => {
     const d = new Date(iso);
@@ -668,6 +760,7 @@ function RecentSessions({
                     onClick={() => {
                       if (bank === "pstar") deletePstarSession(s.id);
                       else if (bank === "timmins") deleteTimminsSession(s.id);
+                      else if (bank === "toronto") deleteTorontoSession(s.id);
                       else deleteSession(s.id);
                       onDelete();
                     }}

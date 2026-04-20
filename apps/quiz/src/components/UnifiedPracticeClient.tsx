@@ -1,15 +1,15 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { questions, Question } from "@/data/questions";
 import Link from "next/link";
+import { BankConfig, AnyQuestion } from "@/lib/bankConfig";
 import {
-  recordQuestionView,
-  recordQuestionAnswer,
-  startSession,
-  finishSession,
-  updateSessionAnswer,
-  getSession,
+  recordQuestionViewForBank,
+  recordQuestionAnswerForBank,
+  startSessionForBank,
+  finishSessionForBank,
+  updateSessionAnswerForBank,
+  getSessionForBank,
 } from "@/lib/stats";
 
 function shuffleArray<T>(arr: T[]): T[] {
@@ -24,26 +24,47 @@ function shuffleArray<T>(arr: T[]): T[] {
 type AnswerRecord = { selected: number; correct: boolean };
 type ReviewFilter = "all" | "correct" | "incorrect";
 
-export default function PracticeClient({ sessionId: resumeSessionId, weakIds, count }: { sessionId?: string; weakIds?: number[]; count?: number }) {
-  const [quiz, setQuiz] = useState<Question[]>([]);
+interface Props {
+  bank: BankConfig;
+  sessionId?: string;
+  weakIds?: number[];
+  count?: number;
+  section?: string;
+}
+
+export default function UnifiedPracticeClient({ bank, sessionId: resumeSessionId, weakIds, count, section }: Props) {
+  const [quiz, setQuiz] = useState<AnyQuestion[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, AnswerRecord>>({});
   const [visited, setVisited] = useState<Set<number>>(new Set([0]));
   const [done, setDone] = useState(false);
+  const [showQuitWarning, setShowQuitWarning] = useState(false);
 
-  // Report mode state
   const [reviewFilter, setReviewFilter] = useState<ReviewFilter>("all");
   const [reviewIndex, setReviewIndex] = useState<number | null>(null);
 
   const sessionIdRef = useRef<string | null>(null);
+  // Track latest answers in a ref so setTimeout callbacks see fresh data
+  const answersRef = useRef(answers);
+  answersRef.current = answers;
 
+  const modeLabel = section
+    ? decodeURIComponent(section)
+    : weakIds && weakIds.length > 0
+    ? "Weakest Questions"
+    : "Practice";
+
+  const modeIcon = section ? "📚" : weakIds && weakIds.length > 0 ? "🎯" : "⚡";
+
+  const sessionMode = section ? "section" as const : "practice" as const;
+
+  // ─── Build or restore quiz ────────────────────────────────────────────────
   useEffect(() => {
-    // Resume or review an existing session
     if (resumeSessionId) {
-      const session = getSession(resumeSessionId);
+      const session = getSessionForBank(bank.storageKey, resumeSessionId);
       if (session) {
-        const qMap = new Map(questions.map((q) => [q.id, q]));
-        const restored = session.questionIds.map((id) => qMap.get(id)).filter(Boolean) as Question[];
+        const qMap = new Map(bank.questions.map((q) => [q.id, q]));
+        const restored = session.questionIds.map((id) => qMap.get(id)).filter(Boolean) as AnyQuestion[];
         if (restored.length > 0) {
           setQuiz(restored);
           sessionIdRef.current = session.id;
@@ -72,20 +93,29 @@ export default function PracticeClient({ sessionId: resumeSessionId, weakIds, co
     }
 
     // New session
-    let pool = questions;
-    if (weakIds && weakIds.length > 0) {
-      pool = weakIds.map((id) => questions.find((q) => q.id === id)).filter(Boolean) as Question[];
+    let pool = bank.questions;
+
+    if (section) {
+      const decodedSection = decodeURIComponent(section);
+      pool = bank.questions.filter((q) => q.section === decodedSection);
     }
+
+    if (weakIds && weakIds.length > 0) {
+      pool = weakIds.map((id) => bank.questions.find((q) => q.id === id)).filter(Boolean) as AnyQuestion[];
+    }
+
     let qs = weakIds && weakIds.length > 0 ? pool : shuffleArray(pool);
     if (count && count > 0 && count < qs.length) {
       qs = qs.slice(0, count);
     }
     setQuiz(qs);
-    sessionIdRef.current = startSession(
-      "practice",
-      qs.map((q) => q.id)
+    sessionIdRef.current = startSessionForBank(
+      bank.storageKey,
+      sessionMode,
+      qs.map((q) => q.id),
+      section ? decodeURIComponent(section) : undefined
     );
-  }, [resumeSessionId, weakIds, count]);
+  }, [resumeSessionId, weakIds, count, section, bank, sessionMode]);
 
   // Track visited questions
   const goTo = useCallback(
@@ -94,35 +124,65 @@ export default function PracticeClient({ sessionId: resumeSessionId, weakIds, co
       setVisited((prev) => {
         const next = new Set(prev);
         if (!next.has(idx) && quiz[idx]) {
-          recordQuestionView(quiz[idx].id);
+          recordQuestionViewForBank(bank.storageKey, quiz[idx].id);
         }
         next.add(idx);
         return next;
       });
     },
-    [quiz]
+    [quiz, bank.storageKey]
   );
 
   // Record view for first question once quiz loads
   useEffect(() => {
     if (quiz.length > 0) {
-      recordQuestionView(quiz[0].id);
+      recordQuestionViewForBank(bank.storageKey, quiz[0].id);
     }
-  }, [quiz]);
+  }, [quiz, bank.storageKey]);
 
-  const handleRestart = () => {
-    const shuffled = shuffleArray(questions);
-    setQuiz(shuffled);
+  const finishCurrentSession = useCallback(() => {
+    const ans = answersRef.current;
+    const total = Object.keys(ans).length;
+    const correctCount = Object.values(ans).filter((a) => a.correct).length;
+    if (sessionIdRef.current) {
+      finishSessionForBank(bank.storageKey, sessionIdRef.current, total, correctCount);
+    }
+    setDone(true);
+    setShowQuitWarning(false);
+  }, [bank.storageKey]);
+
+  const startNewSession = (qs: AnyQuestion[]) => {
+    setQuiz(qs);
     setCurrentIndex(0);
     setAnswers({});
     setVisited(new Set([0]));
     setDone(false);
+    setShowQuitWarning(false);
     setReviewFilter("all");
     setReviewIndex(null);
-    sessionIdRef.current = startSession(
-      "practice",
-      shuffled.map((q) => q.id)
+    sessionIdRef.current = startSessionForBank(
+      bank.storageKey,
+      sessionMode,
+      qs.map((q) => q.id),
+      section ? decodeURIComponent(section) : undefined
     );
+  };
+
+  const handleRestart = () => {
+    let pool = bank.questions;
+    if (section) {
+      pool = bank.questions.filter((q) => q.section === decodeURIComponent(section));
+    }
+    startNewSession(shuffleArray(pool));
+  };
+
+  const handleRetryFailed = () => {
+    const failedQuestions = quiz.filter((_, idx) => {
+      const a = answers[idx];
+      return a && !a.correct;
+    });
+    if (failedQuestions.length === 0) return;
+    startNewSession(shuffleArray(failedQuestions));
   };
 
   if (quiz.length === 0) {
@@ -133,7 +193,7 @@ export default function PracticeClient({ sessionId: resumeSessionId, weakIds, co
     );
   }
 
-  // ─── Question navigator grid (reused in active + report) ───────────────────
+  // ─── Question navigator grid ──────────────────────────────────────────────
   const QuestionGrid = ({
     onSelect,
     activeIndex,
@@ -153,7 +213,7 @@ export default function PracticeClient({ sessionId: resumeSessionId, weakIds, co
 
         let bg: string;
         if (isCurrent) {
-          bg = "bg-emerald-700 text-white ring-2 ring-emerald-300";
+          bg = `${bank.colors.currentQ} text-white ring-2 ${bank.colors.currentQRing}`;
         } else if (a) {
           bg = a.correct
             ? "bg-green-100 text-green-800 border border-green-300 hover:bg-green-200"
@@ -181,9 +241,7 @@ export default function PracticeClient({ sessionId: resumeSessionId, weakIds, co
                 : "Not visited"
             }
           >
-            {(filteredIndices ? [...filteredIndices].indexOf(idx) + 1 > 0 : true)
-              ? idx + 1
-              : idx + 1}
+            {idx + 1}
           </button>
         );
       })}
@@ -197,7 +255,6 @@ export default function PracticeClient({ sessionId: resumeSessionId, weakIds, co
     const incorrect = total - correct;
     const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
 
-    // Filtered indices for the grid
     const filteredSet = new Set(
       quiz
         .map((_, idx) => idx)
@@ -210,20 +267,17 @@ export default function PracticeClient({ sessionId: resumeSessionId, weakIds, co
         })
     );
 
-    // Currently reviewed question
-    const reviewQ =
-      reviewIndex !== null ? quiz[reviewIndex] : null;
-    const reviewA =
-      reviewIndex !== null ? answers[reviewIndex] : undefined;
+    const reviewQ = reviewIndex !== null ? quiz[reviewIndex] : null;
+    const reviewA = reviewIndex !== null ? answers[reviewIndex] : undefined;
 
     return (
       <div className="min-h-screen bg-gray-50">
-        <header className="bg-emerald-800 text-white py-6 px-4">
+        <header className={`${bank.colors.primary} text-white py-6 px-4`}>
           <div className="max-w-3xl mx-auto flex items-center gap-4">
-            <Link href="/?bank=license" className="text-emerald-300 hover:text-white text-sm">
+            <Link href={bank.homeHref} className={`${bank.colors.primaryLight} hover:text-white text-sm`}>
               ← Home
             </Link>
-            <h1 className="text-xl font-semibold">Practice — Report</h1>
+            <h1 className="text-xl font-semibold">{modeLabel} — Report</h1>
           </div>
         </header>
 
@@ -238,7 +292,7 @@ export default function PracticeClient({ sessionId: resumeSessionId, weakIds, co
               {pct}%
             </div>
             <p className="text-gray-600 mb-2">
-              {correct} correct out of {total} answered
+              {correct} correct out of {total} answered ({quiz.length} questions)
             </p>
             <div className="flex gap-4 justify-center text-sm mb-6">
               <span className="text-green-600 font-medium">✓ {correct} correct</span>
@@ -247,15 +301,23 @@ export default function PracticeClient({ sessionId: resumeSessionId, weakIds, co
                 <span className="text-gray-400">— {quiz.length - total} skipped</span>
               )}
             </div>
-            <div className="flex gap-3 justify-center">
+            <div className="flex gap-3 justify-center flex-wrap">
               <button
                 onClick={handleRestart}
-                className="bg-emerald-700 hover:bg-emerald-800 text-white px-6 py-2 rounded-lg text-sm font-medium transition-colors"
+                className={`${bank.colors.accent} ${bank.colors.accentHover} text-white px-6 py-2 rounded-lg text-sm font-medium transition-colors`}
               >
                 Practice Again
               </button>
+              {incorrect > 0 && (
+                <button
+                  onClick={handleRetryFailed}
+                  className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg text-sm font-medium transition-colors"
+                >
+                  Retry Failed Only ({incorrect})
+                </button>
+              )}
               <Link
-                href="/?bank=license"
+                href={bank.homeHref}
                 className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 rounded-lg text-sm font-medium transition-colors"
               >
                 Home
@@ -284,7 +346,7 @@ export default function PracticeClient({ sessionId: resumeSessionId, weakIds, co
                       ? "bg-red-600 text-white"
                       : key === "correct"
                       ? "bg-green-600 text-white"
-                      : "bg-emerald-700 text-white"
+                      : `${bank.colors.accent} text-white`
                     : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                 }`}
               >
@@ -310,132 +372,18 @@ export default function PracticeClient({ sessionId: resumeSessionId, weakIds, co
 
           {/* Single question review */}
           {reviewQ && reviewA && (
-            <div
-              className={`bg-white rounded-lg border-2 p-6 mb-6 ${
-                reviewA.correct ? "border-green-300" : "border-red-300"
-              }`}
-            >
-              <div className="flex items-center gap-2 mb-4">
-                <span
-                  className={`text-sm font-bold ${
-                    reviewA.correct ? "text-green-600" : "text-red-600"
-                  }`}
-                >
-                  {reviewA.correct ? "✓ Correct" : "✗ Incorrect"} — Q
-                  {reviewIndex! + 1}
-                </span>
-                <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded">
-                  {reviewQ.section}
-                </span>
-              </div>
-
-              <p className="text-gray-800 font-medium text-sm leading-relaxed whitespace-pre-line mb-4">
-                {reviewQ.question}
-              </p>
-              {reviewQ.images && reviewQ.images.length > 0 && (
-                <div className="mb-4 space-y-3">
-                  {reviewQ.images.map((img, idx) => (
-                    <div key={idx} className="border border-gray-200 rounded-lg overflow-hidden">
-                      <img
-                        src={img.src}
-                        alt={img.alt}
-                        className="w-full h-auto cursor-pointer"
-                        onClick={() => window.open(img.src, '_blank')}
-                        title="Click to open full size"
-                      />
-                      <p className="text-xs text-gray-500 px-3 py-1.5 bg-gray-50">{img.alt}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              <div className="space-y-2 mb-4">
-                {reviewQ.options.map((opt) => {
-                  const isUserChoice = reviewA.selected === opt.id;
-                  const isCorrectOpt = opt.id === reviewQ.correctAnswer;
-                  let cls =
-                    "text-sm px-3 py-2 rounded border";
-                  if (isCorrectOpt)
-                    cls += " bg-green-50 border-green-300 text-green-800 font-medium";
-                  else if (isUserChoice)
-                    cls += " bg-red-50 border-red-300 text-red-700 line-through";
-                  else cls += " bg-white border-gray-100 text-gray-500";
-
-                  return (
-                    <div key={opt.id} className={cls}>
-                      {isCorrectOpt ? "✓" : isUserChoice ? "✗" : " "}{" "}
-                      ({opt.id}) {opt.text}
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                <p className="text-sm text-gray-700 leading-relaxed mb-3">
-                  {reviewQ.explanation}
-                </p>
-                <div className="flex items-center gap-4 flex-wrap">
-                  {reviewQ.aimReference && (
-                    <span className="text-xs text-gray-400">
-                      📖 {reviewQ.aimReference}
-                    </span>
-                  )}
-                  <a
-                    href="/pdfs/aim-2025-2_access_en.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs text-blue-600 hover:underline"
-                  >
-                    Open TC AIM PDF ↗
-                  </a>
-                  <a
-                    href="/pdfs/examcanada.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs text-blue-600 hover:underline"
-                  >
-                    Open Exam PDF ↗
-                  </a>
-                </div>
-              </div>
-
-              {/* Navigate between filtered questions */}
-              <div className="flex justify-between mt-4">
-                <button
-                  onClick={() => {
-                    const arr = [...filteredSet].sort((a, b) => a - b);
-                    const pos = arr.indexOf(reviewIndex!);
-                    if (pos > 0) setReviewIndex(arr[pos - 1]);
-                  }}
-                  disabled={
-                    [...filteredSet].sort((a, b) => a - b).indexOf(reviewIndex!) <=
-                    0
-                  }
-                  className="px-3 py-1.5 text-xs text-gray-600 bg-gray-100 rounded hover:bg-gray-200 disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  ← Previous
-                </button>
-                <button
-                  onClick={() => {
-                    const arr = [...filteredSet].sort((a, b) => a - b);
-                    const pos = arr.indexOf(reviewIndex!);
-                    if (pos < arr.length - 1) setReviewIndex(arr[pos + 1]);
-                  }}
-                  disabled={
-                    (() => {
-                      const arr = [...filteredSet].sort((a, b) => a - b);
-                      return arr.indexOf(reviewIndex!) >= arr.length - 1;
-                    })()
-                  }
-                  className="px-3 py-1.5 text-xs text-gray-600 bg-gray-100 rounded hover:bg-gray-200 disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  Next →
-                </button>
-              </div>
-            </div>
+            <ReviewQuestionCard
+              question={reviewQ}
+              answer={reviewA}
+              questionNumber={reviewIndex! + 1}
+              bank={bank}
+              filteredSet={filteredSet}
+              reviewIndex={reviewIndex!}
+              onNavigate={setReviewIndex}
+            />
           )}
 
-          {/* If reviewing a question that wasn't answered */}
+          {/* Skipped question review */}
           {reviewIndex !== null && !reviewA && (
             <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
               <div className="flex items-center gap-2 mb-4">
@@ -443,7 +391,7 @@ export default function PracticeClient({ sessionId: resumeSessionId, weakIds, co
                   — Skipped — Q{reviewIndex + 1}
                 </span>
                 <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded">
-                  {reviewQ?.section}
+                  {quiz[reviewIndex].section}
                 </span>
               </div>
               <p className="text-gray-800 font-medium text-sm leading-relaxed whitespace-pre-line mb-4">
@@ -451,21 +399,15 @@ export default function PracticeClient({ sessionId: resumeSessionId, weakIds, co
               </p>
               <p className="text-xs text-green-700">
                 Correct answer: ({quiz[reviewIndex].correctAnswer}){" "}
-                {
-                  quiz[reviewIndex].options.find(
-                    (o) => o.id === quiz[reviewIndex].correctAnswer
-                  )?.text
-                }
+                {quiz[reviewIndex].options.find((o) => o.id === quiz[reviewIndex].correctAnswer)?.text}
               </p>
             </div>
           )}
 
-          {/* Full list fallback (when no question selected) */}
+          {/* Full list fallback */}
           {reviewIndex === null && (
             <>
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">
-                Session Review
-              </h2>
+              <h2 className="text-lg font-semibold text-gray-800 mb-4">Session Review</h2>
               <div className="space-y-3">
                 {quiz.map((q, idx) => {
                   if (!filteredSet.has(idx)) return null;
@@ -480,16 +422,10 @@ export default function PracticeClient({ sessionId: resumeSessionId, weakIds, co
                       }`}
                     >
                       <div className="flex items-start gap-2 mb-1">
-                        <span
-                          className={`text-sm font-medium shrink-0 ${
-                            a.correct ? "text-green-600" : "text-red-600"
-                          }`}
-                        >
+                        <span className={`text-sm font-medium shrink-0 ${a.correct ? "text-green-600" : "text-red-600"}`}>
                           {a.correct ? "✓" : "✗"} Q{idx + 1}
                         </span>
-                        <p className="text-sm text-gray-700 flex-1">
-                          {q.question.split("\n")[0]}
-                        </p>
+                        <p className="text-sm text-gray-700 flex-1">{q.question.split("\n")[0]}</p>
                       </div>
                       {!a.correct && (
                         <p className="text-xs text-red-500 ml-6">
@@ -516,20 +452,29 @@ export default function PracticeClient({ sessionId: resumeSessionId, weakIds, co
   const handleSelect = (optionId: number) => {
     if (isRevealed) return;
     const correct = optionId === current.correctAnswer;
-    setAnswers((prev) => ({
-      ...prev,
+    const newAnswers = {
+      ...answers,
       [currentIndex]: { selected: optionId, correct },
-    }));
-    recordQuestionAnswer(current.id, correct);
+    };
+    setAnswers(newAnswers);
+    // Update the ref immediately so the timeout callback sees fresh data
+    answersRef.current = newAnswers;
+    recordQuestionAnswerForBank(bank.storageKey, current.id, correct);
     if (sessionIdRef.current) {
-      updateSessionAnswer(sessionIdRef.current, currentIndex, {
+      updateSessionAnswerForBank(bank.storageKey, sessionIdRef.current, currentIndex, {
         questionId: current.id,
         selectedOption: optionId,
         correct,
       });
     }
     if (correct) {
-      setTimeout(() => handleNext(), 300);
+      setTimeout(() => {
+        if (currentIndex < quiz.length - 1) {
+          goTo(currentIndex + 1);
+        } else {
+          finishCurrentSession();
+        }
+      }, 300);
     }
   };
 
@@ -537,43 +482,39 @@ export default function PracticeClient({ sessionId: resumeSessionId, weakIds, co
     if (currentIndex < quiz.length - 1) {
       goTo(currentIndex + 1);
     } else {
-      // Finish session
-      const total = Object.keys(answers).length;
-      const correctCount = Object.values(answers).filter((a) => a.correct).length;
-      if (sessionIdRef.current) {
-        finishSession(sessionIdRef.current, total, correctCount);
-      }
-      setDone(true);
+      finishCurrentSession();
     }
   };
 
   const answeredCount = Object.keys(answers).length;
 
+  const referenceField = current.aimReference || current.reference;
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-emerald-800 text-white py-4 px-4">
+      <header className={`${bank.colors.primary} text-white py-4 px-4`}>
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link href="/?bank=license" className="text-emerald-300 hover:text-white text-sm">
+            <Link href={bank.homeHref} className={`${bank.colors.primaryLight} hover:text-white text-sm`}>
               ← Home
             </Link>
-            <span className="text-emerald-500">|</span>
-            <span className="text-sm text-emerald-200 font-medium">{weakIds && weakIds.length > 0 ? "🎯 Weakest Questions" : "⚡ Practice"}</span>
-          </div>
-          <div className="flex items-center gap-4 text-sm text-emerald-200">
-            <span>
-              {answeredCount}/{quiz.length} answered
+            <span className={bank.colors.primarySep}>|</span>
+            <span className={`text-sm ${bank.colors.primaryMuted} font-medium`}>
+              {modeIcon} {modeLabel}
             </span>
+          </div>
+          <div className={`flex items-center gap-4 text-sm ${bank.colors.primaryMuted}`}>
+            <span>{answeredCount}/{quiz.length} answered</span>
             <span className="font-mono">{currentIndex + 1}/{quiz.length}</span>
           </div>
         </div>
       </header>
 
       {/* Progress bar */}
-      <div className="bg-emerald-900 h-1">
+      <div className={`${bank.colors.primaryDark} h-1`}>
         <div
-          className="bg-emerald-400 h-1 transition-all duration-300"
+          className={`${bank.colors.accentBar} h-1 transition-all duration-300`}
           style={{ width: `${((currentIndex + 1) / quiz.length) * 100}%` }}
         />
       </div>
@@ -587,16 +528,12 @@ export default function PracticeClient({ sessionId: resumeSessionId, weakIds, co
             <span className="text-gray-400">■</span> visited{" "}
             <span className="text-gray-300">□</span> not visited
           </p>
-          <QuestionGrid
-            onSelect={goTo}
-            activeIndex={currentIndex}
-            showResults={false}
-          />
+          <QuestionGrid onSelect={goTo} activeIndex={currentIndex} showResults={false} />
         </div>
 
         {/* Section badge */}
         <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-medium text-emerald-700 bg-emerald-100 px-2 py-1 rounded">
+          <span className={`text-xs font-medium ${bank.colors.badge} px-2 py-1 rounded`}>
             {current.section} — Question {current.id}
           </span>
           <span className="text-xs text-gray-400 italic">
@@ -670,11 +607,7 @@ export default function PracticeClient({ sessionId: resumeSessionId, weakIds, co
         {isRevealed && (
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-5 mb-6">
             <div className="flex items-center gap-2 mb-3">
-              <span
-                className={`text-sm font-bold ${
-                  isCorrect ? "text-green-700" : "text-red-600"
-                }`}
-              >
+              <span className={`text-sm font-bold ${isCorrect ? "text-green-700" : "text-red-600"}`}>
                 {isCorrect ? "✅ Correct!" : "❌ Incorrect"}
               </span>
               {!isCorrect && (
@@ -682,44 +615,55 @@ export default function PracticeClient({ sessionId: resumeSessionId, weakIds, co
                   — Correct answer:{" "}
                   <strong className="text-gray-700">
                     ({current.correctAnswer}){" "}
-                    {
-                      current.options.find((o) => o.id === current.correctAnswer)
-                        ?.text
-                    }
+                    {current.options.find((o) => o.id === current.correctAnswer)?.text}
                   </strong>
                 </span>
               )}
             </div>
 
-            <p className="text-sm text-gray-700 leading-relaxed mb-4">
-              {current.explanation}
-            </p>
+            {current.explanation && (
+              <p className="text-sm text-gray-700 leading-relaxed mb-4">{current.explanation}</p>
+            )}
 
             <div className="flex items-center gap-4 flex-wrap border-t border-gray-200 pt-3 mt-1">
-              {current.aimReference && (
+              {referenceField && (
                 <span className="inline-flex items-center gap-1 text-xs text-gray-500">
                   <span>📖</span>
-                  <strong>AIM Reference:</strong> {current.aimReference}
+                  <strong>Reference:</strong> {referenceField}
                 </span>
               )}
-              <a
-                href="/pdfs/aim-2025-2_access_en.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-800 underline"
-                title="Open TC AIM 2025-2 PDF"
+              {bank.pdfs && bank.pdfs.map((pdf, idx) => (
+                <a
+                  key={idx}
+                  href={pdf.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-800 underline"
+                >
+                  {pdf.label} ↗
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Quit warning */}
+        {showQuitWarning && (
+          <div className="bg-amber-50 border border-amber-300 rounded-lg p-4 mb-4 text-sm text-amber-800">
+            <strong>End session early?</strong> Your progress ({answeredCount}/{quiz.length} answered) will be saved.
+            <div className="flex gap-3 mt-3">
+              <button
+                onClick={finishCurrentSession}
+                className="text-xs bg-red-600 hover:bg-red-700 text-white px-4 py-1.5 rounded font-medium"
               >
-                Open TC AIM PDF ↗
-              </a>
-              <a
-                href="/pdfs/examcanada.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-800 underline"
-                title="Open Sample Exam PDF"
+                End Session
+              </button>
+              <button
+                onClick={() => setShowQuitWarning(false)}
+                className="text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-1.5 rounded font-medium"
               >
-                Open Exam PDF ↗
-              </a>
+                Continue
+              </button>
             </div>
           </div>
         )}
@@ -734,16 +678,161 @@ export default function PracticeClient({ sessionId: resumeSessionId, weakIds, co
             ← Previous
           </button>
 
-          {isRevealed && (
+          <div className="flex gap-3">
+            {/* Quit button */}
             <button
-              onClick={handleNext}
-              className="px-5 py-2 text-sm font-medium text-white bg-emerald-700 hover:bg-emerald-800 rounded-lg transition-colors"
+              onClick={() => setShowQuitWarning(true)}
+              className="px-4 py-2 text-sm text-gray-500 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:text-red-600 hover:border-red-300 transition-colors"
             >
-              {currentIndex < quiz.length - 1 ? "Next Question →" : "Finish Session"}
+              Quit
             </button>
-          )}
+
+            {!isRevealed && currentIndex < quiz.length - 1 && (
+              <button
+                onClick={() => goTo(currentIndex + 1)}
+                className="px-5 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                Skip →
+              </button>
+            )}
+
+            {isRevealed && (
+              <button
+                onClick={handleNext}
+                className={`px-5 py-2 text-sm font-medium text-white ${bank.colors.accent} ${bank.colors.accentHover} rounded-lg transition-colors`}
+              >
+                {currentIndex < quiz.length - 1 ? "Next Question →" : "Finish Session"}
+              </button>
+            )}
+          </div>
         </div>
       </main>
+    </div>
+  );
+}
+
+// ─── Review question card (extracted for readability) ───────────────────────
+
+function ReviewQuestionCard({
+  question,
+  answer,
+  questionNumber,
+  bank,
+  filteredSet,
+  reviewIndex,
+  onNavigate,
+}: {
+  question: AnyQuestion;
+  answer: AnswerRecord;
+  questionNumber: number;
+  bank: BankConfig;
+  filteredSet: Set<number>;
+  reviewIndex: number;
+  onNavigate: (idx: number) => void;
+}) {
+  const referenceField = question.aimReference || question.reference;
+
+  const navigateFiltered = (direction: "prev" | "next") => {
+    const arr = [...filteredSet].sort((a, b) => a - b);
+    const pos = arr.indexOf(reviewIndex);
+    if (direction === "prev" && pos > 0) onNavigate(arr[pos - 1]);
+    if (direction === "next" && pos < arr.length - 1) onNavigate(arr[pos + 1]);
+  };
+
+  const arr = [...filteredSet].sort((a, b) => a - b);
+  const pos = arr.indexOf(reviewIndex);
+
+  return (
+    <div
+      className={`bg-white rounded-lg border-2 p-6 mb-6 ${
+        answer.correct ? "border-green-300" : "border-red-300"
+      }`}
+    >
+      <div className="flex items-center gap-2 mb-4">
+        <span className={`text-sm font-bold ${answer.correct ? "text-green-600" : "text-red-600"}`}>
+          {answer.correct ? "✓ Correct" : "✗ Incorrect"} — Q{questionNumber}
+        </span>
+        <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded">
+          {question.section}
+        </span>
+      </div>
+
+      <p className="text-gray-800 font-medium text-sm leading-relaxed whitespace-pre-line mb-4">
+        {question.question}
+      </p>
+
+      {question.images && question.images.length > 0 && (
+        <div className="mb-4 space-y-3">
+          {question.images.map((img, idx) => (
+            <div key={idx} className="border border-gray-200 rounded-lg overflow-hidden">
+              <img
+                src={img.src}
+                alt={img.alt}
+                className="w-full h-auto cursor-pointer"
+                onClick={() => window.open(img.src, '_blank')}
+                title="Click to open full size"
+              />
+              <p className="text-xs text-gray-500 px-3 py-1.5 bg-gray-50">{img.alt}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div className="space-y-2 mb-4">
+        {question.options.map((opt) => {
+          const isUserChoice = answer.selected === opt.id;
+          const isCorrectOpt = opt.id === question.correctAnswer;
+          let cls = "text-sm px-3 py-2 rounded border";
+          if (isCorrectOpt) cls += " bg-green-50 border-green-300 text-green-800 font-medium";
+          else if (isUserChoice) cls += " bg-red-50 border-red-300 text-red-700 line-through";
+          else cls += " bg-white border-gray-100 text-gray-500";
+
+          return (
+            <div key={opt.id} className={cls}>
+              {isCorrectOpt ? "✓" : isUserChoice ? "✗" : " "} ({opt.id}) {opt.text}
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+        {question.explanation && (
+          <p className="text-sm text-gray-700 leading-relaxed mb-3">{question.explanation}</p>
+        )}
+        <div className="flex items-center gap-4 flex-wrap">
+          {referenceField && (
+            <span className="text-xs text-gray-400">📖 {referenceField}</span>
+          )}
+          {bank.pdfs && bank.pdfs.map((pdf, idx) => (
+            <a
+              key={idx}
+              href={pdf.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-blue-600 hover:underline"
+            >
+              {pdf.label} ↗
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex justify-between mt-4">
+        <button
+          onClick={() => navigateFiltered("prev")}
+          disabled={pos <= 0}
+          className="px-3 py-1.5 text-xs text-gray-600 bg-gray-100 rounded hover:bg-gray-200 disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+          ← Previous
+        </button>
+        <button
+          onClick={() => navigateFiltered("next")}
+          disabled={pos >= arr.length - 1}
+          className="px-3 py-1.5 text-xs text-gray-600 bg-gray-100 rounded hover:bg-gray-200 disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+          Next →
+        </button>
+      </div>
     </div>
   );
 }

@@ -2,9 +2,11 @@
 
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import QuizClient from "@/components/QuizClient";
-import PracticeClient from "@/components/PracticeClient";
-import ExamClient from "@/components/ExamClient";
+import UnifiedPracticeClient from "@/components/UnifiedPracticeClient";
+import UnifiedExamClient from "@/components/UnifiedExamClient";
+import { getBankConfig } from "@/lib/bankConfig";
+
+const bank = getBankConfig("license");
 
 function QuizRouter() {
   const searchParams = useSearchParams();
@@ -14,10 +16,11 @@ function QuizRouter() {
   const weakIds = weakParam ? weakParam.split(",").map(Number).filter(Boolean) : undefined;
   const countParam = searchParams.get("count");
   const count = countParam ? Number(countParam) : undefined;
+  const section = searchParams.get("section") ?? undefined;
 
-  if (mode === "practice") return <PracticeClient sessionId={sessionId} weakIds={weakIds} count={count} />;
-  if (mode === "exam") return <ExamClient sessionId={sessionId} />;
-  return <QuizClient sessionId={sessionId} count={count} />;
+  if (mode === "exam") return <UnifiedExamClient bank={bank} sessionId={sessionId} />;
+  // All practice-like modes: practice, section, weakest
+  return <UnifiedPracticeClient bank={bank} sessionId={sessionId} weakIds={weakIds} count={count} section={section} />;
 }
 
 export default function HelicopterQuizPage() {
