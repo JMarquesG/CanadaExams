@@ -7,15 +7,18 @@ import {
   loadPstarStats,
   loadTimminsStats,
   loadTorontoStats,
+  loadGanderStats,
   clearStats,
   clearPstarStats,
   clearTimminsStats,
   clearTorontoStats,
+  clearGanderStats,
   getAggregateStats,
   deleteSession,
   deletePstarSession,
   deleteTimminsSession,
   deleteTorontoSession,
+  deleteGanderSession,
   StatsData,
   SessionRecord,
 } from "@/lib/stats";
@@ -23,8 +26,9 @@ import { questions, SECTIONS } from "@/data/questions";
 import { pstarQuestions, PSTAR_SECTIONS } from "@/data/pstar-questions";
 import { timminsQuestions, TIMMINS_SECTIONS } from "@/data/timmins-questions";
 import { torontoQuestions, TORONTO_SECTIONS } from "@/data/toronto-questions";
+import { ganderQuestions, GANDER_SECTIONS } from "@/data/gander-questions";
 
-type ExamBank = "helicopter" | "pstar" | "timmins" | "toronto";
+type ExamBank = "helicopter" | "pstar" | "timmins" | "toronto" | "gander";
 type Tab = "overview" | "questions" | "sessions";
 type QuestionSort = "id" | "answered" | "accuracy" | "viewed";
 
@@ -34,6 +38,7 @@ export default function StatsPage() {
   const [pstarData, setPstarData] = useState<StatsData | null>(null);
   const [timminsData, setTimminsData] = useState<StatsData | null>(null);
   const [torontoData, setTorontoData] = useState<StatsData | null>(null);
+  const [ganderData, setGanderData] = useState<StatsData | null>(null);
   const [tab, setTab] = useState<Tab>("overview");
   const [questionSort, setQuestionSort] = useState<QuestionSort>("id");
   const [showClearConfirm, setShowClearConfirm] = useState(false);
@@ -43,6 +48,7 @@ export default function StatsPage() {
     setPstarData(loadPstarStats());
     setTimminsData(loadTimminsStats());
     setTorontoData(loadTorontoStats());
+    setGanderData(loadGanderStats());
   }, []);
 
   const data =
@@ -52,6 +58,8 @@ export default function StatsPage() {
       ? timminsData
       : bank === "toronto"
       ? torontoData
+      : bank === "gander"
+      ? ganderData
       : pstarData;
   const allQuestions =
     bank === "helicopter"
@@ -60,6 +68,8 @@ export default function StatsPage() {
       ? timminsQuestions
       : bank === "toronto"
       ? torontoQuestions
+      : bank === "gander"
+      ? ganderQuestions
       : pstarQuestions;
   const sections =
     bank === "helicopter"
@@ -68,6 +78,8 @@ export default function StatsPage() {
       ? TIMMINS_SECTIONS
       : bank === "toronto"
       ? TORONTO_SECTIONS
+      : bank === "gander"
+      ? GANDER_SECTIONS
       : PSTAR_SECTIONS;
   const passPercent =
     bank === "helicopter"
@@ -75,6 +87,8 @@ export default function StatsPage() {
       : bank === "timmins"
       ? 70
       : bank === "toronto"
+      ? 70
+      : bank === "gander"
       ? 70
       : 90;
 
@@ -113,6 +127,14 @@ export default function StatsPage() {
               s.totalQuestions > 0 &&
               (s.correct / s.totalQuestions) * 100 >= 70
           ).length
+      : bank === "gander"
+      ? data.sessions
+          .filter((s) => s.finishedAt && s.mode === "exam")
+          .filter(
+            (s) =>
+              s.totalQuestions > 0 &&
+              (s.correct / s.totalQuestions) * 100 >= 70
+          ).length
       : agg.examsPassed;
 
   const totalQuestions = allQuestions.length;
@@ -127,6 +149,9 @@ export default function StatsPage() {
     } else if (bank === "toronto") {
       clearTorontoStats();
       setTorontoData(loadTorontoStats());
+    } else if (bank === "gander") {
+      clearGanderStats();
+      setGanderData(loadGanderStats());
     } else {
       clearPstarStats();
       setPstarData(loadPstarStats());
@@ -203,6 +228,8 @@ export default function StatsPage() {
       ? "teal"
       : bank === "toronto"
       ? "rose"
+      : bank === "gander"
+      ? "orange"
       : "indigo";
   const headerBg =
     bank === "helicopter"
@@ -211,6 +238,8 @@ export default function StatsPage() {
       ? "bg-teal-900"
       : bank === "toronto"
       ? "bg-rose-900"
+      : bank === "gander"
+      ? "bg-orange-900"
       : "bg-indigo-900";
 
   return (
@@ -238,7 +267,7 @@ export default function StatsPage() {
                 onClick={() => setShowClearConfirm(true)}
                 className="text-xs text-slate-400 hover:text-red-400 transition-colors"
               >
-                Clear {bank === "helicopter" ? "License" : bank === "timmins" ? "Timmins" : bank === "toronto" ? "Toronto" : "PSTAR"} data
+                Clear {bank === "helicopter" ? "License" : bank === "timmins" ? "Timmins" : bank === "toronto" ? "Toronto" : bank === "gander" ? "Gander" : "PSTAR"} data
               </button>
             ) : (
               <div className="flex gap-2 items-center">
@@ -320,6 +349,20 @@ export default function StatsPage() {
               }`}
             >
               Toronto Exam
+            </button>
+            <button
+              onClick={() => {
+                setBank("gander");
+                setTab("overview");
+                setShowClearConfirm(false);
+              }}
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                bank === "gander"
+                  ? "bg-orange-100 text-orange-800"
+                  : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+              }`}
+            >
+              Gander Exam
             </button>
           </div>
 
@@ -636,6 +679,8 @@ export default function StatsPage() {
                       ? "/timmins/quiz"
                       : bank === "toronto"
                       ? "/toronto/quiz"
+                      : bank === "gander"
+                      ? "/gander/quiz"
                       : "/pstar/quiz";
                   const modeParam = s.mode === "exam" ? "exam" : s.mode === "practice" ? "practice" : `section&section=${encodeURIComponent(s.section ?? "")}`;
                   const sessionUrl = `${quizBase}?mode=${modeParam}&session=${s.id}`;
@@ -751,6 +796,9 @@ export default function StatsPage() {
                                 } else if (bank === "toronto") {
                                   deleteTorontoSession(s.id);
                                   setTorontoData(loadTorontoStats());
+                                } else if (bank === "gander") {
+                                  deleteGanderSession(s.id);
+                                  setGanderData(loadGanderStats());
                                 } else {
                                   deletePstarSession(s.id);
                                   setPstarData(loadPstarStats());

@@ -8,27 +8,31 @@ import { questions, SECTIONS } from "@/data/questions";
 import { pstarQuestions, PSTAR_SECTIONS } from "@/data/pstar-questions";
 import { timminsQuestions, TIMMINS_SECTIONS } from "@/data/timmins-questions";
 import { torontoQuestions, TORONTO_SECTIONS } from "@/data/toronto-questions";
+import { ganderQuestions, GANDER_SECTIONS } from "@/data/gander-questions";
 import {
   loadStats,
   loadPstarStats,
   loadTimminsStats,
   loadTorontoStats,
+  loadGanderStats,
   getWeakQuestionIds,
   getMasteryStats,
   deleteSession,
   deletePstarSession,
   deleteTimminsSession,
   deleteTorontoSession,
+  deleteGanderSession,
   StatsData,
   SessionRecord,
 } from "@/lib/stats";
 
-type ExamBank = "pstar" | "license" | "timmins" | "toronto";
+type ExamBank = "pstar" | "license" | "timmins" | "toronto" | "gander";
 
 const QUESTION_COUNT_OPTIONS_PSTAR = [10, 20, 50, 100, 192];
 const QUESTION_COUNT_OPTIONS_LICENSE = [10, 20, 50, 100];
 const QUESTION_COUNT_OPTIONS_TIMMINS = [10, 20, 50, 101];
 const QUESTION_COUNT_OPTIONS_TORONTO = [10, 20, 50, 104];
+const QUESTION_COUNT_OPTIONS_GANDER = [10, 20, 50, 105];
 
 function HomeContent() {
   const searchParams = useSearchParams();
@@ -40,12 +44,15 @@ function HomeContent() {
       ? "timmins"
       : bankParam === "toronto"
       ? "toronto"
+      : bankParam === "gander"
+      ? "gander"
       : "pstar"
   );
   const [pstarStats, setPstarStats] = useState<StatsData | null>(null);
   const [licenseStats, setLicenseStats] = useState<StatsData | null>(null);
   const [timminsStats, setTimminsStats] = useState<StatsData | null>(null);
   const [torontoStats, setTorontoStats] = useState<StatsData | null>(null);
+  const [ganderStats, setGanderStats] = useState<StatsData | null>(null);
   const [practiceCount, setPracticeCount] = useState<number | "all">("all");
   const [weakIds, setWeakIds] = useState<number[]>([]);
 
@@ -54,6 +61,7 @@ function HomeContent() {
     setLicenseStats(loadStats());
     setTimminsStats(loadTimminsStats());
     setTorontoStats(loadTorontoStats());
+    setGanderStats(loadGanderStats());
   }, []);
 
   useEffect(() => {
@@ -65,6 +73,8 @@ function HomeContent() {
         ? timminsStats
         : bank === "toronto"
         ? torontoStats
+        : bank === "gander"
+        ? ganderStats
         : licenseStats;
     const qs =
       bank === "pstar"
@@ -73,6 +83,8 @@ function HomeContent() {
         ? timminsQuestions
         : bank === "toronto"
         ? torontoQuestions
+        : bank === "gander"
+        ? ganderQuestions
         : questions;
     if (stats) {
       const ids = getWeakQuestionIds(stats, qs.map((q) => q.id), 50);
@@ -80,7 +92,7 @@ function HomeContent() {
     } else {
       setWeakIds([]);
     }
-  }, [bank, pstarStats, licenseStats, timminsStats, torontoStats]);
+  }, [bank, pstarStats, licenseStats, timminsStats, torontoStats, ganderStats]);
 
   const currentStats =
     bank === "pstar"
@@ -89,6 +101,8 @@ function HomeContent() {
       ? timminsStats
       : bank === "toronto"
       ? torontoStats
+      : bank === "gander"
+      ? ganderStats
       : licenseStats;
   const currentQuestions =
     bank === "pstar"
@@ -97,6 +111,8 @@ function HomeContent() {
       ? timminsQuestions
       : bank === "toronto"
       ? torontoQuestions
+      : bank === "gander"
+      ? ganderQuestions
       : questions;
   const currentSections =
     bank === "pstar"
@@ -105,6 +121,8 @@ function HomeContent() {
       ? TIMMINS_SECTIONS
       : bank === "toronto"
       ? TORONTO_SECTIONS
+      : bank === "gander"
+      ? GANDER_SECTIONS
       : SECTIONS;
   const quizBase =
     bank === "pstar"
@@ -113,10 +131,16 @@ function HomeContent() {
       ? "/timmins/quiz"
       : bank === "toronto"
       ? "/toronto/quiz"
+      : bank === "gander"
+      ? "/gander/quiz"
       : "/helicopter/quiz";
   const examQuestionCount = bank === "pstar" ? 50 : 100;
   const passPercent =
-    bank === "pstar" ? 90 : bank === "license" ? 60 : bank === "toronto" ? 70 : 70;
+    bank === "pstar"
+      ? 90
+      : bank === "license"
+      ? 60
+      : 70;
   const totalQuestions = currentQuestions.length;
   const countOptions =
     bank === "pstar"
@@ -125,6 +149,8 @@ function HomeContent() {
       ? QUESTION_COUNT_OPTIONS_TIMMINS
       : bank === "toronto"
       ? QUESTION_COUNT_OPTIONS_TORONTO
+      : bank === "gander"
+      ? QUESTION_COUNT_OPTIONS_GANDER
       : QUESTION_COUNT_OPTIONS_LICENSE;
 
   // Section stats
@@ -256,6 +282,16 @@ function HomeContent() {
             }`}
           >
             Toronto Exam
+          </button>
+          <button
+            onClick={() => setBank("gander")}
+            className={`px-5 py-2.5 text-sm font-semibold rounded-lg transition-colors ${
+              bank === "gander"
+                ? "bg-orange-100 text-orange-800 shadow-sm"
+                : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+            }`}
+          >
+            Gander Exam
           </button>
 
           {/* Quick stats in the tab bar */}
@@ -537,6 +573,7 @@ function HomeContent() {
             if (bank === "pstar") setPstarStats(loadPstarStats());
             else if (bank === "timmins") setTimminsStats(loadTimminsStats());
             else if (bank === "toronto") setTorontoStats(loadTorontoStats());
+            else if (bank === "gander") setGanderStats(loadGanderStats());
             else setLicenseStats(loadStats());
           }}
         />
@@ -636,6 +673,18 @@ function HomeContent() {
             </p>
           </div>
         )}
+        {bank === "gander" && (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-5 mb-6">
+            <h2 className="text-sm font-semibold text-gray-800 mb-2">
+              About Gander Exam
+            </h2>
+            <p className="text-gray-600 text-xs mb-2">
+              {totalQuestions} questions covering Air Law, Helicopter Theory,
+              Aeromedical, Meteorology, Weather Reports, and Navigation.
+              Pass mark: 70%.
+            </p>
+          </div>
+        )}
       </main>
 
       <footer className="border-t border-gray-200 py-6 px-4 text-center text-xs text-gray-400">
@@ -673,6 +722,8 @@ function RecentSessions({
       ? "/timmins/quiz"
       : bank === "toronto"
       ? "/toronto/quiz"
+      : bank === "gander"
+      ? "/gander/quiz"
       : "/helicopter/quiz";
 
   const fmtDate = (iso: string) => {
@@ -761,6 +812,7 @@ function RecentSessions({
                       if (bank === "pstar") deletePstarSession(s.id);
                       else if (bank === "timmins") deleteTimminsSession(s.id);
                       else if (bank === "toronto") deleteTorontoSession(s.id);
+                      else if (bank === "gander") deleteGanderSession(s.id);
                       else deleteSession(s.id);
                       onDelete();
                     }}

@@ -4,6 +4,7 @@ const STORAGE_KEY = "canada-exam-stats";
 const PSTAR_STORAGE_KEY = "canada-pstar-stats";
 const TIMMINS_STORAGE_KEY = "canada-timmins-stats";
 const TORONTO_STORAGE_KEY = "canada-toronto-stats";
+const GANDER_STORAGE_KEY = "canada-gander-stats";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -115,6 +116,8 @@ export function startSessionForBank(
       ? "timmins-"
       : storageKey === TORONTO_STORAGE_KEY
       ? "toronto-"
+      : storageKey === GANDER_STORAGE_KEY
+      ? "gander-"
       : "";
   const id = `${prefix}${mode}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   stats.sessions.push({
@@ -176,6 +179,7 @@ export function deleteSessionForBank(storageKey: string, sessionId: string): voi
 export function loadPstarStats(): StatsData { return loadStats(PSTAR_STORAGE_KEY); }
 export function loadTimminsStats(): StatsData { return loadStats(TIMMINS_STORAGE_KEY); }
 export function loadTorontoStats(): StatsData { return loadStats(TORONTO_STORAGE_KEY); }
+export function loadGanderStats(): StatsData { return loadStats(GANDER_STORAGE_KEY); }
 
 // Legacy default-key functions (used by home page)
 export function recordQuestionView(questionId: number): void { recordQuestionViewForBank(STORAGE_KEY, questionId); }
@@ -190,6 +194,7 @@ export function deleteSession(sessionId: string): void { deleteSessionForBank(ST
 export function deletePstarSession(sessionId: string): void { deleteSessionForBank(PSTAR_STORAGE_KEY, sessionId); }
 export function deleteTimminsSession(sessionId: string): void { deleteSessionForBank(TIMMINS_STORAGE_KEY, sessionId); }
 export function deleteTorontoSession(sessionId: string): void { deleteSessionForBank(TORONTO_STORAGE_KEY, sessionId); }
+export function deleteGanderSession(sessionId: string): void { deleteSessionForBank(GANDER_STORAGE_KEY, sessionId); }
 
 // ─── Aggregate helpers (used by the stats dashboard) ─────────────────────────
 
@@ -309,4 +314,9 @@ export function clearTimminsStats(): void {
 export function clearTorontoStats(): void {
   if (typeof window === "undefined") return;
   localStorage.removeItem(TORONTO_STORAGE_KEY);
+}
+
+export function clearGanderStats(): void {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem(GANDER_STORAGE_KEY);
 }

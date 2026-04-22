@@ -2,6 +2,7 @@ import { questions, SECTIONS, Question } from "@/data/questions";
 import { pstarQuestions, PSTAR_SECTIONS, PstarQuestion } from "@/data/pstar-questions";
 import { timminsQuestions, TIMMINS_SECTIONS, TimminsQuestion } from "@/data/timmins-questions";
 import { torontoQuestions, TORONTO_SECTIONS, TorontoQuestion } from "@/data/toronto-questions";
+import { ganderQuestions, GANDER_SECTIONS, GanderQuestion } from "@/data/gander-questions";
 
 // ─── Unified question type ──────────────────────────────────────────────────
 
@@ -19,7 +20,7 @@ export type AnyQuestion = {
 
 // ─── Bank configuration ─────────────────────────────────────────────────────
 
-export type BankKey = "license" | "pstar" | "timmins" | "toronto";
+export type BankKey = "license" | "pstar" | "timmins" | "toronto" | "gander";
 
 export interface BankConfig {
   key: BankKey;
@@ -174,6 +175,32 @@ export const BANK_CONFIGS: Record<BankKey, BankConfig> = {
       currentQRing: "ring-rose-300",
     },
     buildExam: () => shuffleArray([...torontoQuestions] as AnyQuestion[]).slice(0, 100),
+    pdfs: [],
+  },
+  gander: {
+    key: "gander",
+    label: "Gander Exam",
+    storageKey: "canada-gander-stats",
+    questions: ganderQuestions as AnyQuestion[],
+    sections: GANDER_SECTIONS as unknown as string[],
+    examSize: 100,
+    passPercent: 70,
+    homeHref: "/?bank=gander",
+    quizBase: "/gander/quiz",
+    colors: {
+      primary: "bg-orange-800",
+      primaryDark: "bg-orange-900",
+      primaryLight: "text-orange-300",
+      primaryMuted: "text-orange-200",
+      primarySep: "text-orange-500",
+      accent: "bg-orange-700",
+      accentHover: "hover:bg-orange-800",
+      accentBar: "bg-orange-400",
+      badge: "text-orange-700 bg-orange-100",
+      currentQ: "bg-orange-700",
+      currentQRing: "ring-orange-300",
+    },
+    buildExam: () => shuffleArray([...ganderQuestions] as AnyQuestion[]).slice(0, 100),
     pdfs: [],
   },
 };
